@@ -172,7 +172,7 @@ testRandomAngles33 ()
 
 	for (int j = 0; j < 3; ++j)
 	    for (int k = 0; k < 2; ++k)
-		M[j][k] += random.nextf (-1e-7, 1e-7);
+		M[j][k] += static_cast<float>(random.nextf (-1e-7, 1e-7));
 
 
 	debug (("Scale   : %f %f\n", s[0], s[1]));
@@ -343,7 +343,7 @@ testRandomAngles44 ()
 
 	for (int j = 0; j < 4; ++j)
 	    for (int k = 0; k < 3; ++k)
-		M[j][k] += random.nextf (-1e-7, 1e-7);
+		M[j][k] += static_cast<float>(random.nextf (-1e-7, 1e-7));
 
 
 	debug (("Scale   : %f %f %f\n", s[0], s[1], s[2]));

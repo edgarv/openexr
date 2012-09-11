@@ -2128,22 +2128,22 @@ Matrix44<T>::setValue (const Matrix44<S> &v)
     }
     else
     {
-        x[0][0] = v.x[0][0];
-        x[0][1] = v.x[0][1];
-        x[0][2] = v.x[0][2];
-        x[0][3] = v.x[0][3];
-        x[1][0] = v.x[1][0];
-        x[1][1] = v.x[1][1];
-        x[1][2] = v.x[1][2];
-        x[1][3] = v.x[1][3];
-        x[2][0] = v.x[2][0];
-        x[2][1] = v.x[2][1];
-        x[2][2] = v.x[2][2];
-        x[2][3] = v.x[2][3];
-        x[3][0] = v.x[3][0];
-        x[3][1] = v.x[3][1];
-        x[3][2] = v.x[3][2];
-        x[3][3] = v.x[3][3];
+        x[0][0] = static_cast<T>(v.x[0][0]);
+        x[0][1] = static_cast<T>(v.x[0][1]);
+        x[0][2] = static_cast<T>(v.x[0][2]);
+        x[0][3] = static_cast<T>(v.x[0][3]);
+        x[1][0] = static_cast<T>(v.x[1][0]);
+        x[1][1] = static_cast<T>(v.x[1][1]);
+        x[1][2] = static_cast<T>(v.x[1][2]);
+        x[1][3] = static_cast<T>(v.x[1][3]);
+        x[2][0] = static_cast<T>(v.x[2][0]);
+        x[2][1] = static_cast<T>(v.x[2][1]);
+        x[2][2] = static_cast<T>(v.x[2][2]);
+        x[2][3] = static_cast<T>(v.x[2][3]);
+        x[3][0] = static_cast<T>(v.x[3][0]);
+        x[3][1] = static_cast<T>(v.x[3][1]);
+        x[3][2] = static_cast<T>(v.x[3][2]);
+        x[3][3] = static_cast<T>(v.x[3][3]);
     }
 
     return *this;

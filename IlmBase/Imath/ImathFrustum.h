@@ -726,14 +726,4 @@ typedef Frustum<double> Frustumd;
 
 } // namespace Imath
 
-
-#if defined _WIN32 || defined _WIN64
-    #ifdef _redef_near
-        #define near
-    #endif
-    #ifdef _redef_far
-        #define far
-    #endif
-#endif
-
 #endif

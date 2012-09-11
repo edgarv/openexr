@@ -60,7 +60,7 @@ addItem(const std::vector<int> &value, std::vector<T> &perms)
     T p;
     for (unsigned int i = 0; i < value.size(); i++)
     {
-        p[i] = value[i];
+        p[i] = static_cast<typename T::BaseType>(value[i]);
     }
     perms.push_back(p);
 }
@@ -116,7 +116,7 @@ testConstructors(const char *type)
     {
         T p;
         for (unsigned int i = 0; i < T::dimensions(); i++)
-            p[i] = i;
+            p[i] = static_cast<typename T::BaseType>(i);
 
         Imath::Box<T> b(p);
         assert(b.min == p && b.max == p);
@@ -130,8 +130,8 @@ testConstructors(const char *type)
         T p1;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p0[i] = i;
-            p1[i] = 10 * T::dimensions() - i - 1;
+            p0[i] = static_cast<typename T::BaseType>(i);
+            p1[i] = static_cast<typename T::BaseType>(10 * T::dimensions() - i - 1);
         }
 
         Imath::Box<T> b(p0, p1);
@@ -246,7 +246,7 @@ testExtendByPoint(const char *type)
     {
         T p;
         for (unsigned int j = 0; j < T::dimensions(); j++)
-            p[j] = rand.nextf(-12345, 12345);
+            p[j] = static_cast<typename T::BaseType>(rand.nextf(-12345, 12345));
                               
         Imath::Box<T> b;
         b.extendBy(p);
@@ -268,7 +268,7 @@ testExtendByPoint(const char *type)
         {
             T p;
             for (unsigned int k = 0; k < T::dimensions(); k++)
-                p[k] = rand.nextf(-12345, 12345);
+                p[k] = static_cast<typename T::BaseType>(rand.nextf(-12345, 12345));
 
             if (j == 0)
             {
@@ -345,8 +345,8 @@ testExtendByBox(const char *type)
             T p1;
             for (unsigned int k = 0; k < T::dimensions(); k++)
             {
-                p0[k] = rand.nextf(   0,  999);
-                p1[k] = rand.nextf(1000, 1999);
+                p0[k] = static_cast<typename T::BaseType>(rand.nextf(   0,  999));
+                p1[k] = static_cast<typename T::BaseType>(rand.nextf(1000, 1999));
             }
 
             min = b.min;
@@ -641,7 +641,7 @@ testSize(const char *type)
         T p;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p[i] = i;
+            p[i] = static_cast<typename T::BaseType>(i);
         }
         Imath::Box<T> b1(-p, p);
         assert(b1.size() == p * T(2));
@@ -701,8 +701,8 @@ testCenter(const char *type)
         T p1;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p0[i] = -pow(2.0, (int)(i + 1));
-            p1[i] =  pow(2.0, (int)(T::dimensions() - i));
+            p0[i] = static_cast<typename T::BaseType>(-pow(2.0, (int)(i + 1)));
+            p1[i] = static_cast<typename T::BaseType>( pow(2.0, (int)(T::dimensions() - i)));
         }
         Imath::Box<T> b1(p0, p1);
         assert(b1.center() == (p1 + p0) / 2);
@@ -755,8 +755,8 @@ testIsEmpty(const char *type)
         T p1;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-           p0[i] = -pow(2.0, (int)(i + 1));
-           p1[i] =  pow(2.0, (int)(T::dimensions() - i));
+           p0[i] = static_cast<typename T::BaseType>(-pow(2.0, (int)(i + 1)));
+           p1[i] = static_cast<typename T::BaseType>( pow(2.0, (int)(T::dimensions() - i)));
         }
         Imath::Box<T> b1(p0, p1);
         assert(!b1.isEmpty());
@@ -873,8 +873,8 @@ testHasVolume(const char *type)
         T p1;
         for (unsigned int i = 0; i < T::dimensions(); i++)
         {
-            p0[i] = -pow(2.0, (int)(i + 1));
-            p1[i] =  pow(2.0, (int)(T::dimensions() - i));
+            p0[i] = static_cast<typename T::BaseType>(-pow(2.0, (int)(i + 1)));
+            p1[i] = static_cast<typename T::BaseType>( pow(2.0, (int)(T::dimensions() - i)));
         }
         Imath::Box<T> b1(p0, p1);
         assert(b1.hasVolume());

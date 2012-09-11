@@ -141,7 +141,7 @@ testRandomAngles (M44f (*matrixEulerMatrix)(const M44f &, Eulerf::Order),
 
 	for (int j = 0; j < 3; ++j)
 	    for (int k = 0; k < 3; ++k)
-		M[j][k] += r.nextf (-1e-7, 1e-7);
+		M[j][k] += static_cast<float>(r.nextf (-1e-7, 1e-7));
 
 	//
 	// Extract Euler angles from M, convert the Euler angles
