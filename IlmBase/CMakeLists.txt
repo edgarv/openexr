@@ -15,6 +15,7 @@ install(FILES ${OPENEXR_CFG_DIR}/IlmBaseConfig.h
 # Now add the actual projects
 add_subdirectory(Half)
 add_subdirectory(Iex)
+add_subdirectory(IexMath)
 add_subdirectory(Imath)
 add_subdirectory(IlmThread)
 

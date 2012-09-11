@@ -38,7 +38,7 @@
 
 //---------------------------------------------------------------------------
 //
-//	Names for the loating point exceptions defined by IEEE standard 754
+//	Names for the floating point exceptions defined by IEEE standard 754
 //
 //---------------------------------------------------------------------------
 
