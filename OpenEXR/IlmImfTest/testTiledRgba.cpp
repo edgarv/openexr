@@ -730,7 +730,7 @@ writeReadLayers()
 	{
 	    for (int x = 0; x < W; ++x)
 	    {
-		if (y < in.numYTiles() / 2 * in.tileYSize())
+		if (y < in.numYTiles() / 2 * static_cast<int>(in.tileYSize()))
 		    assert (p3[y][x].r == p1[y][x]);
 		else
 		    assert (p3[y][x].r == p2[y][x]);
@@ -826,7 +826,7 @@ writeReadLayers()
 	{
 	    for (int x = 0; x < W; ++x)
 	    {
-		if (y < in.numYTiles() / 2 * in.tileYSize())
+		if (y < in.numYTiles() / 2 * static_cast<int>(in.tileYSize()))
 		{
 		    assert (p3[y][x].r == p1[y][x]);
 		    assert (p3[y][x].g == p1[y][x]);

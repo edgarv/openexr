@@ -47,11 +47,22 @@
 
 namespace Imf {
 
+#if ((__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 2)) && defined(__GXX_EXPERIMENTAL_CXX0X__)) || (_MSC_VER >= 1600)
+#define IMF_STATIC_ASSERT(x) static_assert(x, "ImfCheckedArithmetic: " #x)
+#else
+
+#if defined(_MSC_VER) && _MSC_VER < 1600
+#pragma warning( push )
+#pragma warning( disable : 4101 )
+#endif
+
 template <bool b> struct StaticAssertionFailed;
 template <> struct StaticAssertionFailed <true> {};
 
 #define IMF_STATIC_ASSERT(x) \
     do {StaticAssertionFailed <x> staticAssertionFailed;} while (false)
+
+#endif
 
 
 template <class T>
@@ -155,6 +166,9 @@ checkArraySize (T n, size_t s)
     return size_t (n);
 }
 
+#if defined(_MSC_VER) && _MSC_VER < 1600
+#pragma warning( pop )
+#endif
 
 } // namespace Imf
 

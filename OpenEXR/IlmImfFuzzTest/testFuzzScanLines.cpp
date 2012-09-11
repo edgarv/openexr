@@ -43,6 +43,7 @@
 #include <Iex.h>
 #include <iostream>
 #include <cassert>
+#include <cstdio>
 
 using namespace std;
 using namespace Imath;

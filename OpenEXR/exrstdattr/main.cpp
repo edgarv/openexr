@@ -355,7 +355,7 @@ getPosFloatOrInf (const char attrName[],
     }
     else
     {
-	f = strtod (argv[i + 1], 0);
+	f = static_cast<float> (strtod (argv[i + 1], 0));
 
 	if (f <= 0)
 	{
@@ -494,14 +494,14 @@ getChromaticities (const char attrName[],
     ChromaticitiesAttribute *a = new ChromaticitiesAttribute;
     attrs[attrName] = a;
 
-    a->value().red.x   = strtod (argv[i + 1], 0);
-    a->value().red.y   = strtod (argv[i + 2], 0);
-    a->value().green.x = strtod (argv[i + 3], 0);
-    a->value().green.y = strtod (argv[i + 4], 0);
-    a->value().blue.x  = strtod (argv[i + 5], 0);
-    a->value().blue.y  = strtod (argv[i + 6], 0);
-    a->value().white.x = strtod (argv[i + 7], 0);
-    a->value().white.y = strtod (argv[i + 8], 0);
+    a->value().red.x   = static_cast<float> (strtod (argv[i + 1], 0));
+    a->value().red.y   = static_cast<float> (strtod (argv[i + 2], 0));
+    a->value().green.x = static_cast<float> (strtod (argv[i + 3], 0));
+    a->value().green.y = static_cast<float> (strtod (argv[i + 4], 0));
+    a->value().blue.x  = static_cast<float> (strtod (argv[i + 5], 0));
+    a->value().blue.y  = static_cast<float> (strtod (argv[i + 6], 0));
+    a->value().white.x = static_cast<float> (strtod (argv[i + 7], 0));
+    a->value().white.y = static_cast<float> (strtod (argv[i + 8], 0));
     i += 9;
 }
 

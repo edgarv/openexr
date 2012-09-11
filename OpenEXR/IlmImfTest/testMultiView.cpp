@@ -47,14 +47,14 @@ using namespace Imf;
 namespace {
 
 ChannelList
-buildList (char *name, ...)
+buildList (const char *name, ...)
 {
     //
     // nice function to build channel lists
     //
 
     ChannelList list;
-    char *channelName = name;
+    const char *channelName = name;
 
     va_list ap;
     va_start (ap, name);
@@ -62,7 +62,7 @@ buildList (char *name, ...)
     while (channelName != 0)
     {
 	list.insert (channelName, Channel());
-	channelName = va_arg (ap, char *);
+	channelName = va_arg (ap, const char *);
     }
 
     va_end (ap);
@@ -323,7 +323,7 @@ testMultiViewFunctions ()
 	 "none.jacob",
 	 "shropshire.none.D",
 	 "rough.fell",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     //
     // List of channels in each view
@@ -339,7 +339,7 @@ testMultiViewFunctions ()
 	 "shropshire.left.D",
 	 "castlemilk.moorit.left.A",
 	 "black.welsh.mountain.left.A",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     ChannelList realRight = buildList
 	("A",
@@ -349,7 +349,7 @@ testMultiViewFunctions ()
 	 "shropshire.right.D",
 	 "castlemilk.moorit.right.A",
 	 "black.welsh.mountain.right.A",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     // all the right channels including the default channels
 
@@ -359,7 +359,7 @@ testMultiViewFunctions ()
 	 "centre.C",
 	 "shropshire.centre.D",
 	 "castlemilk.moorit.centre.A",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     // no jacob channel
     // there IS a jacob channel but it has no counterparts because
@@ -373,7 +373,7 @@ testMultiViewFunctions ()
 	 "none.jacob",
 	 "shropshire.none.D",
 	 "rough.fell",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     // have a dummy name just to throw a wolf amongst the sheep
 
@@ -381,7 +381,7 @@ testMultiViewFunctions ()
 
     // no channels
 
-    ChannelList realNull = buildList ((char *) 0);
+    ChannelList realNull = buildList (static_cast<const char *> (0));
 
     //
     // Test channelsInView()
@@ -420,29 +420,29 @@ testMultiViewFunctions ()
 	("left.A",
 	 "A",
 	 "centre.A",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     ChannelList realB = buildList
 	("left.B",
 	 "B",
 	 "centre.B",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     ChannelList realJacob = buildList
 	("left.jacob",
 	 "right.jacob",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     ChannelList realCm = buildList
 	("castlemilk.moorit.left.A",
 	 "castlemillk.moorit.right.A",
 	 "castlemilk.moorit.centre.A",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     ChannelList realBwm = buildList
 	("black.welsh.mountain.left.A",
 	 "black.welsh.mountain.right.A",
-	 (char *) 0);
+	 static_cast<const char *> (0));
 
     assert (channelInAllViews ("left.A", a, multiView) == realA);
 

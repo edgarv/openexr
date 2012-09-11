@@ -124,7 +124,7 @@ main(int argc, char **argv)
 	    if (i > argc - 2)
 		usageMessage (argv[0]);
 
-	    exposure = strtod (argv[i + 1], 0);
+	    exposure = static_cast<float> (strtod (argv[i + 1], 0));
 	    i += 2;
 	}
 	else if (!strcmp (argv[i], "-v"))

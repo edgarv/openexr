@@ -314,7 +314,7 @@ main(int argc, char **argv)
             if (i > argc - 3)
                 usageMessage (argv[0]);
 
-            filterRadius = strtod (argv[i + 1], 0);
+            filterRadius = static_cast<float> (strtod (argv[i + 1], 0));
             numSamples   = strtol (argv[i + 2], 0, 0);
 
             if (filterRadius < 0)
@@ -369,8 +369,8 @@ main(int argc, char **argv)
             if (i > argc - 3)
                 usageMessage (argv[0]);
 
-            padTop    = strtod (argv[i + 1], 0);
-            padBottom = strtod (argv[i + 2], 0);
+            padTop    = static_cast<float> (strtod (argv[i + 1], 0));
+            padBottom = static_cast<float> (strtod (argv[i + 2], 0));
 
             if (padTop < 0 || padBottom < 0)
             {

@@ -74,7 +74,7 @@ fillPixels (Array2D<unsigned int> &pi,
         {
             pi[y][x] = x % 100 + 100 * (y % 100);
             ph[y][x] = sin (double (x)) + sin (y * 0.5);
-            pf[y][x] = sin (double (y)) + sin (x * 0.5);
+            pf[y][x] = static_cast<float> (sin (double (y)) + sin (x * 0.5));
         }
 }
 

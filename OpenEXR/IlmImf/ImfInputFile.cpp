@@ -51,6 +51,8 @@
 #include "half.h"
 #include <fstream>
 #include <algorithm>
+#include <cassert>
+#include <cstddef>
 
 
 namespace Imf {
@@ -154,7 +156,10 @@ InputFile::Data::deleteCachedBuffer()
 
 		delete [] (((float *)s.base) + offset);
 		break;
-	    }                
+
+	      default:
+		assert("Unknown slice type" == 0);
+	    }       
 	}
 
 	//
@@ -272,28 +277,28 @@ bufferedReadPixels (InputFile::Data* ifd, int scanLine1, int scanLine2)
 		 y <= maxYThisRow;
 		 y += toSlice.ySampling)
             {
-		//
+                //
                 // Set the pointers to the start of the y scanline in
                 // this row of tiles
-		//
+                //
                 
                 fromPtr = fromSlice.base +
-                          (y - tileRange.min.y) * fromSlice.yStride +
-                          xStart * fromSlice.xStride;
+                          (y - tileRange.min.y) * static_cast<ptrdiff_t>(fromSlice.yStride) +
+                          xStart * static_cast<ptrdiff_t>(fromSlice.xStride);
 
                 toPtr = toSlice.base +
-                        divp (y, toSlice.ySampling) * toSlice.yStride +
-                        divp (xStart, toSlice.xSampling) * toSlice.xStride;
+                        divp (y, toSlice.ySampling) * static_cast<ptrdiff_t>(toSlice.yStride) +
+                        divp (xStart, toSlice.xSampling) * static_cast<ptrdiff_t>(toSlice.xStride);
 
-		//
+                //
                 // Copy all pixels for the scanline in this row of tiles
-		//
+                //
 
                 for (int x = xStart;
 		     x <= levelRange.max.x;
 		     x += toSlice.xSampling)
                 {
-		    for (size_t i = 0; i < size; ++i)
+		    for (int i = 0; i < size; ++i)
 			toPtr[i] = fromPtr[i];
 
 		    fromPtr += fromSlice.xStride * toSlice.xSampling;
@@ -423,7 +428,7 @@ InputFile::setFrameBuffer (const FrameBuffer &frameBuffer)
 	Lock lock (*_data);
 
 	//
-        // We must invalidate the cached buffer if the new frame
+	// We must invalidate the cached buffer if the new frame
 	// buffer has a different set of channels than the old
 	// frame buffer, or if the type of a channel has changed.
 	//
@@ -448,7 +453,7 @@ InputFile::setFrameBuffer (const FrameBuffer &frameBuffer)
 	    // Invalidate the cached buffer.
 	    //
 
-            _data->deleteCachedBuffer ();
+	    _data->deleteCachedBuffer ();
 	    _data->cachedTileY = -1;
 
 	    //
