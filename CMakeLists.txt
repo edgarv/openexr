@@ -105,12 +105,12 @@ endmacro()
 # First we need to create the configuration headers
 
 # Directory for the generated configuration files
-set(OPENEXR_CFG_DIR ${CMAKE_CURRENT_BINARY_DIR}/config)
+set(OPENEXR_CFG_DIR "${CMAKE_CURRENT_BINARY_DIR}/config")
 
 find_package(Threads)
 
-# pthreads
-if(CMAKE_USE_PTHREADS_INIT)
+# pthreads (do not use in MinGW)
+if(CMAKE_USE_PTHREADS_INIT AND NOT WIN32)
   set(HAVE_PTHREAD 1)
 endif()
 
