@@ -5,14 +5,14 @@
 // used by any OpenEXR library or application code.
 //
 
-#cmakedefine HAVE_LINUX_PROCFS @HAVE_LINUX_PROCFS@
+#cmakedefine HAVE_LINUX_PROCFS 1
 
 //
 // Define and set to 1 if the target system is a Darwin-based system
 // (e.g., OS X).
 //
 
-#cmakedefine HAVE_DARWIN @HAVE_DARWIN@
+#cmakedefine HAVE_DARWIN 1
 
 //
 // Define and set to 1 if the target system has a complete <iomanip>
@@ -20,14 +20,14 @@
 // formatter.
 //
 
-#cmakedefine HAVE_COMPLETE_IOMANIP @HAVE_COMPLETE_IOMANIP@
+#cmakedefine HAVE_COMPLETE_IOMANIP 1
 
 //
 // Define and set to 1 if the target system has support for large
 // stack sizes.
 //
 
-#cmakedefine HAVE_LARGE_STACK @HAVE_LARGE_STACK@
+#cmakedefine HAVE_LARGE_STACK 1
 
 //
 // Version string for runtime access
