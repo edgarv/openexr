@@ -3,6 +3,10 @@
 # Extract the version information from configure.ac
 GET_VERSION (IlmBase)
 
+if(DEFINED HAVE_LARGE_STACK)
+  set(ILMBASE_HAVE_LARGE_STACK ${HAVE_LARGE_STACK})
+endif()
+
 # Create the configuration header and install it
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/config/IlmBaseConfig.h.cmake

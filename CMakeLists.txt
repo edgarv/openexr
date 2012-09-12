@@ -53,6 +53,10 @@ macro (GET_VERSION libname)
     ${${libname_upper}_LIBTOOL_CURRENT}.${${libname_upper}_LIBTOOL_REVISION}.${${libname_upper}_LIBTOOL_AGE}
   )
   
+  # Version strings
+  set(${libname_upper}_VERSION_STRING "\"${${libname_upper}_VERSION}\"")
+  set(${libname_upper}_PACKAGE_STRING "\"${libname} ${${libname_upper}_VERSION}\"")
+  
   # Checks if the string needs to be displayed
   set (${libname_upper}_DISPLAYSTR_AUX 
     "Found ${libname} version ${${libname_upper}_VERSION}, soversion ${${libname_upper}_SOVERSION} from configure.ac"
@@ -107,8 +111,12 @@ if(CMAKE_USE_PTHREADS_INIT)
   set(HAVE_PTHREAD 1)
 endif()
 
-# POSIX semaphores
 include(CheckIncludeFile)
+CHECK_INCLUDE_FILE("limits.h"   HAVE_LIMITS_H)
+CHECK_INCLUDE_FILE("unistd.h"   HAVE_UNISTD_H)
+CHECK_INCLUDE_FILE("ucontext.h" HAVE_UCONTEXT_H)
+
+# POSIX semaphores
 if(APPLE)
   set(HAVE_POSIX_SEMAPHORES 0)
 else()
