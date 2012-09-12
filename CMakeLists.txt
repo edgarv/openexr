@@ -28,8 +28,11 @@ find_package(ZLIB REQUIRED)
 
 # Macro to get the version information from the configure.ac file in the
 # current directory. Its argument is the name of the library as passed to
-# AC_INIT. It will set the variables LIBNAME_VERSION and LIBNAME_SOVERSION
+# AC_INIT. It will set the variables <LIBNAME>_VERSION and <LIBNAME>_SOVERSION
+# with the values read from the file. It also sets the variable CURRENT_PACKAGE
+# to the original library name.
 macro (GET_VERSION libname)
+  set(CURRENT_PACKAGE "${libname}")
   string(TOUPPER "${libname}" libname_upper)
   
   # Read the relevant content from configure.ac
@@ -272,35 +275,51 @@ endif()
 
 
 if (WIN32 AND OPENEXR_SHARED_LIBS)
-  # Store in cache the master resource file
-  get_filename_component(OPENEXR_RC_PATH "win32/openexr.rc" 
-    ABSOLUTE CACHE)
-  mark_as_advanced(OPENEXR_RC_PATH)
+  # Resource template file
+  set(OPENEXR_RC_PATH "${OpenEXR_SOURCE_DIR}/win32/openexr.rc.cmake")
+  
+  # Set a human-readable version number for MSVC
+  if(MSVC_VERSION)
+    math(EXPR MSVC_VER_MAJOR "${MSVC_VERSION}/100 - 6")
+    math(EXPR MSVC_VER_MINOR "(${MSVC_VERSION}-(${MSVC_VER_MAJOR}+6)*100)/10")
+    if(CMAKE_CL_64)
+      set(MSVC_BITS "amd64")
+    else()
+      set(MSVC_BITS "x86")
+    endif()
+    set(MSVC_VER_STRING "${MSVC_VER_MAJOR}.${MSVC_VER_MINOR} ${MSVC_BITS}")
+  endif()
 
   # Macro to add the resource file
   macro(ADD_RESOURCE targetname sourceslst_var description version year)
     
     set(RC_DESCRIPTION "${description}")
-    set(RC_VERSION "${version}.0")
-    string(REPLACE "." "," RC_VERSION_COMMA ${RC_VERSION})
-    set(RC_FILENAME "${targetname}.dll")
-    set(RC_NAME "${targetname}")
+    set(RC_VERSION "${version}")
+    string(REPLACE "." "," RC_VERSION_COMMA "${RC_VERSION}.0")
+    set(RC_FILENAME "${targetname}")
+    # FIXME Add an extra parameter for the product name.
+    # This is coupled with the GET_VERSION macro
+    if(CURRENT_PACKAGE)
+      set(RC_PRODUCT_NAME "${CURRENT_PACKAGE}")
+    else()
+      set(RC_PRODUCT_NAME "${targetname}")
+    endif()
     set(RC_YEAR "${year}")
     configure_file("${OPENEXR_RC_PATH}"
-      "${CMAKE_CURRENT_BINARY_DIR}/${RC_NAME}.rc"  ESCAPE_QUOTES)
+      "${CMAKE_CURRENT_BINARY_DIR}/${targetname}.rc" ESCAPE_QUOTES)
     
     # MSVC can take the .rc file directly, MINGW needs more magic
     if (MSVC)
-      list(APPEND ${sourceslst_var} "${CMAKE_CURRENT_BINARY_DIR}/${RC_NAME}.rc")
+      list(APPEND ${sourceslst_var} "${CMAKE_CURRENT_BINARY_DIR}/${targetname}.rc")
     elseif (MINGW)
       # Based on the function from zlib 1.2.5:
       # This gets us DLL resource information when compiling on MinGW.
-      add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${RC_NAME}_rc.obj"
+      add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${targetname}_rc.obj"
                          COMMAND windres.exe
                               -D GCC_WINDRES
-                              -o "${CMAKE_CURRENT_BINARY_DIR}/${RC_NAME}_rc.obj"
-                              -i "${CMAKE_CURRENT_BINARY_DIR}/${RC_NAME}.rc")
-      list(APPEND ${sourceslst_var} "${CMAKE_CURRENT_BINARY_DIR}/${RC_NAME}_rc.obj")
+                              -o "${CMAKE_CURRENT_BINARY_DIR}/${targetname}_rc.obj"
+                              -i "${CMAKE_CURRENT_BINARY_DIR}/${targetname}.rc")
+      list(APPEND ${sourceslst_var} "${CMAKE_CURRENT_BINARY_DIR}/${targetname}_rc.obj")
     endif ()
   
   endmacro()
