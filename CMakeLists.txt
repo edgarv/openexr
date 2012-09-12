@@ -156,7 +156,18 @@ int main (int argc, char **argv)
     memset(arr, 0, sizeof(arr));
     return 0;
 }
-" HAVE_LARGE_STACK)
+" HAVE_LARGE_STACK_0x40000)
+
+if(HAVE_LARGE_STACK_0x40000)
+  if(MSVC)
+    option(USE_LARGE_STACK "Use large stack optimizations (possible compatibility issues)" OFF)
+    if(USE_LARGE_STACK)
+      set(HAVE_LARGE_STACK ${HAVE_LARGE_STACK_0x40000})
+    endif()
+  else()
+    set(HAVE_LARGE_STACK ${HAVE_LARGE_STACK_0x40000})
+  endif()
+endif()
 
 
 # The build requires headers defined within all directories
