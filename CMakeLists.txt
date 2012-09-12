@@ -372,22 +372,20 @@ macro(ADD_OPENEXR_LIBRARY targetname publicheaders_var sources_var description
   
   # If built as a static library in gcc we need to add the fpic flag, so that the code will work when linked into a shared lib
   if(OPENEXR_LIBTYPE STREQUAL "STATIC" AND CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_COMPILER_IS_GNUCC)
-    set_target_properties(${targetname} PROPERTIES 
-      COMPILE_FLAGS "-fpic"
-    )
+    set_target_properties(${targetname} PROPERTIES COMPILE_FLAGS "-fpic")
   endif()
   
   # For MSVC static libraries, modify the name for easier identification
   if(MSVC AND OPENEXR_LIBTYPE STREQUAL "STATIC")
     set_target_properties(${targetname} PROPERTIES 
-      OUTPUT_NAME "${targetname}_static"
-    )
+      OUTPUT_NAME "${targetname}_static")
   endif()
   
-  # For the windows dll we need extra definitions and use createDLL
+  # For the windows dll we need extra definitions and to use createDLL
   if(OPENEXR_DLL)
     string(TOUPPER ${targetname} targetUpper)
-    add_definitions(-D${targetUpper}_EXPORTS)
+    set_target_properties(${targetname} PROPERTIES
+      DEFINE_SYMBOL "${targetUpper}_EXPORTS")
     CREATEDLL(${targetname} ${ARGV7})
   endif()
   
