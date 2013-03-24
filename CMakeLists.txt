@@ -159,7 +159,7 @@ int main (int argc, char **argv)
 " HAVE_LARGE_STACK_0x40000)
 
 if(HAVE_LARGE_STACK_0x40000)
-  if(MSVC)
+  if(WIN32 OR APPLE)
     option(USE_LARGE_STACK "Use large stack optimizations (possible compatibility issues)" OFF)
     if(USE_LARGE_STACK)
       set(HAVE_LARGE_STACK ${HAVE_LARGE_STACK_0x40000})
