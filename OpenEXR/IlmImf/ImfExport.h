@@ -1,3 +1,6 @@
+#ifndef IMFEXPORT_H
+#define IMFEXPORT_H
+
 ///////////////////////////////////////////////////////////////////////////
 //
 // Copyright (c) 2012, Industrial Light & Magic, a division of Lucas
@@ -32,15 +35,38 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#if defined(OPENEXR_DLL)
-    #if defined(ILMIMF_EXPORTS)
-	    #define IMF_EXPORT __declspec(dllexport)
-        #define IMF_EXPORT_CONST extern __declspec(dllexport)
-    #else
-	    #define IMF_EXPORT __declspec(dllimport)
-	    #define IMF_EXPORT_CONST extern __declspec(dllimport)
-    #endif
-#else
-    #define IMF_EXPORT
-    #define IMF_EXPORT_CONST extern const
+
+#if defined(PLATFORM_WINDOWS)
+#  if defined(PLATFORM_BUILD_STATIC)
+#    define PLATFORM_EXPORT_DEFINITION 
+#    define PLATFORM_IMPORT_DEFINITION
+#    define PLATFORM_EXPORT_CONST_DEFINITION extern const
+#  else
+#    define PLATFORM_EXPORT_DEFINITION __declspec(dllexport) 
+#    define PLATFORM_IMPORT_DEFINITION __declspec(dllimport)
+#    define PLATFORM_EXPORT_CONST_DEFINITION __declspec(dllexport) extern const
+#    define PLATFORM_IMPORT_CONST_DEFINITION __declspec(dllimport) extern const
+#  endif
+#else   // linux/macos
+#  if defined(PLATFORM_VISIBILITY_AVAILABLE)
+#    define PLATFORM_EXPORT_DEFINITION __attribute__((visibility("default")))
+#    define PLATFORM_IMPORT_DEFINITION
+#    define PLATFORM_EXPORT_CONST_DEFINITION __attribute__((visibility("default"))) extern const
+#    define PLATFORM_IMPORT_CONST_DEFINITION extern const
+#  else
+#    define PLATFORM_EXPORT_DEFINITION 
+#    define PLATFORM_IMPORT_DEFINITION
+#    define PLATFORM_EXPORT_CONST_DEFINITION extern const
+#    define PLATFORM_IMPORT_CONST_DEFINITION extern const
+#  endif
 #endif
+
+#if defined(ILMIMF_EXPORTS)                        // create library
+#  define IMF_EXPORT       PLATFORM_EXPORT_DEFINITION
+#  define IMF_EXPORT_CONST PLATFORM_EXPORT_CONST_DEFINITION
+#else                                              // use library
+#  define IMF_EXPORT       PLATFORM_IMPORT_DEFINITION
+#  define IMF_EXPORT_CONST PLATFORM_IMPORT_CONST_DEFINITION
+#endif
+
+#endif // #ifndef IMFEXPORT_H
