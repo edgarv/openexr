@@ -125,8 +125,8 @@ testEntryAndExitPoints (const Box3f &box)
 	    // box, and it passes the box at a minimum distance of r1.
 	    //
 
-	    const float r1 = 0.00001;
-	    const float r2 = 1.0;
+	    const float r1 = 0.00001f;
+	    const float r2 = 1.0f;
 
 	    V3f p1 = box.min + r2 * hollowSphereRand<V3f> (random);
 	    V3f p2;

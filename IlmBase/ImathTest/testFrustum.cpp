@@ -53,7 +53,7 @@ testFrustumPlanes  (IMATH_INTERNAL_NAMESPACE::Frustumf &frustum)
 {
     bool ortho = frustum.orthographic();
     IMATH_INTERNAL_NAMESPACE::V3f o (0.0f, 0.0f, 0.0f);
-    float eps = 5.0e-4;
+    float eps = 5.0e-4f;
 
     for (float xRo = 0.0f; xRo < 360.0f; xRo += 100.0f)
     {
@@ -174,12 +174,12 @@ testFrustum ()
 
     cout << "\nperspective ";
 
-    float n = 1.7;
-    float f = 567.0;
-    float l = -3.5;
-    float r = 2.0;
-    float b = -1.3;
-    float t = 0.9;
+    float n = 1.7f;
+    float f = 567.0f;
+    float l = -3.5f;
+    float r =  2.0f;
+    float b = -1.3f;
+    float t =  0.9;
 
     IMATH_INTERNAL_NAMESPACE::Frustum<float> frustum (n, f, l, r, t, b, false);
 

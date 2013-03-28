@@ -54,12 +54,12 @@ using namespace IMATH_INTERNAL_NAMESPACE;
 
 namespace {
 
-float rad (float deg) {return deg * (M_PI / 180);}
+float rad (float deg) {return deg * (float) (M_PI / 180);}
 
 void
 testComputeLocalFrame ()
 {
-    float eps = 0.00005;
+    float eps = 0.00005f;
     Rand48 random(0);
     for (int i = 0; i < 100000; ++i)
     {

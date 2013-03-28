@@ -170,7 +170,7 @@ verifyProcrustes (const std::vector<IMATH_INTERNAL_NAMESPACE::Vec3<T> >& from,
 
     // Now try the weighted version:
     for (size_t i = 0; i < weights.size(); ++i)
-        weights[i] = i+1;
+        weights[i] = (T) (i+1);
 
     IMATH_INTERNAL_NAMESPACE::M44d m = procrustesRotationAndTranslation (&from[0], &to[0], &weights[0], n);
 
@@ -375,7 +375,7 @@ testProcrustesImp ()
     m = m * rot.toMatrix44();
     testProcrustesWithMatrix<T> (m);
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T>(1.5, 6.4, 2.0));
+    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T>(1.5f, 6.4f, 2.0f));
     testProcrustesWithMatrix<T> (m);
 
     IMATH_INTERNAL_NAMESPACE::Eulerd rot2 (1.0, M_PI, M_PI/3.0);
@@ -384,7 +384,7 @@ testProcrustesImp ()
     m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T>(-1, 1, 1));
     testProcrustesWithMatrix<T> (m);
 
-    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T>(1, 0.001, 1));
+    m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T>(1, 0.001f, 1));
     testProcrustesWithMatrix<T> (m);
 
     m.scale (IMATH_INTERNAL_NAMESPACE::Vec3<T>(1, 1, 0));

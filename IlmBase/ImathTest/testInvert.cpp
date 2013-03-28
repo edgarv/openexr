@@ -119,8 +119,8 @@ testInvert ()
 	invertM44f (m1, 0);
 	invertM44f (m2, 0);
 	invertM44f (m3, 0);
-	invertM44f (m4, 1e-6);
-	invertM44f (m5, 1e-6);
+	invertM44f (m4, 1e-6f);
+	invertM44f (m5, 1e-6f);
     }
 
     {
