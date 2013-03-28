@@ -11,6 +11,7 @@ endif()
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/config/IlmBaseConfig.h.cmake
   ${OPENEXR_CFG_DIR}/IlmBaseConfig.h
+  @ONLY
 )
 install(FILES ${OPENEXR_CFG_DIR}/IlmBaseConfig.h
   DESTINATION "include/OpenEXR"

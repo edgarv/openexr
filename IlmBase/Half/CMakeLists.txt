@@ -5,26 +5,29 @@ add_executable(eLut eLut.cpp)
 add_executable(toFloat toFloat.cpp)
 
 # Directory with the LUTs
-set(LUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-include_directories( ${LUT_DIRECTORY} )
+set(LUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lut")
+include_directories("${LUT_DIRECTORY}")
   
 # All the actual sources
 set(HALF_HEADERS
-  half.h halfFunction.h halfLimits.h
-  )
+  half.h
+  halfFunction.h
+  halfLimits.h
+  halfExport.h
+)
 set(HALF_SOURCES
-  ${LUT_DIRECTORY}/eLut.h
-  ${LUT_DIRECTORY}/toFloat.h
+  "${LUT_DIRECTORY}/eLut.h"
+  "${LUT_DIRECTORY}/toFloat.h"
   half.cpp
-  )
+)
   
-add_custom_command(OUTPUT ${LUT_DIRECTORY}/eLut.h
-  COMMAND eLut > ${LUT_DIRECTORY}/eLut.h
+add_custom_command(OUTPUT "${LUT_DIRECTORY}/eLut.h"
+  COMMAND eLut > "${LUT_DIRECTORY}/eLut.h"
   COMMENT "Generating float-to-half LUT..."
 )
 
-add_custom_command(OUTPUT ${LUT_DIRECTORY}/toFloat.h
-  COMMAND toFloat > ${LUT_DIRECTORY}/toFloat.h
+add_custom_command(OUTPUT "${LUT_DIRECTORY}/toFloat.h"
+  COMMAND toFloat > "${LUT_DIRECTORY}/toFloat.h"
   COMMENT "Generating half-to-float LUT..."
 )
 

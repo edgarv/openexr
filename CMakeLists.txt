@@ -6,7 +6,7 @@
 # this as a Windows DLL.
 
 project(OpenEXR)
-cmake_minimum_required(VERSION 2.6.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 option(OPENEXR_SHARED_LIBS
   "Builds the different OpenEXR components as shared libraries." ON)
@@ -56,6 +56,16 @@ macro (GET_VERSION libname)
     ${${libname_upper}_LIBTOOL_CURRENT}.${${libname_upper}_LIBTOOL_REVISION}.${${libname_upper}_LIBTOOL_AGE}
   )
   
+  # Version components
+  if (${libname_upper}_VERSION MATCHES "([0-9]+)\\.([0-9]+)\\.([0-9]+)")
+    set(${libname_upper}_VERSION_MAJOR "${CMAKE_MATCH_1}")
+    set(${libname_upper}_VERSION_MINOR "${CMAKE_MATCH_2}")
+    set(${libname_upper}_VERSION_PATCH "${CMAKE_MATCH_3}")
+  else()
+    message(FATAL_ERROR
+      "${libname} version has an unexpected format: ${${libname_upper}_VERSION}")
+  endif()
+
   # Version strings
   set(${libname_upper}_VERSION_STRING "\"${${libname_upper}_VERSION}\"")
   set(${libname_upper}_PACKAGE_STRING "\"${libname} ${${libname_upper}_VERSION}\"")
@@ -406,7 +416,7 @@ endif()
 # CMake 2.8 it will wrap the test in a batch file so that tests may be launched
 # from within the IDE
 function(add_openexr_test testname Exename)  
-  if (NOT MSVC_IDE OR ${CMAKE_VERSION} VERSION_LESS "2.8")
+  if (NOT MSVC_IDE)
     add_test("${testname}" "${Exename}" ${ARGN})
     return()
   endif()
