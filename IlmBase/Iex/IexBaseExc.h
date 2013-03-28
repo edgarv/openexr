@@ -117,6 +117,11 @@ class BaseExc: public std::string, public std::exception
 };
 
 
+#if defined(_MSC_VER)
+#pragma warning( push )
+#pragma warning( disable : 4275 ) // non dll-interface class used as base...
+#endif
+
 //-----------------------------------------------------
 // A macro to save typing when declararing an exception
 // class derived directly or indirectly from BaseExc:
@@ -171,6 +176,10 @@ DEFINE_EXC_EXP (IEX_EXPORT, NullExc, BaseExc)   // A pointer is inappropriately 
 DEFINE_EXC_EXP (IEX_EXPORT, TypeExc, BaseExc)   // An object is an inappropriate type,
                                                 // i.e. a dynamnic_cast failed.
 
+
+#if defined(_MSC_VER)
+#pragma warning( pop )
+#endif
 
 //----------------------------------------------------------------------
 // Stack-tracing support:
