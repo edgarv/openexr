@@ -78,8 +78,24 @@ set(ILMIMF_HEADERS
   ImfVersion.h
   ImfWav.h
   ImfXdr.h
-  )
   
+  ImfDeepScanLineOutputFile.h
+  ImfDeepScanLineOutputPart.h
+  ImfDeepScanLineInputFile.h
+  ImfDeepScanLineInputPart.h
+  ImfDeepTiledInputFile.h
+  ImfDeepTiledInputPart.h
+  ImfDeepTiledOutputFile.h
+  ImfDeepTiledOutputPart.h
+  ImfDeepFrameBuffer.h
+  ImfDeepCompositing.h
+  ImfCompositeDeepScanLine.h
+  
+  ImfForward.h
+  ImfExport.h
+  ImfAttribute.h
+)
+
 set(ILMIMF_SOURCES
   ImfAcesFile.cpp
   ImfAttribute.cpp
@@ -144,7 +160,30 @@ set(ILMIMF_SOURCES
   ImfWav.cpp
   ImfZipCompressor.h ImfZipCompressor.cpp
   ${LUT_DIRECTORY}/b44ExpLogTable.h
-  )
+  
+  ImfMultiPartOutputFile.cpp
+  ImfGenericOutputFile.cpp
+  ImfOutputPartData.cpp
+  ImfMultiPartInputFile.cpp
+  ImfGenericInputFile.cpp
+  ImfPartType.cpp
+  ImfInputPartData.cpp
+  ImfOutputPart.cpp
+  ImfTiledOutputPart.cpp
+  ImfInputPart.cpp
+  ImfTiledInputPart.cpp
+  ImfDeepScanLineInputPart.cpp
+  ImfDeepScanLineOutputPart.cpp
+  ImfDeepScanLineInputFile.cpp
+  ImfDeepScanLineOutputFile.cpp
+  ImfDeepTiledInputPart.cpp
+  ImfDeepTiledOutputPart.cpp
+  ImfDeepTiledInputFile.cpp
+  ImfDeepTiledOutputFile.cpp
+  ImfDeepFrameBuffer.cpp
+  ImfDeepCompositing.cpp
+  ImfCompositeDeepScanLine.cpp
+)
 
 
 # To create the DLL on windows we also depend on zlib. If it is static we need to add the

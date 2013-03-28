@@ -1,4 +1,4 @@
-# Non-standalone test file, generated from the original Makefile.am file
+# Non-standalone CMake file
 
 set (BIN_NAME exrmultiview)
 set (SRCS
@@ -6,8 +6,6 @@ set (SRCS
     Image.h Image.cpp
     makeMultiView.cpp makeMultiView.h
 )
-
-include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable (${BIN_NAME} ${SRCS})
 target_link_libraries (${BIN_NAME} IlmImf ${ZLIB_LIBRARIES})

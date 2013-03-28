@@ -33,7 +33,6 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <tmpDir.h>
 
 #include <ImfRgbaFile.h>
 #include <ImfTiledRgbaFile.h>
@@ -41,9 +40,12 @@
 #include <stdio.h>
 #include <assert.h>
 
-using namespace Imf;
-using namespace Imath;
+#include "tmpDir.h"
+
+using namespace OPENEXR_IMF_NAMESPACE;
 using namespace std;
+using namespace IMATH_NAMESPACE;
+
 
 namespace {
 

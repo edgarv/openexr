@@ -42,6 +42,7 @@
 #include <Iex.h>
 #include <iostream>
 #include "PyImathFixedArray.h"
+#include "PyImathOperators.h"
 #include <ImathVec.h>
 
 namespace PyImath {
@@ -50,8 +51,8 @@ template <class T>
 class FixedArray2D
 {
     T *                 _ptr;
-    Imath::Vec2<size_t> _length;
-    Imath::Vec2<size_t> _stride;
+    IMATH_NAMESPACE::Vec2<size_t> _length;
+    IMATH_NAMESPACE::Vec2<size_t> _stride;
     size_t              _size; //flattened size of the array
 
     // this handle optionally stores a shared_array to allocated array data
@@ -60,23 +61,31 @@ class FixedArray2D
 
   public:
 
-    FixedArray2D(T *ptr, size_t lengthX, size_t lengthY, size_t strideX = 1)
+    FixedArray2D(T *ptr, Py_ssize_t lengthX, Py_ssize_t lengthY, Py_ssize_t strideX = 1)
         : _ptr(ptr), _length(lengthX, lengthY), _stride(strideX, lengthX), _handle()
     {
+        if (lengthX < 0 || lengthY < 0)
+            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
+        if (strideX <= 0)
+            throw IEX_NAMESPACE::LogicExc("Fixed array 2d strides must be positive");
         initializeSize();
         //std::cout << "fixed array external construct" << std::endl;
         // nothing
     }
 
-    FixedArray2D(T *ptr, size_t lengthX, size_t lengthY, size_t strideX, size_t strideY)
+    FixedArray2D(T *ptr, Py_ssize_t lengthX, Py_ssize_t lengthY, Py_ssize_t strideX, Py_ssize_t strideY)
         : _ptr(ptr), _length(lengthX, lengthY), _stride(strideX, strideY), _handle()
     {
+        if (lengthX < 0 || lengthY < 0)
+            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
+        if (strideX <= 0 || strideY < 0)
+            throw IEX_NAMESPACE::LogicExc("Fixed array 2d strides must be positive");
         initializeSize();
         //std::cout << "fixed array external construct" << std::endl;
         // nothing
     }
 
-    FixedArray2D(T *ptr, size_t lengthX, size_t lengthY, size_t strideX, size_t strideY, boost::any handle) 
+    FixedArray2D(T *ptr, Py_ssize_t lengthX, Py_ssize_t lengthY, Py_ssize_t strideX, Py_ssize_t strideY, boost::any handle) 
         : _ptr(ptr), _length(lengthX, lengthY), _stride(strideX, strideY), _handle(handle)
     {
         initializeSize();
@@ -84,9 +93,11 @@ class FixedArray2D
         // nothing
     }
 
-    explicit FixedArray2D(size_t lengthX, size_t lengthY)
+    explicit FixedArray2D(Py_ssize_t lengthX, Py_ssize_t lengthY)
         : _ptr(0), _length(lengthX, lengthY), _stride(1, lengthX), _handle()
     {
+        if (lengthX < 0 || lengthY < 0)
+            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
         initializeSize();
         T tmp = FixedArrayDefaultValue<T>::value();
         boost::shared_array<T> a(new T[_size]);
@@ -95,9 +106,11 @@ class FixedArray2D
         _ptr = a.get();
     }
 
-    explicit FixedArray2D(const Imath::V2i& length)
+    explicit FixedArray2D(const IMATH_NAMESPACE::V2i& length)
         : _ptr(0), _length(length), _stride(1, length.x), _handle()
     {
+        if (length.x < 0 || length.y < 0)
+            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
         initializeSize();
         T tmp = FixedArrayDefaultValue<T>::value();
         boost::shared_array<T> a(new T[_size]);
@@ -106,9 +119,11 @@ class FixedArray2D
         _ptr = a.get();
     }
 
-    FixedArray2D(const T &initialValue, size_t lengthX, size_t lengthY)
+    FixedArray2D(const T &initialValue, Py_ssize_t lengthX, Py_ssize_t lengthY)
         : _ptr(0), _length(lengthX, lengthY), _stride(1, lengthX), _handle()
     {
+        if (lengthX < 0 || lengthY < 0)
+            throw IEX_NAMESPACE::LogicExc("Fixed array 2d lengths must be non-negative");
         initializeSize();
         boost::shared_array<T> a(new T[_size]);
         for (size_t i=0; i<_size; ++i) a[i] = initialValue;
@@ -117,8 +132,6 @@ class FixedArray2D
     }
     void initializeSize()
     {
-        if (_length.x < 0 || _length.y < 0)
-            throw Iex::LogicExc("Fixed array 2d lengths must be non-negative");
         _size = _length.x*_length.y;
     }
 
@@ -186,7 +199,7 @@ class FixedArray2D
                 boost::python::throw_error_already_set();
             }
             if (s < 0 || e < 0 || sl < 0) {
-                throw Iex::LogicExc("Slice extraction produced invalid start, end, or length indices");
+                throw IEX_NAMESPACE::LogicExc("Slice extraction produced invalid start, end, or length indices");
             }
             start = s;
             end = e;
@@ -204,7 +217,7 @@ class FixedArray2D
     // return_internal_reference doesn't seem to work with non-class types
     typedef typename boost::mpl::if_<boost::is_class<T>,T&,T>::type get_type;
 //    get_type    getitem(Py_ssize_t index) const { return _ptr[canonical_index(index)*_stride]; }
-    //FIXME: const does not work here with at least Imath::Color4, why it works for V3fArray?
+    //FIXME: const does not work here with at least IMATH_NAMESPACE::Color4, why it works for V3fArray?
     get_type getitem(Py_ssize_t i, Py_ssize_t j) //const
     {
         return (*this)(canonical_index(i, _length.x), canonical_index(j, _length.y));
@@ -249,7 +262,7 @@ class FixedArray2D
 //             }
 //         }
 //         return f;
-        Imath::Vec2<size_t> len = match_dimension(mask);
+        IMATH_NAMESPACE::Vec2<size_t> len = match_dimension(mask);
         FixedArray2D f(len);
         for (size_t j=0; j<len.y; j++)
             for (size_t i=0; i<len.x; i++)
@@ -287,7 +300,7 @@ class FixedArray2D
     void
     setitem_scalar_mask(const FixedArray2D<int> &mask, const T &data)
     {
-        Imath::Vec2<size_t> len = match_dimension(mask);
+        IMATH_NAMESPACE::Vec2<size_t> len = match_dimension(mask);
         for (size_t j = 0; j < len.y; j++)
             for (size_t i=0; i<len.x; ++i)
                 if (mask(i,j))
@@ -305,7 +318,7 @@ class FixedArray2D
         extract_slice_indices(PyTuple_GetItem(index, 0),_length.x,startx,endx,stepx,slicelengthx);
         extract_slice_indices(PyTuple_GetItem(index, 1),_length.y,starty,endy,stepy,slicelengthy);
         // we have a valid range of indices
-        if (data.len() != Imath::Vec2<size_t>(slicelengthx, slicelengthy)) {
+        if (data.len() != IMATH_NAMESPACE::Vec2<size_t>(slicelengthx, slicelengthy)) {
             PyErr_SetString(PyExc_IndexError, "Dimensions of source do not match destination");
             boost::python::throw_error_already_set();
         }
@@ -317,7 +330,7 @@ class FixedArray2D
     void
     setitem_vector_mask(const FixedArray2D<int> &mask, const FixedArray2D &data)
     {
-        Imath::Vec2<size_t> len = match_dimension(mask);
+        IMATH_NAMESPACE::Vec2<size_t> len = match_dimension(mask);
         if (data.len() == len) {
             for (size_t j = 0; j < len.y; j++)
                 for (size_t i=0; i<len.x; ++i)
@@ -332,7 +345,7 @@ class FixedArray2D
     void
     setitem_array1d_mask(const FixedArray2D<int> &mask, const FixedArray<T> &data)
     {
-        Imath::Vec2<size_t> len = match_dimension(mask);
+        IMATH_NAMESPACE::Vec2<size_t> len = match_dimension(mask);
         if (data.len() == len.x*len.y) {
             for (size_t j = 0, z = 0; j < len.y; j++)
                 for (size_t i=0; i<len.x; ++i, ++z)
@@ -376,8 +389,8 @@ class FixedArray2D
                 (*this)(startx+i*stepx, starty+j*stepy) = data[z];
     }
 
-    Imath::Vec2<size_t> len() const { return _length; }
-    Imath::Vec2<size_t> stride() const { return _stride; }
+    IMATH_NAMESPACE::Vec2<size_t> len() const { return _length; }
+    IMATH_NAMESPACE::Vec2<size_t> stride() const { return _stride; }
     T       & operator () (size_t i, size_t j)       { return _ptr[_stride.x*(j*_stride.y + i)]; }
     const T & operator () (size_t i, size_t j) const { return _ptr[_stride.x*(j*_stride.y + i)]; }
     size_t totalLen() const { return _size; }
@@ -431,7 +444,7 @@ class FixedArray2D
 //     }
 
     template <class T2>
-    Imath::Vec2<size_t> match_dimension(const FixedArray2D<T2> &a1) const
+    IMATH_NAMESPACE::Vec2<size_t> match_dimension(const FixedArray2D<T2> &a1) const
     {
         if (len() != a1.len()) {
             PyErr_SetString(PyExc_IndexError, "Dimensions of source do not match destination");
@@ -441,7 +454,7 @@ class FixedArray2D
     }
 
     FixedArray2D<T> ifelse_vector(const FixedArray2D<int> &choice, const FixedArray2D<T> &other) {
-        Imath::Vec2<size_t> len = match_dimension(choice);
+        IMATH_NAMESPACE::Vec2<size_t> len = match_dimension(choice);
         match_dimension(other);
         FixedArray2D<T> tmp(len); // should use default construction but V3f doens't initialize
         for (size_t j = 0; j < len.y; ++j)
@@ -451,129 +464,183 @@ class FixedArray2D
     }
 
     FixedArray2D<T> ifelse_scalar(const FixedArray2D<int> &choice, const T &other) {
-        Imath::Vec2<size_t> len = match_dimension(choice);
+        IMATH_NAMESPACE::Vec2<size_t> len = match_dimension(choice);
         FixedArray2D<T> tmp(len); // should use default construction but V3f doens't initialize
         for (size_t j = 0; j < len.y; ++j)
             for (size_t i = 0; i < len.x; ++i)
                 tmp(i,j) = choice(i,j) ? (*this)(i,j) : other;
         return tmp;
     }
+
 };
-
-} // namespace PyImath
-// exit namespace so operators are in global scope
-
-//
-// Define scalar and vector functions for all the arithemetic operations
-//
-
-#define SOp(op) \
-template <class T> static PyImath::FixedArray2D<T> operator op (const PyImath::FixedArray2D<T> &a0) { \
-    Imath::Vec2<size_t> len = a0.len(); PyImath::FixedArray2D<T> f(len); \
-    for (size_t i=0;i<len.x;++i) for (size_t j=0;j<len.y;++j) f(i,j)= op a0(i,j); return f; \
+ 
+// unary operation application
+template <template <class,class> class Op, class T1, class Ret>
+FixedArray2D<Ret> apply_array2d_unary_op(const FixedArray2D<T1> &a1)
+{
+    IMATH_NAMESPACE::Vec2<size_t> len = a1.len();
+    FixedArray2D<Ret> retval(len.x,len.y);
+    for (int j=0; j<len.y; ++j) {
+        for (int i=0;i<len.x;++i) {
+            retval(i,j) = Op<T1,Ret>::apply(a1(i,j));
+        }
+    }
+    return retval;
 }
 
-#define Op0(op) \
-template <class T> static PyImath::FixedArray2D<T> operator op (const PyImath::FixedArray2D<T> &a0, const PyImath::FixedArray2D<T> &a1) { \
-    Imath::Vec2<size_t> len = a0.match_dimension(a1); PyImath::FixedArray2D<T> f(len); \
-    for (size_t i=0;i<len.x;++i) for (size_t j=0;j<len.y;++j) f(i,j)=a0(i,j) op a1(i,j); return f; \
-} \
-template <class T> static PyImath::FixedArray2D<T> operator op (const PyImath::FixedArray2D<T> &a0, const T &v1) { \
-    Imath::Vec2<size_t> len = a0.len(); PyImath::FixedArray2D<T> f(len); \
-    for (size_t i=0;i<len.x;++i) for (size_t j=0;j<len.y;++j) f(i,j)=a0(i,j) op v1; return f; \
+// binary operation application
+template <template <class,class,class> class Op, class T1, class T2, class Ret>
+FixedArray2D<Ret> apply_array2d_array2d_binary_op(const FixedArray2D<T1> &a1, const FixedArray2D<T2> &a2)
+{
+    IMATH_NAMESPACE::Vec2<size_t> len = a1.match_dimension(a2);
+    FixedArray2D<Ret> retval(len.x,len.y);
+    for (int j=0; j<len.y; ++j) {
+        for (int i=0;i<len.x;++i) {
+            retval(i,j) = Op<T1,T2,Ret>::apply(a1(i,j),a2(i,j));
+        }
+    }
+    return retval;
 }
 
-#define Op(op) \
-Op0(op) \
-template <class T> static PyImath::FixedArray2D<T> operator op (const T &v1, const PyImath::FixedArray2D<T> &a0) { \
-    Imath::Vec2<size_t> len = a0.len(); PyImath::FixedArray2D<T> f(len); \
-    for (size_t i=0;i<len.x;++i) for (size_t j=0;j<len.y;++j) f(i,j)=v1 op a0(i,j); return f; \
+template <template <class,class,class> class Op, class T1, class T2, class Ret>
+FixedArray2D<Ret> apply_array2d_scalar_binary_op(const FixedArray2D<T1> &a1, const T2 &a2)
+{
+    IMATH_NAMESPACE::Vec2<size_t> len = a1.len();
+    FixedArray2D<Ret> retval(len.x,len.y);
+    for (int j=0; j<len.y; ++j) {
+        for (int i=0;i<len.x;++i) {
+            retval(i,j) = Op<T1,T2,Ret>::apply(a1(i,j),a2);
+        }
+    }
+    return retval;
 }
 
+template <template <class,class,class> class Op, class T1, class T2, class Ret>
+FixedArray2D<Ret> apply_array2d_scalar_binary_rop(const FixedArray2D<T1> &a1, const T2 &a2)
+{
+    IMATH_NAMESPACE::Vec2<size_t> len = a1.len();
+    FixedArray2D<Ret> retval(len.x,len.y);
+    for (int j=0; j<len.y; ++j) {
+        for (int i=0;i<len.x;++i) {
+            retval(i,j) = Op<T2,T1,Ret>::apply(a2,a1(i,j));
+        }
+    }
+    return retval;
+}
+
+// in-place binary operation application
+template <template <class,class> class Op, class T1, class T2>
+FixedArray2D<T1> & apply_array2d_array2d_ibinary_op(FixedArray2D<T1> &a1, const FixedArray2D<T2> &a2)
+{
+    IMATH_NAMESPACE::Vec2<size_t> len = a1.match_dimension(a2);
+    for (int j=0; j<len.y; ++j) {
+        for (int i=0;i<len.x;++i) {
+            Op<T1,T2>::apply(a1(i,j),a2(i,j));
+        }
+    }
+    return a1;
+}
+
+// in-place binary operation application
+template <template <class,class> class Op, class T1, class T2>
+FixedArray2D<T1> & apply_array2d_scalar_ibinary_op(FixedArray2D<T1> &a1, const T2 &a2)
+{
+    IMATH_NAMESPACE::Vec2<size_t> len = a1.len();
+    for (int j=0; j<len.y; ++j) {
+        for (int i=0;i<len.x;++i) {
+            Op<T1,T2>::apply(a1(i,j),a2);
+        }
+    }
+    return a1;
+}
+
+    
 // PyObject* PyNumber_Add(	PyObject *o1, PyObject *o2)
-Op(+)
+template <class T> static FixedArray2D<T> operator + (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_add,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator + (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_add,T,T,T>(a0,v1); }
+template <class T> static FixedArray2D<T> operator + (const T &v1, const FixedArray2D<T> &a0)               { return a0+v1; }
 
 // PyObject* PyNumber_Subtract(	PyObject *o1, PyObject *o2)
-Op(-)
+template <class T> static FixedArray2D<T> operator - (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_sub,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator - (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_sub,T,T,T>(a0,v1); }
+template <class T> static FixedArray2D<T> operator - (const T &v1, const FixedArray2D<T> &a0)               { return apply_array2d_scalar_binary_op<op_rsub,T,T,T>(a0,v1); }
 
 // PyObject* PyNumber_Multiply(	PyObject *o1, PyObject *o2)
-Op(*)
+template <class T> static FixedArray2D<T> operator * (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_mul,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator * (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_mul,T,T,T>(a0,v1); }
+template <class T> static FixedArray2D<T> operator * (const T &v1, const FixedArray2D<T> &a0)               { return a0*v1; }
 
 // PyObject* PyNumber_Divide(	PyObject *o1, PyObject *o2)
-Op(/)
+template <class T> static FixedArray2D<T> operator / (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_div,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator / (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_div,T,T,T>(a0,v1); }
+// no reversed scalar/array2d divide - no meaning
 
 // PyObject* PyNumber_FloorDivide(	PyObject *o1, PyObject *o2)
-
 // PyObject* PyNumber_TrueDivide(	PyObject *o1, PyObject *o2)
-
 // PyObject* PyNumber_Remainder(	PyObject *o1, PyObject *o2)
-Op0(%)
-// no reversed scalar%vector remainder - no meaning
+template <class T> static FixedArray2D<T> operator % (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_mod,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator % (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_mod,T,T,T>(a0,v1); }
+// no reversed scalar%array2d remainder - no meaning
 
 // PyObject* PyNumber_Divmod(	PyObject *o1, PyObject *o2)
 
 // PyObject* PyNumber_Power(	PyObject *o1, PyObject *o2, PyObject *o3)
-template <class T1, class T2> static PyImath::FixedArray2D<T1> pow_vector_vector2D (const PyImath::FixedArray2D<T1> &a0, const PyImath::FixedArray2D<T2> &a1) {
-    Imath::Vec2<size_t> len = a0.match_dimension(a1); PyImath::FixedArray2D<T1> f(len);
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) f(i,j)=std::pow(a0(i,j),a1(i,j)); return f;
-}
-template <class T1, class T2> static PyImath::FixedArray2D<T1> pow_vector_scalar2D (const PyImath::FixedArray2D<T1> &a0, const T2 &v1) {
-    Imath::Vec2<size_t> len = a0.len(); PyImath::FixedArray2D<T1> f(len);
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) f(i,j)=std::pow(a0(i,j),v1); return f;
-}
-template <class T1, class T2> static PyImath::FixedArray2D<T2> rpow_vector_scalar2D (const PyImath::FixedArray2D<T1> &a1, const T2 &v0) {
-    Imath::Vec2<size_t> len = a1.len(); PyImath::FixedArray2D<T2> f(len);
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) f(i,j)=std::pow(v0,a1(i,j)); return f;
-}
+template <class T> static FixedArray2D<T> pow_array2d_array2d (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_pow,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> pow_array2d_scalar (const FixedArray2D<T> &a0, const T &v1)                { return apply_array2d_scalar_binary_op<op_pow,T,T,T>(a0,v1); }
+// no reversed scalar/array2d pow - no meaning
 
 // PyObject* PyNumber_Negative(	PyObject *o)
-SOp(-)
+template <class T> static FixedArray2D<T> operator - (const FixedArray2D<T> &a0) { return apply_array2d_unary_op<op_neg,T,T>(a0); }
 
 // PyObject* PyNumber_Positive(	PyObject *o)
 
 // PyObject* PyNumber_Absolute(	PyObject *o)
+template <class T> static FixedArray2D<T> abs (const FixedArray2D<T> &a0)        { return apply_array2d_unary_op<op_abs,T,T>(a0); }
 
 // PyObject* PyNumber_Invert(	PyObject *o)
-SOp(~)
+template <class T> static FixedArray2D<T> operator ~ (const FixedArray2D<T> &a0) { return apply_array2d_unary_op<op_inverse,T,T>(a0); }
 
 // PyObject* PyNumber_Lshift(	PyObject *o1, PyObject *o2)
-Op0(<<)
+template <class T> static FixedArray2D<T> operator << (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_lshift,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator << (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_lshift,T,T,T>(a0,v1); }
 // no reversed
 
 // PyObject* PyNumber_Rshift(	PyObject *o1, PyObject *o2)
-Op0(>>)
+template <class T> static FixedArray2D<T> operator >> (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_rshift,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator >> (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_rshift,T,T,T>(a0,v1); }
 // no reversed
 
 // PyObject* PyNumber_And(	PyObject *o1, PyObject *o2)
-Op(&)
+template <class T> static FixedArray2D<T> operator & (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_bitand,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator & (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_bitand,T,T,T>(a0,v1); }
+template <class T> static FixedArray2D<T> operator & (const T &v1, const FixedArray2D<T> &a0)               { return a0&v1; }
 
 // PyObject* PyNumber_Xor(	PyObject *o1, PyObject *o2)
-Op(^)
+template <class T> static FixedArray2D<T> operator ^ (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_xor,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator ^ (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_xor,T,T,T>(a0,v1); }
+template <class T> static FixedArray2D<T> operator ^ (const T &v1, const FixedArray2D<T> &a0)               { return a0^v1; }
 
 // PyObject* PyNumber_Or(	PyObject *o1, PyObject *o2)
-Op(|)
+template <class T> static FixedArray2D<T> operator | (const FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_binary_op<op_bitor,T,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> operator | (const FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_binary_op<op_bitor,T,T,T>(a0,v1); }
+template <class T> static FixedArray2D<T> operator | (const T &v1, const FixedArray2D<T> &a0)               { return a0|v1; }
 
-#define InplaceOp(op) \
-template <class T1, class T2> static PyImath::FixedArray2D<T1> & operator op (PyImath::FixedArray2D<T1> &a0, const PyImath::FixedArray2D<T2> &a1) { \
-    Imath::Vec2<size_t> len = a0.match_dimension(a1); \
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) a0(i,j) op a1(i,j); return a0; \
-} \
-template <class T1, class T2> static PyImath::FixedArray2D<T1> & operator op (PyImath::FixedArray2D<T1> &a0, const T2 &v1) { \
-    Imath::Vec2<size_t> len = a0.len(); \
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) a0(i,j) op v1; return a0; \
-}
 
 // PyObject* PyNumber_InPlaceAdd(	PyObject *o1, PyObject *o2)
-InplaceOp(+=)
+template <class T> static FixedArray2D<T> & operator += (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_iadd,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator += (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_iadd,T,T>(a0,v1); }
 
 // PyObject* PyNumber_InPlaceSubtract(	PyObject *o1, PyObject *o2)
-InplaceOp(-=)
+template <class T> static FixedArray2D<T> & operator -= (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_isub,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator -= (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_isub,T,T>(a0,v1); }
 
 // PyObject* PyNumber_InPlaceMultiply(	PyObject *o1, PyObject *o2)
-InplaceOp(*=)
+template <class T> static FixedArray2D<T> & operator *= (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_imul,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator *= (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_imul,T,T>(a0,v1); }
 
 // PyObject* PyNumber_InPlaceDivide(	PyObject *o1, PyObject *o2)
-InplaceOp(/=)
+template <class T> static FixedArray2D<T> & operator /= (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_idiv,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator /= (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_idiv,T,T>(a0,v1); }
 
 // PyObject* PyNumber_InPlaceFloorDivide(	PyObject *o1, PyObject *o2)
 // not implemented
@@ -582,106 +649,70 @@ InplaceOp(/=)
 // not implemented
 
 // PyObject* PyNumber_InPlaceRemainder(	PyObject *o1, PyObject *o2)
-InplaceOp(%=)
+template <class T> static FixedArray2D<T> & operator %= (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_imod,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator %= (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_imod,T,T>(a0,v1); }
 
 // PyObject* PyNumber_InPlacePower(	PyObject *o1, PyObject *o2, PyObject *o3)
-template <class T1, class T2> static PyImath::FixedArray2D<T1> & ipow_vector_vector2D (PyImath::FixedArray2D<T1> &a0, const PyImath::FixedArray2D<T2> &a1) {
-    Imath::Vec2<size_t> len = a0.match_dimension(a1);
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) a0(i,j)=std::pow(a0(i,j),a1(i,j)); return a0;
-}
-template <class T1, class T2> static PyImath::FixedArray2D<T1> & ipow_vector_scalar2D (PyImath::FixedArray2D<T1> &a0, const T2 &v1) {
-    Imath::Vec2<size_t> len = a0.len();
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) a0(i,j)=std::pow(a0(i,j),v1); return a0;
-}
+template <class T> static FixedArray2D<T> & ipow_array2d_array2d (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_ipow,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & ipow_array2d_scalar (FixedArray2D<T> &a0, const T &v1)                { return apply_array2d_scalar_ibinary_op<op_ipow,T,T>(a0,v1); }
 
 // PyObject* PyNumber_InPlaceLshift(	PyObject *o1, PyObject *o2)
-InplaceOp(<<=)
+template <class T> static FixedArray2D<T> & operator <<= (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_ilshift,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator <<= (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_ilshift,T,T>(a0,v1); }
 
 // PyObject* PyNumber_InPlaceRshift(	PyObject *o1, PyObject *o2)
-InplaceOp(>>=)
+template <class T> static FixedArray2D<T> & operator >>= (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_irshift,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator >>= (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_irshift,T,T>(a0,v1); }
+
+// PyObject* PyNumber_InPlaceAnd(	PyObject *o1, PyObject *o2)
+template <class T> static FixedArray2D<T> & operator &= (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_ibitand,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator &= (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_ibitand,T,T>(a0,v1); }
 
 // PyObject* PyNumber_InPlaceXor(	PyObject *o1, PyObject *o2)
-InplaceOp(^=)
+template <class T> static FixedArray2D<T> & operator ^= (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_ixor,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator ^= (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_ixor,T,T>(a0,v1); }
 
 // PyObject* PyNumber_InPlaceOr(	PyObject *o1, PyObject *o2)
-InplaceOp(!=)
-
-// int PyObject_RichCompareBool(	PyObject *o1, PyObject *o2,int opid)
-// where opid is Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
-#define Compare(op) \
-template <class T> static PyImath::FixedArray2D<int> operator op (const PyImath::FixedArray2D<T> &a0, const PyImath::FixedArray2D<T> &a1) { \
-    Imath::Vec2<size_t> len = a0.match_dimension(a1); PyImath::FixedArray2D<int> f(len); \
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) f(i,j)=a0(i,j) op a1(i,j); return f; \
-} \
-template <class T> static PyImath::FixedArray2D<int> operator op (const PyImath::FixedArray2D<T> &a0, const T &v1) { \
-    Imath::Vec2<size_t> len = a0.len(); PyImath::FixedArray2D<int> f(len); \
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) f(i,j)=a0(i,j) op v1; return f; \
-} \
-template <class T> static PyImath::FixedArray2D<int> operator op (const T &v1, const PyImath::FixedArray2D<T> &a0) { \
-    Imath::Vec2<size_t> len = a0.len(); PyImath::FixedArray2D<int> f(len); \
-    for (size_t j=0;j<len.y;++j) for (size_t i=0;i<len.x;++i) f(i,j)=v1 op a0(i,j); return f; \
-}
-Compare(<)
-Compare(<=)
-Compare(==)
-Compare(!=)
-Compare(>)
-Compare(>=)
-
-#undef SOp
-#undef Op0
-#undef Op
-#undef InplaceOp
-#undef Compare
-
-namespace PyImath {
-
-template <class T>
-static T fa_reduce2D(const FixedArray2D<T> &a) {
-    T tmp(T(0)); // should use default construction but V3f doens't initialize
-    Imath::Vec2<size_t> len = a.len();
-    for (size_t j=0; j < len.y; ++j) for (size_t i=0; i < len.x; ++i)
-        tmp += a(i,j);
-    return tmp;
-}
+template <class T> static FixedArray2D<T> & operator |= (FixedArray2D<T> &a0, const FixedArray2D<T> &a1) { return apply_array2d_array2d_ibinary_op<op_ibitor,T,T>(a0,a1); }
+template <class T> static FixedArray2D<T> & operator |= (FixedArray2D<T> &a0, const T &v1)               { return apply_array2d_scalar_ibinary_op<op_ibitor,T,T>(a0,v1); }
 
 template <class T>
 static void add_arithmetic_math_functions(boost::python::class_<FixedArray2D<T> > &c) {
     using namespace boost::python;
     c
-        .def(self + self)
-        .def(self + other<T>())
-        .def(other<T>() + self)
-        .def(self - self)
-        .def(self - other<T>())
-        .def(other<T>() - self)
-        .def(self * self)
-        .def(self * other<T>())
-        .def(other<T>() * self)
-        .def(self / self)
-        .def(self / other<T>())
-        .def(-self)
-        .def(self += self)
-        .def(self += other<T>())
-        .def(self -= self)
-        .def(self -= other<T>())
-        .def(self *= self)
-        .def(self *= other<T>())
-        .def(self /= self)
-        .def(self /= other<T>())
-        .def("reduce",&fa_reduce2D<T>)
+        .def("__add__",&apply_array2d_array2d_binary_op<op_add,T,T,T>)
+        .def("__add__",&apply_array2d_scalar_binary_op<op_add,T,T,T>)
+        .def("__radd__",&apply_array2d_scalar_binary_rop<op_add,T,T,T>)
+        .def("__sub__",&apply_array2d_array2d_binary_op<op_sub,T,T,T>)
+        .def("__sub__",&apply_array2d_scalar_binary_op<op_sub,T,T,T>)
+        .def("__rsub__",&apply_array2d_scalar_binary_op<op_rsub,T,T,T>)
+        .def("__mul__",&apply_array2d_array2d_binary_op<op_mul,T,T,T>)
+        .def("__mul__",&apply_array2d_scalar_binary_op<op_mul,T,T,T>)
+        .def("__rmul__",&apply_array2d_scalar_binary_rop<op_mul,T,T,T>)
+        .def("__div__",&apply_array2d_array2d_binary_op<op_div,T,T,T>)
+        .def("__div__",&apply_array2d_scalar_binary_op<op_div,T,T,T>)
+        .def("__neg__",&apply_array2d_unary_op<op_neg,T,T>)
+        .def("__iadd__",&apply_array2d_array2d_ibinary_op<op_iadd,T,T>,return_internal_reference<>())
+        .def("__iadd__",&apply_array2d_scalar_ibinary_op<op_iadd,T,T>,return_internal_reference<>())
+        .def("__isub__",&apply_array2d_array2d_ibinary_op<op_isub,T,T>,return_internal_reference<>())
+        .def("__isub__",&apply_array2d_scalar_ibinary_op<op_isub,T,T>,return_internal_reference<>())
+        .def("__imul__",&apply_array2d_array2d_ibinary_op<op_imul,T,T>,return_internal_reference<>())
+        .def("__imul__",&apply_array2d_scalar_ibinary_op<op_imul,T,T>,return_internal_reference<>())
+        .def("__idiv__",&apply_array2d_array2d_ibinary_op<op_idiv,T,T>,return_internal_reference<>())
+        .def("__idiv__",&apply_array2d_scalar_ibinary_op<op_idiv,T,T>,return_internal_reference<>())
         ;
 }
+
 
 template <class T>
 static void add_pow_math_functions(boost::python::class_<FixedArray2D<T> > &c) {
     using namespace boost::python;
     c
-        .def("__pow__",&pow_vector_scalar2D<T,T>)
-        .def("__pow__",&pow_vector_vector2D<T,T>)
-        .def("__rpow__",&rpow_vector_scalar2D<T,T>)
-        .def("__ipow__",&ipow_vector_scalar2D<T,T>,boost::python::return_internal_reference<>())
-        .def("__ipow__",&ipow_vector_vector2D<T,T>,boost::python::return_internal_reference<>())
+        .def("__pow__",&apply_array2d_array2d_binary_op<op_pow,T,T,T>)
+        .def("__pow__",&apply_array2d_scalar_binary_op<op_pow,T,T,T>)
+        .def("__rpow__",&apply_array2d_scalar_binary_rop<op_rpow,T,T,T>)
+        .def("__ipow__",&apply_array2d_array2d_ibinary_op<op_ipow,T,T>,return_internal_reference<>())
+        .def("__ipow__",&apply_array2d_scalar_ibinary_op<op_ipow,T,T>,return_internal_reference<>())
         ;
 }
 
@@ -689,10 +720,10 @@ template <class T>
 static void add_mod_math_functions(boost::python::class_<FixedArray2D<T> > &c) {
     using namespace boost::python;
     c
-        .def(self % self)
-        .def(self % other<T>())
-        .def(self %= self)
-        .def(self %= other<T>())
+        .def("__mod__",&apply_array2d_array2d_binary_op<op_mod,T,T,T>)
+        .def("__mod__",&apply_array2d_scalar_binary_op<op_mod,T,T,T>)
+        .def("__imod__",&apply_array2d_array2d_ibinary_op<op_imod,T,T>,return_internal_reference<>())
+        .def("__imod__",&apply_array2d_scalar_ibinary_op<op_imod,T,T>,return_internal_reference<>())
         ;
 }
 
@@ -700,14 +731,14 @@ template <class T>
 static void add_shift_math_functions(boost::python::class_<FixedArray2D<T> > &c) {
     using namespace boost::python;
     c
-        .def(self << self)
-        .def(self << other<T>())
-        .def(self <<= self)
-        .def(self <<= other<T>())
-        .def(self >> self)
-        .def(self >> other<T>())
-        .def(self >>= self)
-        .def(self >>= other<T>())
+        .def("__lshift__",&apply_array2d_array2d_binary_op<op_lshift,T,T,T>)
+        .def("__lshift__",&apply_array2d_scalar_binary_op<op_lshift,T,T,T>)
+        .def("__ilshift__",&apply_array2d_array2d_ibinary_op<op_ilshift,T,T>,return_internal_reference<>())
+        .def("__ilshift__",&apply_array2d_scalar_ibinary_op<op_ilshift,T,T>,return_internal_reference<>())
+        .def("__rshift__",&apply_array2d_array2d_binary_op<op_rshift,T,T,T>)
+        .def("__rshift__",&apply_array2d_scalar_binary_op<op_rshift,T,T,T>)
+        .def("__irshift__",&apply_array2d_array2d_ibinary_op<op_irshift,T,T>,return_internal_reference<>())
+        .def("__irshift__",&apply_array2d_scalar_ibinary_op<op_irshift,T,T>,return_internal_reference<>())
         ;
 }
 
@@ -715,39 +746,29 @@ template <class T>
 static void add_bitwise_math_functions(boost::python::class_<FixedArray2D<T> > &c) {
     using namespace boost::python;
     c
-        .def(self & self)
-        .def(self & other<T>())
-        .def(self &= self)
-        .def(self &= other<T>())
-        .def(self | self)
-        .def(self | other<T>())
-        .def(self |= self)
-        .def(self |= other<T>())
-        .def(self ^ self)
-        .def(self ^ other<T>())
-        .def(self ^= self)
-        .def(self ^= other<T>())
+        .def("__and__",&apply_array2d_array2d_binary_op<op_bitand,T,T,T>)
+        .def("__and__",&apply_array2d_scalar_binary_op<op_bitand,T,T,T>)
+        .def("__iand__",&apply_array2d_array2d_ibinary_op<op_ibitand,T,T>,return_internal_reference<>())
+        .def("__iand__",&apply_array2d_scalar_ibinary_op<op_ibitand,T,T>,return_internal_reference<>())
+        .def("__or__",&apply_array2d_array2d_binary_op<op_bitor,T,T,T>)
+        .def("__or__",&apply_array2d_scalar_binary_op<op_bitor,T,T,T>)
+        .def("__ior__",&apply_array2d_array2d_ibinary_op<op_ibitor,T,T>,return_internal_reference<>())
+        .def("__ior__",&apply_array2d_scalar_ibinary_op<op_ibitor,T,T>,return_internal_reference<>())
+        .def("__xor__",&apply_array2d_array2d_binary_op<op_xor,T,T,T>)
+        .def("__xor__",&apply_array2d_scalar_binary_op<op_xor,T,T,T>)
+        .def("__ixor__",&apply_array2d_array2d_ibinary_op<op_ixor,T,T>,return_internal_reference<>())
+        .def("__ixor__",&apply_array2d_scalar_ibinary_op<op_ixor,T,T>,return_internal_reference<>())
         ;
 }
-
-template <class T1,class T2> static inline FixedArray2D<int> fa_lt2D(const T1 &a0, const T2 &a1) { return a0 < a1; }
-template <class T1,class T2> static inline FixedArray2D<int> fa_le2D(const T1 &a0, const T2 &a1) { return a0 <= a1; }
-template <class T1,class T2> static inline FixedArray2D<int> fa_eq2D(const T1 &a0, const T2 &a1) { return a0 == a1; }
-template <class T1,class T2> static inline FixedArray2D<int> fa_ne2D(const T1 &a0, const T2 &a1) { return a0 != a1; }
-template <class T1,class T2> static inline FixedArray2D<int> fa_gt2D(const T1 &a0, const T2 &a1) { return a0 > a1; }
-template <class T1,class T2> static inline FixedArray2D<int> fa_ge2D(const T1 &a0, const T2 &a1) { return a0 >= a1; }
 
 template <class T>
 static void add_comparison_functions(boost::python::class_<FixedArray2D<T> > &c) {
     using namespace boost::python;
     c
-//         //.def(self == self)
-        .def("__eq__", fa_eq2D<FixedArray2D<T>,FixedArray2D<T> >)
-        .def("__eq__", fa_eq2D<T,FixedArray2D<T> >)
-        .def("__eq__", fa_eq2D<FixedArray2D<T>,T>)
-        .def("__ne__", fa_ne2D<FixedArray2D<T>,FixedArray2D<T> >)
-        .def("__ne__", fa_ne2D<T,FixedArray2D<T> >)
-        .def("__ne__", fa_ne2D<FixedArray2D<T>,T>)
+        .def("__eq__",&apply_array2d_array2d_binary_op<op_eq,T,T,int>)
+        .def("__eq__",&apply_array2d_scalar_binary_op<op_eq,T,T,int>)
+        .def("__ne__",&apply_array2d_array2d_binary_op<op_ne,T,T,int>)
+        .def("__ne__",&apply_array2d_scalar_binary_op<op_ne,T,T,int>)
         ;
 }
 
@@ -755,18 +776,14 @@ template <class T>
 static void add_ordered_comparison_functions(boost::python::class_<FixedArray2D<T> > &c) {
     using namespace boost::python;
     c
-        .def("__lt__", fa_lt2D<FixedArray2D<T>,FixedArray2D<T> >)
-        .def("__lt__", fa_lt2D<T,FixedArray2D<T> >)
-        .def("__lt__", fa_lt2D<FixedArray2D<T>,T>)
-        .def("__le__", fa_le2D<FixedArray2D<T>,FixedArray2D<T> >)
-        .def("__le__", fa_le2D<T,FixedArray2D<T> >)
-        .def("__le__", fa_le2D<FixedArray2D<T>,T>)
-        .def("__gt__", fa_gt2D<FixedArray2D<T>,FixedArray2D<T> >)
-        .def("__gt__", fa_gt2D<T,FixedArray2D<T> >)
-        .def("__gt__", fa_gt2D<FixedArray2D<T>,T>)
-        .def("__ge__", fa_ge2D<FixedArray2D<T>,FixedArray2D<T> >)
-        .def("__ge__", fa_ge2D<T,FixedArray2D<T> >)
-        .def("__ge__", fa_ge2D<FixedArray2D<T>,T>)
+        .def("__lt__",&apply_array2d_array2d_binary_op<op_lt,T,T,int>)
+        .def("__lt__",&apply_array2d_scalar_binary_op<op_lt,T,T,int>)
+        .def("__gt__",&apply_array2d_array2d_binary_op<op_gt,T,T,int>)
+        .def("__gt__",&apply_array2d_scalar_binary_op<op_gt,T,T,int>)
+        .def("__le__",&apply_array2d_array2d_binary_op<op_le,T,T,int>)
+        .def("__le__",&apply_array2d_scalar_binary_op<op_le,T,T,int>)
+        .def("__ge__",&apply_array2d_array2d_binary_op<op_ge,T,T,int>)
+        .def("__ge__",&apply_array2d_scalar_binary_op<op_ge,T,T,int>)
         ;
 }
 

@@ -37,7 +37,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
-#include <tmpDir.h>
 
 #include <ImfTiledRgbaFile.h>
 #include <ImfArray.h>
@@ -47,9 +46,12 @@
 #include <assert.h>
 #include <math.h>
 
-using namespace Imf;
-using namespace Imath;
+#include "tmpDir.h"
+
+using namespace OPENEXR_IMF_NAMESPACE;
 using namespace std;
+using namespace IMATH_NAMESPACE;
+
 
 namespace {
 
@@ -180,11 +182,11 @@ testTiledYa ()
 
 	const char *fileName = IMF_TMP_DIR "imf_test_tiled_ya.exr";
 
-	int maxThreads = IlmThread::supportsThreads()? 3: 0;
+	int maxThreads = ILMTHREAD_NAMESPACE::supportsThreads()? 3: 0;
 
 	for (int n = 0; n <= maxThreads; ++n)
 	{
-	    if (IlmThread::supportsThreads())
+	    if (ILMTHREAD_NAMESPACE::supportsThreads())
 	    {
 		setGlobalThreadCount (n);
 		cout << "\nnumber of threads: " << globalThreadCount() << endl;

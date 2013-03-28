@@ -1,15 +1,14 @@
-# Non-standalone test file, generated from the original Makefile.am file
+# Non-standalone CMake file
 
 set (SRCS
-    main.cpp drawImage.cpp rgbaInterfaceExamples.cpp
-    rgbaInterfaceTiledExamples.cpp
-    generalInterfaceExamples.cpp
-    lowLevelIoExamples.cpp previewImageExamples.cpp
-    generalInterfaceTiledExamples.cpp
-    generalInterfaceTiledExamples.h drawImage.h
-    rgbaInterfaceExamples.h generalInterfaceExamples.h
-    rgbaInterfaceTiledExamples.h
-    lowLevelIoExamples.h previewImageExamples.h
+  main.cpp
+  drawImage.cpp                     drawImage.h
+  rgbaInterfaceExamples.cpp         rgbaInterfaceExamples.h
+  rgbaInterfaceTiledExamples.cpp    rgbaInterfaceTiledExamples.h
+  generalInterfaceExamples.cpp      generalInterfaceExamples.h
+  lowLevelIoExamples.cpp            lowLevelIoExamples.h
+  previewImageExamples.cpp          previewImageExamples.h
+  generalInterfaceTiledExamples.cpp generalInterfaceTiledExamples.h     
 )
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})

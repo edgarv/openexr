@@ -267,7 +267,7 @@ struct measure_argument<PyImath::FixedArray<T> >
 //
 // match_lengths returns the compatible length given two argument lengths
 //
-static std::pair<size_t,bool>
+static inline std::pair<size_t,bool>
 match_lengths(const std::pair<size_t,bool> &len1, const std::pair<size_t,bool> &len2)
 {
     // scalar arguemnts are always compatible with other arguments
@@ -329,7 +329,7 @@ struct create_uninitalized_return_value<PyImath::FixedArray<T> >
 {
     static PyImath::FixedArray<T> apply(size_t length)
     {
-        return PyImath::FixedArray<T>(length,PyImath::UNINITIALIZED);
+        return PyImath::FixedArray<T>(Py_ssize_t(length),PyImath::UNINITIALIZED);
     }
 };
 

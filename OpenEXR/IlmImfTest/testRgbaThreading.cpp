@@ -33,8 +33,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <tmpDir.h>
-#include <compareB44.h>
+#include "compareB44.h"
 
 #include <ImfRgbaFile.h>
 #include <ImfArray.h>
@@ -45,9 +44,12 @@
 #include <ImfThreading.h>
 #include <IlmThread.h>
 
-using namespace Imf;
-using namespace Imath;
+#include "tmpDir.h"
+
+using namespace OPENEXR_IMF_NAMESPACE;
 using namespace std;
+using namespace IMATH_NAMESPACE;
+
 
 namespace {
 
@@ -189,7 +191,7 @@ testRgbaThreading ()
     {
         cout << "Testing setGlobalThreadCount()" << endl;
 
-        if (!IlmThread::supportsThreads ())
+        if (!ILMTHREAD_NAMESPACE::supportsThreads ())
         {
             cout << "   Threading not supported!" << endl << endl;
             return;
@@ -238,13 +240,13 @@ testRgbaThreading ()
                                    LineOrder (lorder),
                                    Compression (comp));
     
-                    writeReadRGBA ("imf_test_rgba.exr",
+                    writeReadRGBA (IMF_TMP_DIR "imf_test_rgba.exr",
                                    W, H, p1,
                                    WRITE_A,
                                    LineOrder (lorder),
                                    Compression (comp));
     
-                    writeReadRGBA ("imf_test_rgba.exr",
+                    writeReadRGBA (IMF_TMP_DIR "imf_test_rgba.exr",
                                    W, H, p1,
                                    RgbaChannels (WRITE_R | WRITE_B),
                                    LineOrder (lorder),

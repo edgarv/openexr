@@ -45,3 +45,42 @@ if(OPENEXR_BUILD_UTILS)
   add_subdirectory(exrmultiview)
   add_subdirectory(exrstdattr)
 endif()
+
+##########################
+# Installation
+##########################
+
+# Documentation
+install (FILES
+  doc/TechnicalIntroduction.pdf
+  doc/TechnicalIntroduction_2.0.pdf
+  doc/ReadingAndWritingImageFiles.pdf
+  doc/OpenEXRFileLayout.pdf
+  doc/OpenEXRFileLayout_2.0.pdf
+  doc/ReadingAndWritingImageFiles_2.0.pdf
+  doc/MultiViewOpenEXR.pdf
+  DESTINATION
+  share/doc/OpenEXR-2.0.0
+)
+
+# Examples
+
+install (FILES
+  IlmImfExamples/main.cpp
+  IlmImfExamples/drawImage.cpp
+  IlmImfExamples/rgbaInterfaceExamples.cpp
+  IlmImfExamples/rgbaInterfaceTiledExamples.cpp
+  IlmImfExamples/generalInterfaceExamples.cpp
+  IlmImfExamples/lowLevelIoExamples.cpp
+  IlmImfExamples/previewImageExamples.cpp
+  IlmImfExamples/generalInterfaceTiledExamples.cpp
+  IlmImfExamples/generalInterfaceTiledExamples.h
+  IlmImfExamples/drawImage.h
+  IlmImfExamples/rgbaInterfaceExamples.h
+  IlmImfExamples/generalInterfaceExamples.h
+  IlmImfExamples/rgbaInterfaceTiledExamples.h
+  IlmImfExamples/lowLevelIoExamples.h
+  IlmImfExamples/previewImageExamples.h
+  DESTINATION
+  share/doc/OpenEXR-2.0.0/examples
+)

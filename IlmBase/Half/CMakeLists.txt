@@ -21,12 +21,12 @@ set(HALF_SOURCES
 add_custom_command(OUTPUT ${LUT_DIRECTORY}/eLut.h
   COMMAND eLut > ${LUT_DIRECTORY}/eLut.h
   COMMENT "Generating float-to-half LUT..."
-  )
+)
 
 add_custom_command(OUTPUT ${LUT_DIRECTORY}/toFloat.h
   COMMAND toFloat > ${LUT_DIRECTORY}/toFloat.h
   COMMENT "Generating half-to-float LUT..."
-  )
+)
 
 # Creates the special target  
 ADD_OPENEXR_LIBRARY(Half HALF_HEADERS HALF_SOURCES

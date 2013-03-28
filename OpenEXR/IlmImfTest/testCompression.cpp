@@ -33,8 +33,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <tmpDir.h>
-#include <compareB44.h>
+#include "compareB44.h"
 
 #include <ImfOutputFile.h>
 #include <ImfInputFile.h>
@@ -42,14 +41,17 @@
 #include <ImfArray.h>
 #include <ImathRandom.h>
 #include <half.h>
-#include <compareFloat.h>
+#include "compareFloat.h"
 
 #include <stdio.h>
 #include <assert.h>
 
+#include "tmpDir.h"
+
+using namespace OPENEXR_IMF_NAMESPACE;
 using namespace std;
-using namespace Imath;
-using namespace Imf;
+using namespace IMATH_NAMESPACE;
+
 
 namespace {
 

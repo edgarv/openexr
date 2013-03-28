@@ -45,8 +45,9 @@
 #endif
 
 
-using namespace Imf;
+using namespace OPENEXR_IMF_NAMESPACE;
 using namespace std;
+
 
 namespace {
 

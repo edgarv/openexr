@@ -1,9 +1,11 @@
-# Non-standalone test file, generated from the original Makefile.am file
+# Non-standalone CMake file
 
 set (SRCS
-    fuzzFile.cpp fuzzFile.h main.cpp tmpDir.h
-    testFuzzScanLines.cpp testFuzzScanLines.h
-    testFuzzTiles.cpp testFuzzTiles.h
+  fuzzFile.cpp          fuzzFile.h
+  main.cpp
+  tmpDir.h
+  testFuzzScanLines.cpp testFuzzScanLines.h
+  testFuzzTiles.cpp     testFuzzTiles.h
 )
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})

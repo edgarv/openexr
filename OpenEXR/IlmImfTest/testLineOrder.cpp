@@ -33,7 +33,6 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <tmpDir.h>
 
 #include <ImfOutputFile.h>
 #include <ImfInputFile.h>
@@ -46,9 +45,12 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include "tmpDir.h"
+
+using namespace OPENEXR_IMF_NAMESPACE;
 using namespace std;
-using namespace Imath;
-using namespace Imf;
+using namespace IMATH_NAMESPACE;
+
 
 namespace {
 
@@ -196,11 +198,11 @@ testLineOrder ()
 	Array2D<half> ph (H, W);
 	fillPixels (ph, W, H);
 
-	int maxThreads = IlmThread::supportsThreads()? 3: 0;
+	int maxThreads = ILMTHREAD_NAMESPACE::supportsThreads()? 3: 0;
 
 	for (int n = 0; n <= maxThreads; ++n)
 	{
-	    if (IlmThread::supportsThreads())
+	    if (ILMTHREAD_NAMESPACE::supportsThreads())
 	    {
 		setGlobalThreadCount (n);
 		cout << "\nnumber of threads: " << globalThreadCount() << endl;

@@ -1,14 +1,22 @@
 # Description of the IlmThread library
 
 set(ILMTHREAD_HEADERS
-  IlmThreadPool.h IlmThread.h
-  IlmThreadSemaphore.h IlmThreadMutex.h
+  IlmThreadPool.h
+  IlmThread.h
+  IlmThreadSemaphore.h
+  IlmThreadMutex.h
+  IlmThreadNamespace.h
+  IlmThreadExport.h
+  IlmThreadForward.h
   )
   
 set(ILMTHREAD_SOURCES
-  IlmThreadPool.cpp IlmThread.cpp
-  IlmThreadSemaphore.cpp IlmThreadMutex.cpp
-  IlmThreadPosix.cpp IlmThreadSemaphorePosix.cpp
+  IlmThreadPool.cpp
+  IlmThread.cpp
+  IlmThreadSemaphore.cpp
+  IlmThreadMutex.cpp
+  IlmThreadPosix.cpp
+  IlmThreadSemaphorePosix.cpp
   IlmThreadSemaphorePosixCompat.cpp
   IlmThreadMutexPosix.cpp
   )

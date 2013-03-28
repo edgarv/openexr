@@ -43,7 +43,10 @@
 #include <cassert>
 
 
-namespace Imf {
+OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_ENTER
+
+
+using namespace OPENEXR_IMF_INTERNAL_NAMESPACE;
 
 
 template <>
@@ -56,7 +59,7 @@ StringVectorAttribute::staticTypeName ()
 
 template <>
 void
-StringVectorAttribute::writeValueTo (OStream &os, int version) const
+StringVectorAttribute::writeValueTo (OPENEXR_IMF_INTERNAL_NAMESPACE::OStream &os, int version) const
 {
     int size = _value.size();
 
@@ -71,7 +74,7 @@ StringVectorAttribute::writeValueTo (OStream &os, int version) const
 
 template <>
 void
-StringVectorAttribute::readValueFrom (IStream &is, int size, int version)
+StringVectorAttribute::readValueFrom (OPENEXR_IMF_INTERNAL_NAMESPACE::IStream &is, int size, int version)
 {
     int read = 0;
 
@@ -95,4 +98,4 @@ StringVectorAttribute::readValueFrom (IStream &is, int size, int version)
 }
 
 
-} // namespace Imf
+OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_EXIT 

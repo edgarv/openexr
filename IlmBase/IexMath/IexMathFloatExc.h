@@ -37,11 +37,26 @@
 #ifndef INCLUDED_IEXMATHFLOATEXC_H
 #define INCLUDED_IEXMATHFLOATEXC_H
 
-#include <IexMathExc.h>
-//#include <IexBaseExc.h>
-#include <IexMathIeeeExc.h>
+#ifndef IEXMATH_EXPORT_H
+#define IEXMATH_EXPORT_H
+#if defined(PLATFORM_WINDOWS) && !defined(ZENO_STATIC)
+#   ifdef IEXMATH_EXPORTS
+#       define IEXMATH_EXPORT __declspec(dllexport)
+#   else
+#       define IEXMATH_EXPORT __declspec(dllimport)
+#   endif
+#else
+#   define IEXMATH_EXPORT
+#endif
+#endif
 
-namespace Iex {
+
+#include "IexNamespace.h"
+#include "IexMathExc.h"
+//#include <IexBaseExc.h>
+#include "IexMathIeeeExc.h"
+
+IEX_INTERNAL_NAMESPACE_HEADER_ENTER
 
 
 //-------------------------------------------------------------
@@ -49,6 +64,7 @@ namespace Iex {
 // will be trapped and converted to C++ exceptions.
 //-------------------------------------------------------------
 
+IEXMATH_EXPORT
 void mathExcOn (int when = (IEEE_OVERFLOW | IEEE_DIVZERO | IEEE_INVALID));
 
 
@@ -57,7 +73,8 @@ void mathExcOn (int when = (IEEE_OVERFLOW | IEEE_DIVZERO | IEEE_INVALID));
 // trapping and conversion to C++ exceptions is currently enabled.
 //----------------------------------------------------------------------
 
-int getMathExcOn ();
+IEXMATH_EXPORT
+int getMathExcOn();
 
 
 //------------------------------------------------------------------------
@@ -80,7 +97,7 @@ int getMathExcOn ();
 //					// point exception settings
 //------------------------------------------------------------------------
 
-class MathExcOn
+class IEXMATH_EXPORT MathExcOn
 {
   public:
 
@@ -120,6 +137,7 @@ class MathExcOn
     int				_saved;
 };
 
-} // namespace Iex
+
+IEX_INTERNAL_NAMESPACE_HEADER_EXIT
 
 #endif

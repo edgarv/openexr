@@ -33,8 +33,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <tmpDir.h>
-#include <compareB44.h>
+#include "compareB44.h"
 
 #include <ImfRgbaFile.h>
 #include <ImfArray.h>
@@ -49,10 +48,12 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include "tmpDir.h"
+
+using namespace OPENEXR_IMF_NAMESPACE;
 using namespace std;
-using namespace Imath;
-using namespace Imf;
-using namespace IlmThread;
+using namespace IMATH_NAMESPACE;
+using namespace ILMTHREAD_NAMESPACE;
 
 
 namespace {
@@ -293,7 +294,7 @@ testSharedFrameBuffer ()
 	cout << "Testing reading from and writing to files using\n"
 		"multiple threads and a shared framebuffer" << endl;
 
-        if (!IlmThread::supportsThreads ())
+        if (!ILMTHREAD_NAMESPACE::supportsThreads ())
         {
             cout << "   Threading not supported!" << endl << endl;
             return;
@@ -324,12 +325,12 @@ testSharedFrameBuffer ()
                                 WRITE_RGB,
                                 Compression (comp));
 
-                writeReadRGBA ("imf_test_rgba.exr",
+                writeReadRGBA (IMF_TMP_DIR "imf_test_rgba.exr",
                                 W, H, p1,
                                 WRITE_A,
                                 Compression (comp));
 
-                writeReadRGBA ("imf_test_rgba.exr",
+                writeReadRGBA (IMF_TMP_DIR "imf_test_rgba.exr",
                                 W, H, p1,
                                 RgbaChannels (WRITE_R | WRITE_B),
                                 Compression (comp));
