@@ -199,7 +199,7 @@ ADD_OPENEXR_LIBRARY(IlmImf ILMIMF_HEADERS ILMIMF_SOURCES
 
 # Link against zlib as it was found in the top level CMakeLists.txt
 include_directories(${ZLIB_INCLUDE_DIRS})
-target_link_libraries(IlmImf Half Iex IlmThread ${ZLIB_LIBRARIES})
+target_link_libraries(IlmImf Half Iex Imath IlmThread ${ZLIB_LIBRARIES})
 
 # Disable recurrent warnings in MSVC
 MSVC_COMPILE_FLAGS(IlmImf "/wd4244 /wd4018 /wd4996 /wd4800 /wd4267")

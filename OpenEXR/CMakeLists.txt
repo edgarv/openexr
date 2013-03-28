@@ -5,6 +5,11 @@
 # Extract the version information from configure.ac
 GET_VERSION (OpenEXR)
 
+set(OPENEXR_IMF_HAVE_LINUX_PROCFS     ${HAVE_LINUX_PROCFS})
+set(OPENEXR_IMF_HAVE_DARWIN           ${HAVE_DARWIN})
+set(OPENEXR_IMF_HAVE_COMPLETE_IOMANIP ${HAVE_COMPLETE_IOMANIP})
+set(OPENEXR_HAVE_LARGE_STACK          ${HAVE_LARGE_STACK})
+
 # Create the configuration header and install it
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/config/OpenEXRConfig.h.cmake
