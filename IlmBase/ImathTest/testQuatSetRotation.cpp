@@ -33,9 +33,9 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <testQuatSetRotation.h>
-#include "ImathQuat.h"
-#include "ImathRandom.h"
+#include "testQuatSetRotation.h"
+#include <ImathQuat.h>
+#include <ImathRandom.h>
 #include <iostream>
 #include <assert.h>
 

@@ -34,10 +34,10 @@
 
 
 
-#include <testShear.h>
-#include "ImathShear.h"
-#include "ImathLimits.h"
-#include "ImathMath.h"
+#include "testShear.h"
+#include <ImathShear.h>
+#include <ImathLimits.h>
+#include <ImathMath.h>
 #include <iostream>
 #include <assert.h>
 

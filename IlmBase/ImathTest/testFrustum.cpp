@@ -34,10 +34,10 @@
 
 
 
-#include <testFrustum.h>
-#include "ImathFrustum.h"
-#include "ImathEuler.h"
-#include "ImathFun.h"
+#include "testFrustum.h"
+#include <ImathFrustum.h>
+#include <ImathEuler.h>
+#include <ImathFun.h>
 #include <iostream>
 #include <assert.h>
 

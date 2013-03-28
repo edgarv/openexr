@@ -33,10 +33,10 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <testVec.h>
-#include "ImathVec.h"
-#include "ImathFun.h"
-#include "ImathLimits.h"
+#include "testVec.h"
+#include <ImathVec.h>
+#include <ImathFun.h>
+#include <ImathLimits.h>
 #include <iostream>
 #include <cassert>
 #include <cmath>

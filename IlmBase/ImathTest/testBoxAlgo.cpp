@@ -33,9 +33,9 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <testBoxAlgo.h>
-#include "ImathBoxAlgo.h"
-#include "ImathRandom.h"
+#include "testBoxAlgo.h"
+#include <ImathBoxAlgo.h>
+#include <ImathRandom.h>
 #include <iostream>
 #include <algorithm>
 #include <assert.h>

@@ -33,9 +33,9 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <testQuatSlerp.h>
-#include "ImathQuat.h"
-#include "ImathRandom.h"
+#include "testQuatSlerp.h"
+#include <ImathQuat.h>
+#include <ImathRandom.h>
 #include <iostream>
 #include <math.h>
 #include <assert.h>

@@ -33,11 +33,11 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <testExtractEuler.h>
-#include "ImathMatrixAlgo.h"
-#include "ImathEuler.h"
-#include "ImathRandom.h"
-#include "ImathFun.h"
+#include "testExtractEuler.h"
+#include <ImathMatrixAlgo.h>
+#include <ImathEuler.h>
+#include <ImathRandom.h>
+#include <ImathFun.h>
 #include <iostream>
 #include <assert.h>
 

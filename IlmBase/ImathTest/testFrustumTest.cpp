@@ -34,11 +34,11 @@
 
 
 
-#include <testFrustumTest.h>
-#include "ImathFrustum.h"
-#include "ImathFrustumTest.h"
-#include "ImathBox.h"
-#include "ImathSphere.h"
+#include "testFrustumTest.h"
+#include <ImathFrustum.h>
+#include <ImathFrustumTest.h>
+#include <ImathBox.h>
+#include <ImathSphere.h>
 #include <iostream>
 #include <assert.h>
 

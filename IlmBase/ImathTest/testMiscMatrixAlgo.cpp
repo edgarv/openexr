@@ -33,9 +33,9 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <testMiscMatrixAlgo.h>
-#include "ImathMatrixAlgo.h"
-#include "ImathRandom.h"
+#include "testMiscMatrixAlgo.h"
+#include <ImathMatrixAlgo.h>
+#include <ImathRandom.h>
 #include <iostream>
 #include <exception>
 #include <stdio.h>

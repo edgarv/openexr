@@ -33,9 +33,9 @@
 ///////////////////////////////////////////////////////////////////////////
 
 
-#include <testLineAlgo.h>
-#include "ImathLineAlgo.h"
-#include "ImathRandom.h"
+#include "testLineAlgo.h"
+#include <ImathLineAlgo.h>
+#include <ImathRandom.h>
 #include <iostream>
 #include <assert.h>
 
