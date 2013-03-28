@@ -1,3 +1,5 @@
+#ifndef ILMTHREADEXPORT_H
+#define ILMTHREADEXPORT_H
 ///////////////////////////////////////////////////////////////////////////
 //
 // Copyright (c) 2012, Industrial Light & Magic, a division of Lucas
@@ -32,15 +34,38 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#if defined(OPENEXR_DLL)
-    #if defined(ILMTHREAD_EXPORTS)
-	    #define ILMTHREAD_EXPORT __declspec(dllexport)
-        #define ILMTHREAD_EXPORT_CONST extern __declspec(dllexport)
-    #else
-	    #define ILMTHREAD_EXPORT __declspec(dllimport)
-	    #define ILMTHREAD_EXPORT_CONST extern __declspec(dllimport)
-    #endif
-#else
-    #define ILMTHREAD_EXPORT
-    #define ILMTHREAD_EXPORT_CONST extern const
+
+#if defined(PLATFORM_WINDOWS)
+#  if defined(PLATFORM_BUILD_STATIC)
+#    define PLATFORM_EXPORT_DEFINITION 
+#    define PLATFORM_IMPORT_DEFINITION
+#    define PLATFORM_EXPORT_CONST_DEFINITION extern const
+#  else
+#    define PLATFORM_EXPORT_DEFINITION __declspec(dllexport) 
+#    define PLATFORM_IMPORT_DEFINITION __declspec(dllimport)
+#    define PLATFORM_EXPORT_CONST_DEFINITION __declspec(dllexport) extern const
+#    define PLATFORM_IMPORT_CONST_DEFINITION __declspec(dllimport) extern const
+#  endif
+#else   // linux/macos
+#  if defined(PLATFORM_VISIBILITY_AVAILABLE)
+#    define PLATFORM_EXPORT_DEFINITION __attribute__((visibility("default")))
+#    define PLATFORM_IMPORT_DEFINITION
+#    define PLATFORM_EXPORT_CONST_DEFINITION __attribute__((visibility("default"))) extern const
+#    define PLATFORM_IMPORT_CONST_DEFINITION extern const
+#  else
+#    define PLATFORM_EXPORT_DEFINITION 
+#    define PLATFORM_IMPORT_DEFINITION
+#    define PLATFORM_EXPORT_CONST_DEFINITION extern const
+#    define PLATFORM_IMPORT_CONST_DEFINITION extern const
+#  endif
 #endif
+
+#if defined(ILMTHREAD_EXPORTS)                     // create library
+#  define ILMTHREAD_EXPORT       PLATFORM_EXPORT_DEFINITION
+#  define ILMTHREAD_EXPORT_CONST PLATFORM_EXPORT_CONST_DEFINITION
+#else                                              // use library
+#  define ILMTHREAD_EXPORT       PLATFORM_IMPORT_DEFINITION
+#  define ILMTHREAD_EXPORT_CONST PLATFORM_IMPORT_CONST_DEFINITION
+#endif
+
+#endif // #ifndef ILMTHREADEXPORT_H
