@@ -1,3 +1,4 @@
+/* config/IlmBaseConfig.h.  Generated from IlmBaseConfig.h.cmake by cmake. */
 //
 // Define and set to 1 if the target system has POSIX thread support
 // and you want IlmBase to use it for multithreaded file I/O.
@@ -35,12 +36,12 @@
 // Current (internal) library namepace name and corresponding public
 // client namespaces.
 //
-#cmakedefine ILMBASE_INTERNAL_NAMESPACE_CUSTOM @ILMBASE_INTERNAL_NAMESPACE_CUSTOM@
+#cmakedefine ILMBASE_INTERNAL_NAMESPACE_CUSTOM 1
 #cmakedefine IMATH_INTERNAL_NAMESPACE @IMATH_INTERNAL_NAMESPACE@
 #cmakedefine IEX_INTERNAL_NAMESPACE @IEX_INTERNAL_NAMESPACE@
 #cmakedefine ILMTHREAD_INTERNAL_NAMESPACE @ILMTHREAD_INTERNAL_NAMESPACE@
 
-#cmakedefine ILMBASE_NAMESPACE_CUSTOM @ILMBASE_NAMESPACE_CUSTOM@
+#cmakedefine ILMBASE_NAMESPACE_CUSTOM 1
 #cmakedefine IMATH_NAMESPACE @IMATH_NAMESPACE@
 #cmakedefine IEX_NAMESPACE @IEX_NAMESPACE@
 #cmakedefine ILMTHREAD_NAMESPACE @ILMTHREAD_NAMESPACE@

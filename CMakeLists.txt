@@ -61,6 +61,7 @@ macro (GET_VERSION libname)
     set(${libname_upper}_VERSION_MAJOR "${CMAKE_MATCH_1}")
     set(${libname_upper}_VERSION_MINOR "${CMAKE_MATCH_2}")
     set(${libname_upper}_VERSION_PATCH "${CMAKE_MATCH_3}")
+    set(${libname_upper}_VERSION_API "${CMAKE_MATCH_1}_${CMAKE_MATCH_2}")
   else()
     message(FATAL_ERROR
       "${libname} version has an unexpected format: ${${libname_upper}_VERSION}")
@@ -155,6 +156,17 @@ int main (int argc, char **argv) {
 }
 " HAVE_COMPLETE_IOMANIP)
 
+# Checks for dealing with fpe handling
+CHECK_CXX_SOURCE_COMPILES("
+#include <stdint.h>
+#include <ucontext.h>
+int main (int argc, char **argv) {
+    ucontext_t ucon;
+    uint32_t mxcsr = ucon.uc_mcontext.fpregs->mxcsr;
+    uint16_t cw    = ucon.uc_mcontext.fpregs->cwd;
+}
+" HAVE_CONTROL_REGISTER_SUPPORT)
+
 # Check if the stack is large enough (ie more than 256 KiB)
 include(CheckCSourceRuns)
 CHECK_C_SOURCE_RUNS("
@@ -179,6 +191,14 @@ if(HAVE_LARGE_STACK_0x40000)
   endif()
 endif()
 
+# Handle namespacing configuration : internal library namespace
+#                                    public namespace
+option(ENABLE_NAMESPACE_VERSIONING
+  "Enable symbol versioning via versioned/custom namespace to prevent runtime conflicts" ON)
+
+# Public User namespace
+option(ENABLE_CUSTOM_USER_NAMESPACE
+  "Use a custom namespace into which the library namespace will be exported to" OFF)
 
 # The build requires headers defined within all directories
 include_directories( ${OPENEXR_CFG_DIR} )
