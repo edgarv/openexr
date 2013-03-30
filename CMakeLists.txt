@@ -209,109 +209,9 @@ include_directories( IlmBase/IlmThread )
 include_directories( OpenEXR/IlmImf )
 
 
-# Flag to indicate whether this needs the special createDLL tool
-set (NEEDS_CREATEDLL FALSE)
-
-# When building a windows dll we need to add some defines and build the create dll tool
+# When building a windows dll we need to add some defines
 if(OPENEXR_DLL)
   add_definitions(-DOPENEXR_DLL)
-  
-  if (MSVC)
-    set (NEEDS_CREATEDLL TRUE)
-  endif()
-  
-  if (NEEDS_CREATEDLL)
-    if (MSVC_IDE)
-      add_subdirectory(IlmBase/vc/createDLL)
-    else ()
-      message (FATAL_ERROR "The createDLL toolchain is only supported using Visual Studio.")
-    endif ()
-  endif ()
-  
-  # The DLLs need special handling. It assumes that the resource file has been generated!
-  if (NEEDS_CREATEDLL)
-  
-    # List of the paths of the different version of the zlib to use
-    set(ZLIB_PATHS "")
-  
-    # Extract the full filename of zlib, both the debug and release versions if they are present
-    list(LENGTH ZLIB_LIBRARIES zlib_libraries_len)
-    if (zlib_libraries_len GREATER 0)
-      # Loop over all libraries
-      foreach(zlib_current ${ZLIB_LIBRARIES})
-        if (NOT ("${zlib_current}" STREQUAL "debug" OR 
-            "${zlib_current}" STREQUAL "optimized" OR
-              "${zlib_current}" STREQUAL "general"))
-          get_filename_component(zlib_filename "${zlib_current}" ABSOLUTE)
-          get_filename_component(zlib_path "${zlib_filename}" PATH)
-          list (APPEND ZLIB_PATHS ${zlib_path})
-        endif()
-        list(REMOVE_DUPLICATES ZLIB_PATHS)
-      endforeach()
-    else()
-      message (FATAL_ERROR "Could not identify the zlib components")
-    endif()
-  
-    macro(CREATEDLL targetname)
-  
-      # The createdll program needs an export map while keeping all the symbols
-      set_target_properties(${targetname} PROPERTIES
-        LINK_FLAGS "/MAP /MAPINFO:EXPORTS /OPT:NOREF /OPT:ICF")
-        
-      if(${ARGC} EQUAL 2)
-        set(EXTRA_LIB "-o${ARGV1}")
-      endif()
-      
-      if (CMAKE_GENERATOR MATCHES "Visual Studio")
-        set (createDLL_ARGS
-          "-x${targetname}.res" "-M$(PlatformName)"
-          "-n$(OutDir)\\$(TargetName).map"
-          "-l$(IntDir)"
-          "-l$(SolutionDir)IlmBase\\Half\\${CMAKE_CFG_INTDIR}"
-          "-l$(SolutionDir)IlmBase\\Iex\\${CMAKE_CFG_INTDIR}"
-          "-l$(SolutionDir)IlmBase\\Imath\\${CMAKE_CFG_INTDIR}"
-          "-l$(SolutionDir)IlmBase\\IlmThread\\${CMAKE_CFG_INTDIR}"
-          "-i$(OutDir)\\$(TargetName).lib"
-        )
-      else()
-        message(AUTHOR_WARNING "Check that this path works properly")
-        if (CMAKE_SIZEOF_VOID_P EQUAL 8)
-          set (createDLL_Platform "X64")
-        else()
-          set (createDLL_Platform "X86")
-        endif()
-        set (createDLL_ARGS
-          "-x${targetname}.res" "-M${createDLL_Platform}"
-          "-n${CMAKE_CURRENT_BINARY_DIR}\\${CMAKE_CFG_INTDIR}\\${targetname}.map"
-          "-l${CMAKE_CURRENT_BINARY_DIR}\\${targetname}.dir\\${CMAKE_CFG_INTDIR}"
-          "-l${PROJECT_BINARY_DIR}\\IlmBase\\Half\\${CMAKE_CFG_INTDIR}"
-          "-l${PROJECT_BINARY_DIR}\\IlmBase\\Iex\\${CMAKE_CFG_INTDIR}"
-          "-l${PROJECT_BINARY_DIR}\\IlmBase\\Imath\\${CMAKE_CFG_INTDIR}"
-          "-l${PROJECT_BINARY_DIR}\\IlmBase\\IlmThread\\${CMAKE_CFG_INTDIR}"
-          "-i${CMAKE_CURRENT_BINARY_DIR}\\${CMAKE_CFG_INTDIR}\\${targetname}.lib"
-        )
-      endif()
-      if (ZLIB_PATHS)
-        set (createDLL_ARGS ${createDLL_ARGS} "-l${ZLIB_PATHS}")
-      endif()
-      add_custom_command(TARGET ${targetname} POST_BUILD
-        COMMAND createDLL
-          ${createDLL_ARGS}
-          "${EXTRA_LIB}"
-        COMMENT "Exporting all public symbols from $(TargetFileName)..."
-      )
-      
-      # If createDLL does not exist before the target is created, horrible things happen
-      add_dependencies(${targetname} createDLL)
-    endmacro()
-    
-  else()
-  
-    # Define the macro as no-ops
-    macro(CREATEDLL targetname)
-    endmacro()
-  endif () # NEEDS_CREATEDLL
-  
 endif()
 
 
@@ -411,17 +311,15 @@ macro(ADD_OPENEXR_LIBRARY targetname publicheaders_var sources_var description
       OUTPUT_NAME "${targetname}_static")
   endif()
   
-  # For the windows dll we need extra definitions and to use createDLL
+  # For the windows dll we need extra definitions
   if(OPENEXR_DLL)
     string(TOUPPER ${targetname} targetUpper)
     set_target_properties(${targetname} PROPERTIES
       DEFINE_SYMBOL "${targetUpper}_EXPORTS")
-    CREATEDLL(${targetname} ${ARGV7})
   endif()
   
   # Finally installs the target
   INSTALL_TARGET(${targetname})
-
 endmacro()
 
 

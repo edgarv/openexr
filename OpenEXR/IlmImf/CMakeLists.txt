@@ -186,16 +186,10 @@ set(ILMIMF_SOURCES
 )
 
 
-# To create the DLL on windows we also depend on zlib. If it is static we need to add the
-# library explictly
-if(WIN32 AND ZLIB_LIB_FILENAME MATCHES "zlib(d)?\\.lib")
-  set(ZLIB_EXTRA_ARG ${ZLIB_LIB_FILENAME})
-endif()
-  
 # Creates the special target 
 ADD_OPENEXR_LIBRARY(IlmImf ILMIMF_HEADERS ILMIMF_SOURCES
   "IlmImf is a library that reads and writes OpenEXR images."
-  ${OPENEXR_VERSION} ${OPENEXR_SOVERSION} "2002" ${ZLIB_EXTRA_ARG})
+  ${OPENEXR_VERSION} ${OPENEXR_SOVERSION} "2002")
 
 # Link against zlib as it was found in the top level CMakeLists.txt
 include_directories(${ZLIB_INCLUDE_DIRS})
