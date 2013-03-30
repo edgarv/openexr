@@ -1,14 +1,14 @@
 # Non-standalone CMake file
 
 set (SRCS
-  fuzzFile.cpp          fuzzFile.h
+  fuzzFile.cpp              fuzzFile.h
   main.cpp
+  testFuzzDeepScanLines.cpp testFuzzDeepScanLines.h
+  testFuzzDeepTiles.cpp     testFuzzDeepTiles.h
+  testFuzzScanLines.cpp     testFuzzScanLines.h
+  testFuzzTiles.cpp         testFuzzTiles.h
   tmpDir.h
-  testFuzzScanLines.cpp testFuzzScanLines.h
-  testFuzzTiles.cpp     testFuzzTiles.h
 )
-
-include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable (IlmImfFuzzTest ${SRCS})
 target_link_libraries (IlmImfFuzzTest
