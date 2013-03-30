@@ -14,9 +14,10 @@ set(OPENEXR_HAVE_LARGE_STACK          ${HAVE_LARGE_STACK})
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/config/OpenEXRConfig.h.cmake
   ${OPENEXR_CFG_DIR}/OpenEXRConfig.h
+  @ONLY
 )
 install(FILES ${OPENEXR_CFG_DIR}/OpenEXRConfig.h
-  DESTINATION "include/OpenEXR"
+  DESTINATION ${INSTALL_INCLUDE_DIR}
 )
 
 # Add the actual OpenEXR library
@@ -36,7 +37,7 @@ endif()
 option(OPENEXR_BUILD_EXAMPLE
   "Build IlmImf example program" OFF)
 if (OPENEXR_BUILD_EXAMPLE)
-add_subdirectory(IlmImfExamples)
+  add_subdirectory(IlmImfExamples)
 endif()
 
 option(OPENEXR_BUILD_UTILS

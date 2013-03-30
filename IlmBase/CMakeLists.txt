@@ -36,7 +36,7 @@ configure_file(
   @ONLY
 )
 install(FILES ${OPENEXR_CFG_DIR}/IlmBaseConfig.h
-  DESTINATION "include/OpenEXR"
+  DESTINATION ${INSTALL_INCLUDE_DIR}
 )
 
 # Now add the actual projects
