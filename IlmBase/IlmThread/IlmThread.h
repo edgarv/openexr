@@ -94,14 +94,7 @@
 #include "IlmThreadExport.h"
 #include "IlmThreadNamespace.h"
 
-#if defined _WIN32 || defined _WIN64
-    #ifdef NOMINMAX
-        #undef NOMINMAX
-    #endif
-    #define NOMINMAX
-    #include <windows.h>
-    #include <process.h>
-#elif HAVE_PTHREAD
+#if HAVE_PTHREAD
     #include <pthread.h>
 #endif
 
@@ -128,7 +121,7 @@ class ILMTHREAD_EXPORT Thread
   private:
 
     #if defined _WIN32 || defined _WIN64
-	HANDLE _thread;
+	void* _thread;
     #elif HAVE_PTHREAD
 	pthread_t _thread;
     #endif

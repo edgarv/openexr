@@ -41,8 +41,21 @@
 
 #include "IlmThread.h"
 #include "Iex.h"
+
+#ifdef WIN32_LEAN_AND_MEAN
+    #undef WIN32_LEAN_AND_MEAN
+#endif
+#ifdef NOMINMAX
+    #undef NOMINMAX
+#endif
+
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <windows.h>
+#include <process.h>
+
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 
 ILMTHREAD_INTERNAL_NAMESPACE_SOURCE_ENTER
 
