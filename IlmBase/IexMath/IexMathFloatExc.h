@@ -37,17 +37,28 @@
 #ifndef INCLUDED_IEXMATHFLOATEXC_H
 #define INCLUDED_IEXMATHFLOATEXC_H
 
-#ifndef IEXMATH_EXPORT_H
-#define IEXMATH_EXPORT_H
-#if defined(PLATFORM_WINDOWS) && !defined(ZENO_STATIC)
-#   ifdef IEXMATH_EXPORTS
-#       define IEXMATH_EXPORT __declspec(dllexport)
-#   else
-#       define IEXMATH_EXPORT __declspec(dllimport)
-#   endif
-#else
-#   define IEXMATH_EXPORT
+#if defined(PLATFORM_WINDOWS)
+#  if defined(PLATFORM_BUILD_STATIC)
+#    define PLATFORM_EXPORT_DEFINITION 
+#    define PLATFORM_IMPORT_DEFINITION
+#  else
+#    define PLATFORM_EXPORT_DEFINITION __declspec(dllexport) 
+#    define PLATFORM_IMPORT_DEFINITION __declspec(dllimport)
+#  endif
+#else   // linux/macos
+#  if defined(PLATFORM_VISIBILITY_AVAILABLE)
+#    define PLATFORM_EXPORT_DEFINITION __attribute__((visibility("default")))
+#    define PLATFORM_IMPORT_DEFINITION
+#  else
+#    define PLATFORM_EXPORT_DEFINITION 
+#    define PLATFORM_IMPORT_DEFINITION
+#  endif
 #endif
+
+#if defined(IEXMATH_EXPORTS)                       // create library
+#  define IEXMATH_EXPORT PLATFORM_EXPORT_DEFINITION
+#else                                              // use library
+#  define IEXMATH_EXPORT PLATFORM_IMPORT_DEFINITION
 #endif
 
 
