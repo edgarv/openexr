@@ -21,6 +21,7 @@ add_custom_command(OUTPUT ${LUT_DIRECTORY}/b44ExpLogTable.h
   VERBATIM
 )
 
+# Public headers
 set(ILMIMF_HEADERS
   ImfAcesFile.h
   ImfArray.h
@@ -32,19 +33,35 @@ set(ILMIMF_HEADERS
   ImfChannelListAttribute.h
   ImfChromaticities.h
   ImfChromaticitiesAttribute.h
+  ImfCompositeDeepScanLine.h
   ImfCompression.h
   ImfCompressionAttribute.h
   ImfConvert.h
+  ImfDeepCompositing.h
+  ImfDeepFrameBuffer.h
+  ImfDeepScanLineInputFile.h
+  ImfDeepScanLineInputPart.h
+  ImfDeepScanLineOutputFile.h
+  ImfDeepScanLineOutputPart.h
+  ImfDeepTiledInputFile.h
+  ImfDeepTiledInputPart.h
+  ImfDeepTiledOutputFile.h
+  ImfDeepTiledOutputPart.h
   ImfDoubleAttribute.h
   ImfEnvmap.h
   ImfEnvmapAttribute.h
+  ImfExport.h
   ImfFloatAttribute.h
+  ImfForward.h
   ImfFrameBuffer.h
   ImfFramesPerSecond.h
+  ImfGenericInputFile.h
+  ImfGenericOutputFile.h
   ImfHeader.h
   ImfHuf.h
   ImfIO.h
   ImfInputFile.h
+  ImfInputPart.h
   ImfInt64.h
   ImfIntAttribute.h
   ImfKeyCode.h
@@ -53,10 +70,17 @@ set(ILMIMF_HEADERS
   ImfLineOrderAttribute.h
   ImfLut.h
   ImfMatrixAttribute.h
+  ImfMisc.h
+  ImfMultiPartInputFile.h
+  ImfMultiPartOutputFile.h
   ImfMultiView.h
   ImfName.h
+  ImfNamespace.h
   ImfOpaqueAttribute.h
   ImfOutputFile.h
+  ImfOutputPart.h
+  ImfPartHelper.h
+  ImfPartType.h
   ImfPixelType.h
   ImfPreviewImage.h
   ImfPreviewImageAttribute.h
@@ -73,7 +97,9 @@ set(ILMIMF_HEADERS
   ImfTileDescription.h
   ImfTileDescriptionAttribute.h
   ImfTiledInputFile.h
+  ImfTiledInputPart.h
   ImfTiledOutputFile.h
+  ImfTiledOutputPart.h
   ImfTiledRgbaFile.h
   ImfTimeCode.h
   ImfTimeCodeAttribute.h
@@ -81,111 +107,112 @@ set(ILMIMF_HEADERS
   ImfVersion.h
   ImfWav.h
   ImfXdr.h
-  
-  ImfDeepScanLineOutputFile.h
-  ImfDeepScanLineOutputPart.h
-  ImfDeepScanLineInputFile.h
-  ImfDeepScanLineInputPart.h
-  ImfDeepTiledInputFile.h
-  ImfDeepTiledInputPart.h
-  ImfDeepTiledOutputFile.h
-  ImfDeepTiledOutputPart.h
-  ImfDeepFrameBuffer.h
-  ImfDeepCompositing.h
-  ImfCompositeDeepScanLine.h
-  
-  ImfForward.h
-  ImfExport.h
-  ImfAttribute.h
 )
 
+# All sources, including the public headers
 set(ILMIMF_SOURCES
-  ImfAcesFile.cpp
-  ImfAttribute.cpp
+  "${LUT_DIRECTORY}/b44ExpLogTable.h"
+  ImfAcesFile.cpp                 ImfAcesFile.h
+  ImfArray.h
+  ImfAttribute.cpp                ImfAttribute.h
   ImfAutoArray.h
-  ImfB44Compressor.cpp
-  ImfBoxAttribute.cpp
-  ImfCRgbaFile.cpp
-  ImfChannelList.cpp
-  ImfChannelListAttribute.cpp
+  ImfB44Compressor.cpp            ImfB44Compressor.h
+  ImfBoxAttribute.cpp             ImfBoxAttribute.h
+  ImfCRgbaFile.cpp                ImfCRgbaFile.h
+  ImfChannelList.cpp              ImfChannelList.h
+  ImfChannelListAttribute.cpp     ImfChannelListAttribute.h
   ImfCheckedArithmetic.h
-  ImfChromaticities.cpp
-  ImfChromaticitiesAttribute.cpp
-  ImfCompressionAttribute.cpp
-  ImfCompressor.h ImfCompressor.cpp
-  ImfConvert.cpp
-  ImfDoubleAttribute.cpp
-  ImfEnvmap.cpp
-  ImfEnvmapAttribute.cpp
-  ImfFloatAttribute.cpp
-  ImfFrameBuffer.cpp
-  ImfFramesPerSecond.cpp
-  ImfHeader.cpp
-  ImfHuf.cpp
-  ImfIO.cpp
-  ImfInputFile.cpp
-  ImfIntAttribute.cpp
-  ImfKeyCode.cpp
-  ImfKeyCodeAttribute.cpp
-  ImfLineOrderAttribute.cpp
-  ImfLut.cpp
-  ImfMatrixAttribute.cpp
-  ImfMisc.h ImfMisc.cpp
-  ImfMultiView.cpp
-  ImfOpaqueAttribute.cpp
-  ImfOutputFile.cpp
-  ImfPizCompressor.h ImfPizCompressor.cpp
-  ImfPreviewImage.cpp
-  ImfPreviewImageAttribute.cpp
-  ImfPxr24Compressor.h ImfPxr24Compressor.cpp
-  ImfRational.cpp
-  ImfRationalAttribute.cpp
-  ImfRgbaFile.cpp
-  ImfRgbaYca.cpp
-  ImfRleCompressor.h ImfRleCompressor.cpp
-  ImfScanLineInputFile.h ImfScanLineInputFile.cpp
-  ImfStandardAttributes.cpp
-  ImfStdIO.h ImfStdIO.cpp
-  ImfStringAttribute.cpp
-  ImfStringVectorAttribute.cpp
-  ImfTestFile.cpp
-  ImfThreading.cpp
-  ImfTileDescriptionAttribute.cpp
-  ImfTileOffsets.cpp
-  ImfTiledInputFile.cpp
-  ImfTiledMisc.cpp
-  ImfTiledOutputFile.cpp
-  ImfTiledRgbaFile.cpp
-  ImfTimeCode.cpp
-  ImfTimeCodeAttribute.cpp
-  ImfVecAttribute.cpp
-  ImfVersion.cpp
-  ImfWav.cpp
-  ImfZipCompressor.h ImfZipCompressor.cpp
-  ${LUT_DIRECTORY}/b44ExpLogTable.h
-  
-  ImfMultiPartOutputFile.cpp
-  ImfGenericOutputFile.cpp
-  ImfOutputPartData.cpp
-  ImfMultiPartInputFile.cpp
-  ImfGenericInputFile.cpp
-  ImfPartType.cpp
-  ImfInputPartData.cpp
-  ImfOutputPart.cpp
-  ImfTiledOutputPart.cpp
-  ImfInputPart.cpp
-  ImfTiledInputPart.cpp
-  ImfDeepScanLineInputPart.cpp
-  ImfDeepScanLineOutputPart.cpp
-  ImfDeepScanLineInputFile.cpp
-  ImfDeepScanLineOutputFile.cpp
-  ImfDeepTiledInputPart.cpp
-  ImfDeepTiledOutputPart.cpp
-  ImfDeepTiledInputFile.cpp
-  ImfDeepTiledOutputFile.cpp
-  ImfDeepFrameBuffer.cpp
-  ImfDeepCompositing.cpp
-  ImfCompositeDeepScanLine.cpp
+  ImfChromaticities.cpp           ImfChromaticities.h
+  ImfChromaticitiesAttribute.cpp  ImfChromaticitiesAttribute.h
+  ImfCompositeDeepScanLine.cpp    ImfCompositeDeepScanLine.h
+  ImfCompression.h
+  ImfCompressionAttribute.cpp     ImfCompressionAttribute.h
+  ImfCompressor.cpp               ImfCompressor.h
+  ImfConvert.cpp                  ImfConvert.h
+  ImfDeepCompositing.cpp          ImfDeepCompositing.h
+  ImfDeepFrameBuffer.cpp          ImfDeepFrameBuffer.h
+  ImfDeepScanLineInputFile.cpp    ImfDeepScanLineInputFile.h
+  ImfDeepScanLineInputPart.cpp    ImfDeepScanLineInputPart.h
+  ImfDeepScanLineOutputFile.cpp   ImfDeepScanLineOutputFile.h
+  ImfDeepScanLineOutputPart.cpp   ImfDeepScanLineOutputPart.h
+  ImfDeepTiledInputFile.cpp       ImfDeepTiledInputFile.h
+  ImfDeepTiledInputPart.cpp       ImfDeepTiledInputPart.h
+  ImfDeepTiledOutputFile.cpp      ImfDeepTiledOutputFile.h
+  ImfDeepTiledOutputPart.cpp      ImfDeepTiledOutputPart.h
+  ImfDoubleAttribute.cpp          ImfDoubleAttribute.h
+  ImfEnvmap.cpp                   ImfEnvmap.h
+  ImfEnvmapAttribute.cpp          ImfEnvmapAttribute.h
+  ImfExport.h
+  ImfFloatAttribute.cpp           ImfFloatAttribute.h
+  ImfForward.h
+  ImfFrameBuffer.cpp              ImfFrameBuffer.h
+  ImfFramesPerSecond.cpp          ImfFramesPerSecond.h
+  ImfGenericInputFile.cpp         ImfGenericInputFile.h
+  ImfGenericOutputFile.cpp        ImfGenericOutputFile.h
+  ImfHeader.cpp                   ImfHeader.h
+  ImfHuf.cpp                      ImfHuf.h
+  ImfIO.cpp                       ImfIO.h
+  ImfInputFile.cpp                ImfInputFile.h
+  ImfInputPart.cpp                ImfInputPart.h
+  ImfInputPartData.cpp            ImfInputPartData.h
+  ImfInputStreamMutex.h
+  ImfInt64.h
+  ImfIntAttribute.cpp             ImfIntAttribute.h
+  ImfKeyCode.cpp                  ImfKeyCode.h
+  ImfKeyCodeAttribute.cpp         ImfKeyCodeAttribute.h
+  ImfLineOrder.h
+  ImfLineOrderAttribute.cpp       ImfLineOrderAttribute.h
+  ImfLut.cpp                      ImfLut.h
+  ImfMatrixAttribute.cpp          ImfMatrixAttribute.h
+  ImfMisc.cpp                     ImfMisc.h
+  ImfMultiPartInputFile.cpp       ImfMultiPartInputFile.h
+  ImfMultiPartOutputFile.cpp      ImfMultiPartOutputFile.h
+  ImfMultiView.cpp                ImfMultiView.h
+  ImfName.h
+  ImfNamespace.h
+  ImfOpaqueAttribute.cpp          ImfOpaqueAttribute.h
+  ImfOptimizedPixelReading.h
+  ImfOutputFile.cpp               ImfOutputFile.h
+  ImfOutputPart.cpp               ImfOutputPart.h
+  ImfOutputPartData.cpp           ImfOutputPartData.h
+  ImfOutputStreamMutex.h
+  ImfPartHelper.h
+  ImfPartType.cpp                 ImfPartType.h
+  ImfPixelType.h
+  ImfPizCompressor.cpp            ImfPizCompressor.h
+  ImfPreviewImage.cpp             ImfPreviewImage.h
+  ImfPreviewImageAttribute.cpp    ImfPreviewImageAttribute.h
+  ImfPxr24Compressor.cpp          ImfPxr24Compressor.h
+  ImfRational.cpp                 ImfRational.h
+  ImfRationalAttribute.cpp        ImfRationalAttribute.h
+  ImfRgba.h
+  ImfRgbaFile.cpp                 ImfRgbaFile.h
+  ImfRgbaYca.cpp                  ImfRgbaYca.h
+  ImfRleCompressor.cpp            ImfRleCompressor.h
+  ImfScanLineInputFile.cpp        ImfScanLineInputFile.h
+  ImfStandardAttributes.cpp       ImfStandardAttributes.h
+  ImfStdIO.cpp                    ImfStdIO.h
+  ImfStringAttribute.cpp          ImfStringAttribute.h
+  ImfStringVectorAttribute.cpp    ImfStringVectorAttribute.h
+  ImfSystemSpecific.h
+  ImfTestFile.cpp                 ImfTestFile.h
+  ImfThreading.cpp                ImfThreading.h
+  ImfTileDescription.h
+  ImfTileDescriptionAttribute.cpp ImfTileDescriptionAttribute.h
+  ImfTileOffsets.cpp              ImfTileOffsets.h
+  ImfTiledInputFile.cpp           ImfTiledInputFile.h
+  ImfTiledInputPart.cpp           ImfTiledInputPart.h
+  ImfTiledMisc.cpp                ImfTiledMisc.h
+  ImfTiledOutputFile.cpp          ImfTiledOutputFile.h
+  ImfTiledOutputPart.cpp          ImfTiledOutputPart.h
+  ImfTiledRgbaFile.cpp            ImfTiledRgbaFile.h
+  ImfTimeCode.cpp                 ImfTimeCode.h
+  ImfTimeCodeAttribute.cpp        ImfTimeCodeAttribute.h
+  ImfVecAttribute.cpp             ImfVecAttribute.h
+  ImfVersion.cpp                  ImfVersion.h
+  ImfWav.cpp                      ImfWav.h
+  ImfXdr.h
+  ImfZipCompressor.cpp            ImfZipCompressor.h
 )
 
 
