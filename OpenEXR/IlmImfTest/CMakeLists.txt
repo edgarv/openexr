@@ -1,5 +1,11 @@
 # Non-standalone CMake file
 
+option(OPENEXR_BUILD_IMFHUGETEST
+  "Build IlmImf huge input resilience test" OFF)
+if (OPENEXR_BUILD_IMFHUGETEST)
+  add_definitions(-DENABLE_IMFHUGETEST)
+endif()
+
 set (IlmImfTest_SOURCES
   main.cpp
   tmpDir.h
