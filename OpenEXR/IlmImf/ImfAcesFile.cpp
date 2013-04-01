@@ -55,10 +55,10 @@ const Chromaticities &
 acesChromaticities ()
 {
     static const Chromaticities acesChr 
-	    (V2f (0.73470f,  0.26530f),  // red
-	     V2f (0.00000f,  1.00000f),	 // green
-	     V2f (0.00010f, -0.07700f),	 // blue
-	     V2f (0.32168f,  0.33767f)); // white
+	    (V2f (0.73470f,  0.26530f), 	// red
+	     V2f (0.00000f,  1.00000f), 	// green
+	     V2f (0.00010f, -0.07700f), 	// blue
+	     V2f (0.32168f,  0.33767f));	// white
 
     return acesChr;
 }
