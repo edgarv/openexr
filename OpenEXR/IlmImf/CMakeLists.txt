@@ -5,18 +5,21 @@ add_executable(b44ExpLogTable b44ExpLogTable.cpp)
 target_link_libraries(b44ExpLogTable Half)
 
 # Directory with the LUTs
-set(LUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-include_directories( ${LUT_DIRECTORY} )
+set(LUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lut")
+file(MAKE_DIRECTORY "${LUT_DIRECTORY}")
+include_directories("${LUT_DIRECTORY}")
 
-# We set the working directory to the one containing the half dll (not an issue with the static libs)
-# TODO This might fail in Linux! should we build a static version of half for this?
+# We set the working directory to the one containing the half dll (not an
+# issue with the static libs). On gcc there is no problem because CMake uses
+# the full rpath to dependent libraries during the build process.
 get_target_property(_halfLoc Half "LOCATION")
 get_filename_component(HALF_OUT_DIR "${_halfLoc}" PATH)
 add_custom_command(OUTPUT ${LUT_DIRECTORY}/b44ExpLogTable.h
   COMMAND b44ExpLogTable > ${LUT_DIRECTORY}/b44ExpLogTable.h
   WORKING_DIRECTORY "${HALF_OUT_DIR}"
   COMMENT "Generating b44 Exp->Log LUT..."
-  )
+  VERBATIM
+)
 
 set(ILMIMF_HEADERS
   ImfAcesFile.h
