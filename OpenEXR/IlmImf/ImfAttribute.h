@@ -404,11 +404,5 @@ TypedAttribute<T>::unRegisterAttributeType ()
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_EXIT
 
- 	#pragma warning( push )
- 	#pragma warning( disable : 4231 ) // nonstandard extension: extern template
-
-    #if !defined(ILMIMF_EXPORTS)
-    #pragma warning (pop)
-    #endif
 
 #endif
