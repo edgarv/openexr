@@ -3,7 +3,7 @@
 # Extract the version information from configure.ac
 GET_VERSION (IlmBase)
 
-set(ILMBASE_HAVE_LARGE_STACK ${HAVE_LARGE_STACK})
+set(ILMBASE_HAVE_LARGE_STACK ${ENABLE_LARGE_STACK})
 set(ILMBASE_HAVE_CONTROL_REGISTER_SUPPORT ${HAVE_CONTROL_REGISTER_SUPPORT})
 
 message(AUTHOR_WARNING "Add custom namespace versioning and library suffix")

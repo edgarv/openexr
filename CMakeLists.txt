@@ -178,17 +178,19 @@ int main (int argc, char **argv)
     memset(arr, 0, sizeof(arr));
     return 0;
 }
-" HAVE_LARGE_STACK_0x40000)
+" HAVE_LARGE_STACK)
 
-if(HAVE_LARGE_STACK_0x40000)
+if(HAVE_LARGE_STACK)
   if(WIN32 OR APPLE)
-    option(USE_LARGE_STACK "Use large stack optimizations (possible compatibility issues)" OFF)
-    if(USE_LARGE_STACK)
-      set(HAVE_LARGE_STACK ${HAVE_LARGE_STACK_0x40000})
-    endif()
+    set(USE_LARGE_STACK_DEFAULT OFF)
+    set(USE_LARGE_STACK_EXTRA " (possible compatibility issues.)")
   else()
-    set(HAVE_LARGE_STACK ${HAVE_LARGE_STACK_0x40000})
+    set(USE_LARGE_STACK_DEFAULT ON)
+    set(USE_LARGE_STACK_EXTRA ".")
   endif()
+  option(ENABLE_LARGE_STACK
+    "Enable optimizations for systems that support large stack sizes${USE_LARGE_STACK_EXTRA}"
+    ${USE_LARGE_STACK_DEFAULT})
 endif()
 
 # Handle namespacing configuration : internal library namespace
