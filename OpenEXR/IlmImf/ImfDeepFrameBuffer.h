@@ -90,6 +90,11 @@ struct IMF_EXPORT DeepSlice : public Slice
 // DeepFrameBuffer.
 //-----------------
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
+
 class IMF_EXPORT DeepFrameBuffer
 {
   public:
@@ -163,6 +168,10 @@ class IMF_EXPORT DeepFrameBuffer
     SliceMap                    _map;
     Slice                       _sampleCounts;
 };
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 //----------
 // Iterators

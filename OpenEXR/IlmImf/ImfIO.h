@@ -51,6 +51,11 @@
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_ENTER
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
+
 //-----------------------------------------------------------
 // class IStream -- an abstract base class for input streams.
 //-----------------------------------------------------------
@@ -209,6 +214,10 @@ class IMF_EXPORT OStream
 
     std::string		_fileName;
 };
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 
 //-----------------------

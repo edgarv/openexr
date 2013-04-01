@@ -56,6 +56,11 @@
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_ENTER
 
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
+
 class IMF_EXPORT OpaqueAttribute: public Attribute
 {
   public:
@@ -103,6 +108,10 @@ class IMF_EXPORT OpaqueAttribute: public Attribute
     long			_dataSize;
     Array<char>			_data;
 };
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_EXIT

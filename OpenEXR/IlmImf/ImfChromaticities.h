@@ -52,6 +52,11 @@
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_ENTER
 
    
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
+
 struct IMF_EXPORT Chromaticities
 {
     //-----------------------------------------------
@@ -82,6 +87,10 @@ struct IMF_EXPORT Chromaticities
     bool		operator == (const Chromaticities &v) const;    
     bool		operator != (const Chromaticities &v) const;
 };
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 
 //

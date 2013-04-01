@@ -150,6 +150,11 @@ struct IMF_EXPORT Slice
 };
 
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
+
 class IMF_EXPORT FrameBuffer
 {
   public:
@@ -214,6 +219,10 @@ class IMF_EXPORT FrameBuffer
 
     SliceMap                    _map;
 };
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 
 //----------

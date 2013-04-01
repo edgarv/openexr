@@ -225,6 +225,11 @@ class IMF_EXPORT RgbaOutputFile
 // RGBA input file
 //
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
+
 class IMF_EXPORT RgbaInputFile
 {
   public:
@@ -335,6 +340,10 @@ class IMF_EXPORT RgbaInputFile
     FromYca *			_fromYca;
     std::string			_channelNamePrefix;
 };
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_EXIT

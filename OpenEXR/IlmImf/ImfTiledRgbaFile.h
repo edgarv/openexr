@@ -294,6 +294,11 @@ class IMF_EXPORT TiledRgbaOutputFile
 // Tiled RGBA input file
 //
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
+
 class IMF_EXPORT TiledRgbaInputFile
 {
   public:
@@ -471,6 +476,10 @@ class IMF_EXPORT TiledRgbaInputFile
     FromYa *		_fromYa;
     std::string		_channelNamePrefix;
 };
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_EXIT

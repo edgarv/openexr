@@ -54,6 +54,11 @@
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_ENTER
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
+
 //
 // Lookup table for individual half channels.
 //
@@ -131,6 +136,10 @@ class IMF_EXPORT RgbaLut
     halfFunction <half>	_lut;
     RgbaChannels	_chn;
 };
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 
 //

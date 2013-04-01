@@ -52,6 +52,11 @@
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_ENTER
 
 
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4251)
+#endif
+
 class IMF_EXPORT TileOffsets
 {
   public:
@@ -114,6 +119,10 @@ class IMF_EXPORT TileOffsets
     std::vector<std::vector<std::vector <Int64> > > _offsets;
     
 };
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
 
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_EXIT
