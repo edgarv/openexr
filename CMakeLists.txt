@@ -244,10 +244,13 @@ if (WIN32 AND OPENEXR_SHARED_LIBS)
     if (MSVC)
       list(APPEND ${sourceslst_var} "${CMAKE_CURRENT_BINARY_DIR}/${targetname}.rc")
     elseif (MINGW)
-      # Based on the function from zlib 1.2.5:
+      # Based on the function from zlib 1.2.7:
       # This gets us DLL resource information when compiling on MinGW.
+      if(NOT CMAKE_RC_COMPILER)
+        set(CMAKE_RC_COMPILER windres.exe)
+      endif()
       add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${targetname}_rc.obj"
-                         COMMAND windres.exe
+                         COMMAND "${CMAKE_RC_COMPILER}"
                               -D GCC_WINDRES
                               -o "${CMAKE_CURRENT_BINARY_DIR}/${targetname}_rc.obj"
                               -i "${CMAKE_CURRENT_BINARY_DIR}/${targetname}.rc")
