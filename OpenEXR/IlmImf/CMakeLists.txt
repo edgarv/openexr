@@ -1,5 +1,7 @@
 # Description of the IlmImf library
 
+find_package(ZLIB REQUIRED)
+
 # Programs which build the LUTs
 add_executable(b44ExpLogTable b44ExpLogTable.cpp)
 target_link_libraries(b44ExpLogTable Half)

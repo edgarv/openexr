@@ -17,9 +17,6 @@ else()
   set(OPENEXR_LIBTYPE "STATIC")
 endif()
 
-# OpenEXR requires zlib
-find_package(ZLIB REQUIRED)
-
 
 # Macro to get the version information from the configure.ac file in the
 # current directory. Its argument is the name of the library as passed to
