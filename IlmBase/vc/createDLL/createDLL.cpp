@@ -2379,11 +2379,7 @@ int main(int argC, char* argV[])
     bool noDefaultLib = false;
 
     options.AddTrueOption("-d", "--nodefaultlib", noDefaultLib, "invoke /NODEFAULTLIB:library option");
-    
-    vector<string> extraobjs;
-    
-    options.AddStringVectorOption("-x", "--extra", extraobjs, "extra objects to link (ie, a compiled resource)");
-    
+
     bool verbose = false;
 
     options.AddTrueOption("-v", "--verbose", verbose, "verbose diagnostic output");
@@ -2733,14 +2729,8 @@ int main(int argC, char* argV[])
             // silly placeholder code, given the comment above :
 
             string impliblib = importlib + ".lib";
-			
-            // Adds the extra object to the objs list
-            
-            for( vector<string>::const_iterator it = extraobjs.begin(); it != extraobjs.end(); ++it) {
-           
-                objs.insert(*it);
-            
-            }
+
+
 
             if (manifestFileName == "*")
 
