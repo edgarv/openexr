@@ -41,6 +41,7 @@
 #    define PLATFORM_EXPORT_DEFINITION 
 #    define PLATFORM_IMPORT_DEFINITION
 #    define PLATFORM_EXPORT_CONST_DEFINITION extern const
+#    define PLATFORM_IMPORT_CONST_DEFINITION extern const
 #  else
 #    define PLATFORM_EXPORT_DEFINITION __declspec(dllexport) 
 #    define PLATFORM_IMPORT_DEFINITION __declspec(dllimport)
