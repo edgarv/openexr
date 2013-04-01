@@ -17,7 +17,7 @@ the future.
 you are not going to be doing any debugging, and can be optionally
 built.
 
-The source will build under both Visual Studio versions 7 and 8, and 
+The source will build under both Visual Studio versions 7 and 8, and
 there are separate directories for the corresponding build files.  The
 tag <vc7|8> is used in this document to describe the appropriate folder
 in the path that corresponds to your the version of Visual Studio.
@@ -116,7 +116,7 @@ Step 4. Compile OpenEXR_CTL support
 
 Step 5. Compile OpenEXR_Viewers
 
-  a. Open the appropriate Visual Studio project in 
+  a. Open the appropriate Visual Studio project in
      OpenEXR_Viewers\vc\<vc7|8>\OpenEXR_Viewers depending on whether or not
      you want CTL support.
 
@@ -141,7 +141,7 @@ Step 5. Compile OpenEXR_Viewers
          download the cg toolkit, version 1.5, and install it.  The path
          where you choose to install Cg is referred to by the
          <Cg install location> tag in the steps below.
- 
+
       b. During the installation, if the integrate with visual studio
          option is selected, the header files will be automatically found.
          Otherwise, copy the directory <Cg install location>\Cg\include\Cg
@@ -154,7 +154,7 @@ Step 5. Compile OpenEXR_Viewers
       c. Copy the cg.lib and cgGL.lib from <Cg install location>\Cg\lib
          into Deploy\lib\Release and Deploy\lib\Debug
 
-    2. Make glut available. This can be done via several mechanisms. 
+    2. Make glut available. This can be done via several mechanisms.
        See step 4 below.
 
     3. Make glew available. This can be done via several mechanisms.
@@ -176,13 +176,13 @@ Step 5. Compile OpenEXR_Viewers
          lib folder inside it.  Inside the lib folder, make Debug and
          Release folders.
 
-      c. Copy the <SDK install location>\external\include\GL directory into 
+      c. Copy the <SDK install location>\external\include\GL directory into
          nvidia\include the GL and glh folders into nvidia\include.
 
       d. Copy the glew headers in <SDK install location>\common\GLEW\include\GL
          into nvidia\include\GL.
 
-      e. Copy <SDK install location>\common\GLEW\lib\glew32.lib and 
+      e. Copy <SDK install location>\common\GLEW\lib\glew32.lib and
          <SDK install location>\external\lib\glut32.lib into Deploy\bin\Release.
 
       f. Copy bin\glut32.dll and bin\glew32.dll into Deploy\bin\Release.
