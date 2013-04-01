@@ -17,11 +17,6 @@ else()
   set(OPENEXR_LIBTYPE "STATIC")
 endif()
 
-# Building Windows DLL's on MSVC requires lots of extra work
-if(OPENEXR_SHARED_LIBS AND MSVC)
-  set(OPENEXR_DLL ON)
-endif()
-
 # OpenEXR requires zlib
 find_package(ZLIB REQUIRED)
 
@@ -211,12 +206,6 @@ include_directories( IlmBase/IlmThread )
 include_directories( OpenEXR/IlmImf )
 
 
-# When building a windows dll we need to add some defines
-if(OPENEXR_DLL)
-  add_definitions(-DOPENEXR_DLL)
-endif()
-
-
 if (WIN32 AND OPENEXR_SHARED_LIBS)
   # Resource template file
   set(OPENEXR_RC_PATH "${OpenEXR_SOURCE_DIR}/win32/openexr.rc.cmake")
@@ -274,7 +263,7 @@ endif()
 # Helper global property to hold the targets created with ADD_OPENEXR_LIBRARY.
 set_property(GLOBAL PROPERTY OPENEXR_LIBRARY_TARGETS "")
 
-# Super macro with all the common stuff. The arguments are:
+# Utility macro to add an OpenEXR library. The arguments are:
 #   - Name of the target to build
 #   - Variable with the public headers list
 #   - Variable with all the other sources
@@ -282,7 +271,6 @@ set_property(GLOBAL PROPERTY OPENEXR_LIBRARY_TARGETS "")
 #   - Version of the library (e.g. 1.0.1)
 #   - soversion of the library, as used by libtool (e.g. 6.0.0)
 #   - Copyright year
-#   - Optional extra arg: extra library to add when linking the dll
 macro(ADD_OPENEXR_LIBRARY targetname publicheaders_var sources_var description 
                           version soversion year)
 
@@ -294,9 +282,11 @@ macro(ADD_OPENEXR_LIBRARY targetname publicheaders_var sources_var description
   
   # Adds the target
   add_library(${targetname} ${OPENEXR_LIBTYPE} ${${publicheaders_var}} ${${sources_var}})
+  string(TOUPPER ${targetname} targetUpper)
   set_target_properties(${targetname} PROPERTIES 
     VERSION ${version}
     SOVERSION ${soversion}
+    DEFINE_SYMBOL "${targetUpper}_EXPORTS"
     DEBUG_POSTFIX "d"
     PUBLIC_HEADER "${${publicheaders_var}}"
   )
@@ -307,20 +297,13 @@ macro(ADD_OPENEXR_LIBRARY targetname publicheaders_var sources_var description
     set_target_properties(${targetname} PROPERTIES COMPILE_FLAGS "-fpic")
   endif()
   
-  # For MSVC static libraries, modify the name for easier identification
+  # For MSVC static libraries, modify the name so that the shared and static
+  # library files may coexists
   if(MSVC AND OPENEXR_LIBTYPE STREQUAL "STATIC")
     set_target_properties(${targetname} PROPERTIES 
       OUTPUT_NAME "${targetname}_static")
   endif()
-  
-  # For the windows dll we need extra definitions
-  if(OPENEXR_DLL)
-    string(TOUPPER ${targetname} targetUpper)
-    set_target_properties(${targetname} PROPERTIES
-      DEFINE_SYMBOL "${targetUpper}_EXPORTS")
-  endif()
-  
-  # Finally installs the target
+
   INSTALL_TARGET(${targetname})
 endmacro()
 
