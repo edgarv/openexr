@@ -63,7 +63,6 @@
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_ENTER
 
-using std::string;
 
 
 class IMF_EXPORT Header
@@ -268,17 +267,17 @@ class IMF_EXPORT Header
     // They are optional to non-multipart files and mandatory
     // for multipart files.
     //-----------------------------------------------------
-    void                        setName (const string& name);
+    void                        setName (const std::string& name);
 
-    string&                     name();
-    const string&               name() const;
+    std::string&                name();
+    const std::string&          name() const;
 
     bool                        hasName() const;
 
-    void                        setType (const string& Type);
+    void                        setType (const std::string& Type);
 
-    string&                     type();
-    const string&               type() const;
+    std::string&                type();
+    const std::string&          type() const;
 
     bool                        hasType() const;
 
@@ -303,10 +302,10 @@ class IMF_EXPORT Header
     // for multipart files, return whether the file has a view string attribute
     // (for the deprecated single part multiview format EXR, see ImfMultiView.h)
     //
-    void                       setView(const string & view);
+    void                       setView(const std::string & view);
     bool                       hasView() const;
-    string &                   view();
-    const string &             view() const;
+    std::string &              view();
+    const std::string &        view() const;
     
 
     //----------------------------------------------------------------------

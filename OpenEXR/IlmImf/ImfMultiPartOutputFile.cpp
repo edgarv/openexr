@@ -65,6 +65,7 @@ using ILMTHREAD_NAMESPACE::Lock;
 using std::vector;
 using std::map;
 using std::set;
+using std::string;
 
 
 struct MultiPartOutputFile::Data: public OutputStreamMutex
