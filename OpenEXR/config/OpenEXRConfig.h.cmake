@@ -1,3 +1,4 @@
+/* config/OpenEXRConfig.h.  Generated from OpenEXRConfig.h.cmake by CMake. */
 //
 // Define and set to 1 if the target system supports a proc filesystem
 // compatible with the Linux kernel's proc filesystem.  Note that this
