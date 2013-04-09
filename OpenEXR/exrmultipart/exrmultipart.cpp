@@ -287,7 +287,7 @@ convert(vector <const char*> in, vector<const char *> views,const char* outname,
         // create output file
         //
         
-        MultiPartOutputFile outfile(outname,&output_headers[0],output_headers.size());
+        MultiPartOutputFile outfile(outname,&output_headers[0],(int)output_headers.size());
         InputPart inpart(infile,0);
         
         
@@ -303,7 +303,7 @@ convert(vector <const char*> in, vector<const char *> views,const char* outname,
         
         for(size_t i=0;i<output_framebuffers.size();i++)
         {
-            OutputPart outpart(outfile,i);
+            OutputPart outpart(outfile,(int)i);
             outpart.setFrameBuffer(output_framebuffers[i]);
             outpart.writePixels(dataWindow.max.y+1-dataWindow.min.y);
         }
@@ -422,7 +422,7 @@ combine (vector <const char*> in, vector<const char *> views,const char* outname
     try
     {
         MultiPartOutputFile temp (outname, &headers[0],
-                                  headers.size(), override);
+                                  (int)headers.size(), override);
     }
     catch (IEX_NAMESPACE::BaseExc &e)
     {
@@ -430,7 +430,7 @@ combine (vector <const char*> in, vector<const char *> views,const char* outname
         exit (1);
     }
 
-    MultiPartOutputFile out (outname, &headers[0], headers.size(), override);
+    MultiPartOutputFile out (outname, &headers[0], (int)headers.size(), override);
 
     for (size_t p = 0 ; p < partnums.size();p++)
     {
@@ -439,22 +439,22 @@ combine (vector <const char*> in, vector<const char *> views,const char* outname
         if (type == SCANLINEIMAGE)
         {
             cout << "part " << p << ": "<< "scanlineimage" << endl;
-            copy_scanline (*inputs[p], out, partnums[p], p);
+            copy_scanline (*inputs[p], out, partnums[p], (int)p);
         }
         else if (type == TILEDIMAGE)
         {
             cout << "part " << p << ": "<< "tiledimage" << endl;
-            copy_tile (*inputs[p], out, partnums[p], p);
+            copy_tile (*inputs[p], out, partnums[p], (int)p);
         }
         else if (type == DEEPSCANLINE)
         {
             cout << "part " << p << ": "<< "deepscanlineimage" << endl;
-            copy_scanlinedeep (*inputs[p], out, partnums[p], p);
+            copy_scanlinedeep (*inputs[p], out, partnums[p], (int)p);
         }
         else if (type == DEEPTILE)
         {
             cout << "part " << p << ": "<< "deeptile" << endl;
-            copy_tiledeep (*inputs[p], out, partnums[p], p);
+            copy_tiledeep (*inputs[p], out, partnums[p], (int)p);
         }
     }
 
@@ -632,7 +632,7 @@ main (int argc, char * argv[])
                 break;
             case 2: outFile = argv[i];
                 break;
-            case 3: override = atoi (argv[i]);
+            case 3: override = atoi (argv[i]) != 0;
                 break;
             case 4: view = argv[i];
                  mode=1;
