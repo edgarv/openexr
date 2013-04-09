@@ -1,20 +1,12 @@
-# yue.nicholas@gmail.com
+# Non-standalone CMake file
 
-ADD_EXECUTABLE ( exrmultipart
+set (BIN_NAME exrmultipart)
+set (SRCS
   exrmultipart.cpp
 )
 
-TARGET_LINK_LIBRARIES ( exrmultipart
-  IlmImf
-  IlmThread
-  Iex
-  Half
-  ${PTHREAD_LIB}
-  ${Z_LIB}
-)
+add_executable (${BIN_NAME} ${SRCS})
+target_link_libraries (${BIN_NAME} IlmImf)
 
-INSTALL ( TARGETS
-  exrmultipart
-  DESTINATION
-  ${CMAKE_INSTALL_PREFIX}/bin
-)
+install(TARGETS ${BIN_NAME}
+        RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR})
