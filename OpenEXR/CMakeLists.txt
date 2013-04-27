@@ -78,8 +78,6 @@ install (FILES
   doc/TechnicalIntroduction_2.0.pdf
   doc/ReadingAndWritingImageFiles.pdf
   doc/OpenEXRFileLayout.pdf
-  doc/OpenEXRFileLayout_2.0.pdf
-  doc/ReadingAndWritingImageFiles_2.0.pdf
   doc/MultiViewOpenEXR.pdf
   DESTINATION
   share/doc/OpenEXR-2.0.0
