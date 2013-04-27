@@ -1,6 +1,5 @@
 # Non-standalone Cmake driver for OpenEXR. Assumes that the IlmBase
-# libraries have been previously defined and that find_package(ZLIB)
-# succeeded
+# libraries have been previously defined as targets.
 
 # Extract the version information from configure.ac
 GET_VERSION (OpenEXR)
