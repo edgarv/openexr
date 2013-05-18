@@ -1,5 +1,5 @@
-#ifndef IMATHXEXPORT_H
-#define IMATHXEXPORT_H
+#ifndef IMATHEXPORT_H
+#define IMATHEXPORT_H
 
 ///////////////////////////////////////////////////////////////////////////
 //
@@ -35,39 +35,30 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-
-#if defined(PLATFORM_WINDOWS)
-#  if defined(PLATFORM_BUILD_STATIC)
-#    define PLATFORM_EXPORT_DEFINITION 
-#    define PLATFORM_IMPORT_DEFINITION
-#    define PLATFORM_EXPORT_CONST_DEFINITION extern const
-#    define PLATFORM_IMPORT_CONST_DEFINITION extern const
+#if defined(WIN32)
+#  if defined(OPENEXR_DLL)
+#    define IMATH_EXPORT_DEFINITION __declspec(dllexport) 
+#    define IMATH_IMPORT_DEFINITION __declspec(dllimport)
 #  else
-#    define PLATFORM_EXPORT_DEFINITION __declspec(dllexport) 
-#    define PLATFORM_IMPORT_DEFINITION __declspec(dllimport)
-#    define PLATFORM_EXPORT_CONST_DEFINITION __declspec(dllexport) extern const
-#    define PLATFORM_IMPORT_CONST_DEFINITION __declspec(dllimport) extern const
+#    define IMATH_EXPORT_DEFINITION 
+#    define IMATH_IMPORT_DEFINITION
 #  endif
 #else   // linux/macos
 #  if defined(PLATFORM_VISIBILITY_AVAILABLE)
-#    define PLATFORM_EXPORT_DEFINITION __attribute__((visibility("default")))
-#    define PLATFORM_IMPORT_DEFINITION
-#    define PLATFORM_EXPORT_CONST_DEFINITION __attribute__((visibility("default"))) extern const
-#    define PLATFORM_IMPORT_CONST_DEFINITION extern const
+#    define IMATH_EXPORT_DEFINITION __attribute__((visibility("default")))
+#    define IMATH_IMPORT_DEFINITION
 #  else
-#    define PLATFORM_EXPORT_DEFINITION 
-#    define PLATFORM_IMPORT_DEFINITION
-#    define PLATFORM_EXPORT_CONST_DEFINITION extern const
-#    define PLATFORM_IMPORT_CONST_DEFINITION extern const
+#    define IMATH_EXPORT_DEFINITION 
+#    define IMATH_IMPORT_DEFINITION
 #  endif
 #endif
 
-#if defined(IMATH_EXPORTS)                         // create library
-#  define IMATH_EXPORT       PLATFORM_EXPORT_DEFINITION
-#  define IMATH_EXPORT_CONST PLATFORM_EXPORT_CONST_DEFINITION
+#if defined(IMATH_EXPORTS)                          // create library
+#  define IMATH_EXPORT IMATH_EXPORT_DEFINITION
+#  define IMATH_EXPORT_VAR IMATH_EXPORT_DEFINITION extern
 #else                                              // use library
-#  define IMATH_EXPORT       PLATFORM_IMPORT_DEFINITION
-#  define IMATH_EXPORT_CONST PLATFORM_IMPORT_CONST_DEFINITION
+#  define IMATH_EXPORT IMATH_IMPORT_DEFINITION
+#  define IMATH_EXPORT_VAR IMATH_IMPORT_DEFINITION extern
 #endif
 
-#endif // #ifndef IMATHXEXPORT_H
+#endif // IMATHEXPORT_H

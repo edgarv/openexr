@@ -35,39 +35,28 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-
-#if defined(PLATFORM_WINDOWS)
-#  if defined(PLATFORM_BUILD_STATIC)
-#    define PLATFORM_EXPORT_DEFINITION 
-#    define PLATFORM_IMPORT_DEFINITION
-#    define PLATFORM_EXPORT_EXC_DEFINITION
-#    define PLATFORM_IMPORT_EXC_DEFINITION
+#if defined(WIN32)
+#  if defined(OPENEXR_DLL)
+#    define IEX_EXPORT_DEFINITION __declspec(dllexport) 
+#    define IEX_IMPORT_DEFINITION __declspec(dllimport)
 #  else
-#    define PLATFORM_EXPORT_DEFINITION __declspec(dllexport) 
-#    define PLATFORM_IMPORT_DEFINITION __declspec(dllimport)
-#    define PLATFORM_EXPORT_EXC_DEFINITION
-#    define PLATFORM_IMPORT_EXC_DEFINITION
+#    define IEX_EXPORT_DEFINITION 
+#    define IEX_IMPORT_DEFINITION
 #  endif
 #else   // linux/macos
 #  if defined(PLATFORM_VISIBILITY_AVAILABLE)
-#    define PLATFORM_EXPORT_DEFINITION __attribute__((visibility("default")))
-#    define PLATFORM_IMPORT_DEFINITION
-#    define PLATFORM_EXPORT_EXC_DEFINITION __attribute__((visibility("default")))
-#    define PLATFORM_IMPORT_EXC_DEFINITION
+#    define IEX_EXPORT_DEFINITION __attribute__((visibility("default")))
+#    define IEX_IMPORT_DEFINITION
 #  else
-#    define PLATFORM_EXPORT_DEFINITION 
-#    define PLATFORM_IMPORT_DEFINITION
-#    define PLATFORM_EXPORT_EXC_DEFINITION
-#    define PLATFORM_IMPORT_EXC_DEFINITION
+#    define IEX_EXPORT_DEFINITION 
+#    define IEX_IMPORT_DEFINITION
 #  endif
 #endif
 
 #if defined(IEX_EXPORTS)                           // create library
-#  define IEX_EXPORT PLATFORM_EXPORT_DEFINITION
-#  define IEX_EXPORT_EXC PLATFORM_EXPORT_EXC_DEFINITION
+#  define IEX_EXPORT IEX_EXPORT_DEFINITION
 #else                                              // use library
-#  define IEX_EXPORT PLATFORM_IMPORT_DEFINITION
-#  define IEX_EXPORT_EXC PLATFORM_IMPORT_EXC_DEFINITION
+#  define IEX_EXPORT IEX_IMPORT_DEFINITION
 #endif
 
 #endif // #ifndef IEXEXPORT_H

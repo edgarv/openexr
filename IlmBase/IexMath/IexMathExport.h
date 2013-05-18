@@ -1,5 +1,5 @@
-#ifndef ILMTHREADEXPORT_H
-#define ILMTHREADEXPORT_H
+#ifndef IEXMATHEXPORT_H
+#define IEXMATHEXPORT_H
 
 ///////////////////////////////////////////////////////////////////////////
 //
@@ -37,27 +37,27 @@
 
 #if defined(WIN32)
 #  if defined(OPENEXR_DLL)
-#    define ILMTHREAD_EXPORT_DEFINITION __declspec(dllexport) 
-#    define ILMTHREAD_IMPORT_DEFINITION __declspec(dllimport)
+#    define IEXMATH_EXPORT_DEFINITION __declspec(dllexport) 
+#    define IEXMATH_IMPORT_DEFINITION __declspec(dllimport)
 #  else
-#    define ILMTHREAD_EXPORT_DEFINITION 
-#    define ILMTHREAD_IMPORT_DEFINITION
+#    define IEXMATH_EXPORT_DEFINITION 
+#    define IEXMATH_IMPORT_DEFINITION
 #  endif
 #else   // linux/macos
 #  if defined(PLATFORM_VISIBILITY_AVAILABLE)
-#    define ILMTHREAD_EXPORT_DEFINITION __attribute__((visibility("default")))
-#    define ILMTHREAD_IMPORT_DEFINITION
+#    define IEXMATH_EXPORT_DEFINITION __attribute__((visibility("default")))
+#    define IEXMATH_IMPORT_DEFINITION
 #  else
-#    define ILMTHREAD_EXPORT_DEFINITION 
-#    define ILMTHREAD_IMPORT_DEFINITION
+#    define IEXMATH_EXPORT_DEFINITION 
+#    define IEXMATH_IMPORT_DEFINITION
 #  endif
 #endif
 
-#if defined(ILMTHREAD_EXPORTS)                     // create library
-#  define ILMTHREAD_EXPORT ILMTHREAD_EXPORT_DEFINITION
+#if defined(IEXMATH_EXPORTS)                       // create library
+#  define IEXMATH_EXPORT IEXMATH_EXPORT_DEFINITION
 #else                                              // use library
-#  define ILMTHREAD_EXPORT ILMTHREAD_IMPORT_DEFINITION
+#  define IEXMATH_EXPORT IEXMATH_IMPORT_DEFINITION
 #endif
 
+#endif // #ifndef IEXMATHEXPORT_H
 
-#endif // ILMTHREADEXPORT_H

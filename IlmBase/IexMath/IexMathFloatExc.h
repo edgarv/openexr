@@ -37,34 +37,9 @@
 #ifndef INCLUDED_IEXMATHFLOATEXC_H
 #define INCLUDED_IEXMATHFLOATEXC_H
 
-#if defined(PLATFORM_WINDOWS)
-#  if defined(PLATFORM_BUILD_STATIC)
-#    define PLATFORM_EXPORT_DEFINITION 
-#    define PLATFORM_IMPORT_DEFINITION
-#  else
-#    define PLATFORM_EXPORT_DEFINITION __declspec(dllexport) 
-#    define PLATFORM_IMPORT_DEFINITION __declspec(dllimport)
-#  endif
-#else   // linux/macos
-#  if defined(PLATFORM_VISIBILITY_AVAILABLE)
-#    define PLATFORM_EXPORT_DEFINITION __attribute__((visibility("default")))
-#    define PLATFORM_IMPORT_DEFINITION
-#  else
-#    define PLATFORM_EXPORT_DEFINITION 
-#    define PLATFORM_IMPORT_DEFINITION
-#  endif
-#endif
-
-#if defined(IEXMATH_EXPORTS)                       // create library
-#  define IEXMATH_EXPORT PLATFORM_EXPORT_DEFINITION
-#else                                              // use library
-#  define IEXMATH_EXPORT PLATFORM_IMPORT_DEFINITION
-#endif
-
-
+#include "IexMathExport.h"
 #include "IexNamespace.h"
 #include "IexMathExc.h"
-//#include <IexBaseExc.h>
 #include "IexMathIeeeExc.h"
 
 IEX_INTERNAL_NAMESPACE_HEADER_ENTER

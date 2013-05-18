@@ -1,6 +1,7 @@
 # IexMath library
 
 set(IEXMATH_HEADERS
+  IexMathExport.h
   IexMathFloatExc.h
   IexMathFpu.h
   IexMathIeeeExc.h

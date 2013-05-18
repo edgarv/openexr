@@ -50,6 +50,8 @@
 #include <exception>
 #include <sstream>
 
+#include "IexExport.h"
+
 IEX_INTERNAL_NAMESPACE_HEADER_ENTER
 
 
@@ -57,7 +59,7 @@ IEX_INTERNAL_NAMESPACE_HEADER_ENTER
 // Our most basic exception class
 //-------------------------------
 
-class IEX_EXPORT_EXC BaseExc: public std::string, public std::exception
+class BaseExc: public std::string, public std::exception
 {
   public:
 
@@ -84,10 +86,10 @@ class IEX_EXPORT_EXC BaseExc: public std::string, public std::exception
     //--------------------------------------------------
 
     IEX_EXPORT BaseExc &            assign (std::stringstream &s);	// assign (s.str())
-    IEX_EXPORT BaseExc &            operator = (std::stringstream &s);
+    BaseExc &            operator = (std::stringstream &s);
 
     IEX_EXPORT BaseExc &            append (std::stringstream &s);	// append (s.str())
-    IEX_EXPORT BaseExc &            operator += (std::stringstream &s);
+    BaseExc &            operator += (std::stringstream &s);
 
 
     //--------------------------------------------------
@@ -95,11 +97,11 @@ class IEX_EXPORT_EXC BaseExc: public std::string, public std::exception
     // the definitions above.
     //--------------------------------------------------
 
-    IEX_EXPORT BaseExc &            assign (const char *s);
-    IEX_EXPORT BaseExc &            operator = (const char *s);
+    BaseExc &            assign (const char *s);
+    BaseExc &            operator = (const char *s);
 
-    IEX_EXPORT BaseExc &            append (const char *s);
-    IEX_EXPORT BaseExc &            operator += (const char *s);
+    BaseExc &            append (const char *s);
+    BaseExc &            operator += (const char *s);
 
 
     //--------------------------------------------------
@@ -109,7 +111,7 @@ class IEX_EXPORT_EXC BaseExc: public std::string, public std::exception
     // has been installed (see below, setStackTracer()).
     //--------------------------------------------------
 
-    IEX_EXPORT const std::string &  stackTrace () const;
+    const std::string &  stackTrace () const;
 
   private:
 

@@ -47,6 +47,7 @@
 //-----------------------------------------------------------------------------
 
 #include "half.h"
+#include "ImfExport.h"
 #include "ImfNamespace.h"
 #include "ImfExport.h"
 
@@ -72,8 +73,8 @@ OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_ENTER
 //
 //---------------------------------------------------------
 
-unsigned int	IMF_EXPORT halfToUint (half h);
-unsigned int	IMF_EXPORT floatToUint (float f);
+IMF_EXPORT unsigned int	halfToUint (half h);
+IMF_EXPORT unsigned int	floatToUint (float f);
 
 
 //---------------------------------------------------------
@@ -97,11 +98,14 @@ unsigned int	IMF_EXPORT floatToUint (float f);
 //
 //---------------------------------------------------------
 
-half		IMF_EXPORT uintToHalf (unsigned int ui);
-half		IMF_EXPORT floatToHalf (float f);
+IMF_EXPORT half		uintToHalf (unsigned int ui);
+IMF_EXPORT half		floatToHalf (float f);
 
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_EXIT
+
+
+
 
 
 #endif

@@ -11,28 +11,28 @@
 //  This copyright notice does not imply publication.
 //
 
-#if defined(PLATFORM_WINDOWS)
-#  if defined(PLATFORM_BUILD_STATIC)
-#    define PLATFORM_EXPORT_DEFINITION 
-#    define PLATFORM_IMPORT_DEFINITION
+#if defined(WIN32)
+#  if defined(OPENEXR_DLL)
+#    define HALF_EXPORT_DEFINITION __declspec(dllexport) 
+#    define HALF_IMPORT_DEFINITION __declspec(dllimport)
 #  else
-#    define PLATFORM_EXPORT_DEFINITION __declspec(dllexport) 
-#    define PLATFORM_IMPORT_DEFINITION __declspec(dllimport)
+#    define HALF_EXPORT_DEFINITION 
+#    define HALF_IMPORT_DEFINITION
 #  endif
 #else   // linux/macos
 #  if defined(PLATFORM_VISIBILITY_AVAILABLE)
-#    define PLATFORM_EXPORT_DEFINITION __attribute__((visibility("default")))
-#    define PLATFORM_IMPORT_DEFINITION
+#    define HALF_EXPORT_DEFINITION __attribute__((visibility("default")))
+#    define HALF_IMPORT_DEFINITION
 #  else
-#    define PLATFORM_EXPORT_DEFINITION 
-#    define PLATFORM_IMPORT_DEFINITION
+#    define HALF_EXPORT_DEFINITION 
+#    define HALF_IMPORT_DEFINITION
 #  endif
 #endif
 
 #if defined(HALF_EXPORTS)                          // create library
-#  define HALF_EXPORT PLATFORM_EXPORT_DEFINITION
+#  define HALF_EXPORT HALF_EXPORT_DEFINITION
 #else                                              // use library
-#  define HALF_EXPORT PLATFORM_IMPORT_DEFINITION
+#  define HALF_EXPORT HALF_IMPORT_DEFINITION
 #endif
 
 #endif // #ifndef HALFEXPORT_H

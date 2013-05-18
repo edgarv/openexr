@@ -12,14 +12,13 @@ option(OPENEXR_SHARED_LIBS
   "Builds the different OpenEXR components as shared libraries." ON)
   
 # TODO Find a better place for the platform defines
-if (MSVC)
-  add_definitions(-DPLATFORM_WINDOWS)
-else()
+if (NOT MSVC)
   add_definitions(-DPLATFORM_VISIBILITY_AVAILABLE)
 endif()
 
 if(OPENEXR_SHARED_LIBS)
   set(OPENEXR_LIBTYPE "SHARED")
+  add_definitions(-DOPENEXR_DLL)
 else()
   set(OPENEXR_LIBTYPE "STATIC")
   add_definitions(-DPLATFORM_BUILD_STATIC)
