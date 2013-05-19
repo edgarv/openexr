@@ -59,7 +59,7 @@ IEX_INTERNAL_NAMESPACE_HEADER_ENTER
 // Our most basic exception class
 //-------------------------------
 
-class BaseExc: public std::string, public std::exception
+class IEX_EXPORT BaseExc: public std::exception
 {
   public:
 
@@ -67,41 +67,49 @@ class BaseExc: public std::string, public std::exception
     // Constructors and destructor
     //----------------------------
 
-    IEX_EXPORT BaseExc (const char *s = 0) throw();     // std::string (s)
-    IEX_EXPORT BaseExc (const std::string &s) throw();  // std::string (s)
-    IEX_EXPORT BaseExc (std::stringstream &s) throw();  // std::string (s.str())
+    BaseExc (const char *s = 0) throw();     // std::string (s)
+    BaseExc (const std::string &s) throw();  // std::string (s)
+    BaseExc (std::stringstream &s) throw();  // std::string (s.str())
 
-    IEX_EXPORT BaseExc (const BaseExc &be) throw();
-    IEX_EXPORT virtual ~BaseExc () throw ();
+    BaseExc (const BaseExc &be) throw();
+    virtual ~BaseExc () throw ();
 
     //--------------------------------------------
     // what() method -- e.what() returns e.c_str()
     //--------------------------------------------
 
-    IEX_EXPORT virtual const char * what () const throw ();
+    virtual const char * what () const throw ();
 
 
     //--------------------------------------------------
     // Convenient methods to change the exception's text
     //--------------------------------------------------
 
-    IEX_EXPORT BaseExc &            assign (std::stringstream &s);	// assign (s.str())
+    BaseExc &            assign (const std::string &s);
+    BaseExc &            operator = (const std::string &s);
+
+    BaseExc &            append (const std::string &s);
+    BaseExc &            operator += (const std::string &s);
+
+    BaseExc &            assign (std::stringstream &s);	// assign (s.str())
     BaseExc &            operator = (std::stringstream &s);
 
-    IEX_EXPORT BaseExc &            append (std::stringstream &s);	// append (s.str())
+    BaseExc &            append (std::stringstream &s);	// append (s.str())
     BaseExc &            operator += (std::stringstream &s);
-
-
-    //--------------------------------------------------
-    // These methods from the base class get obscured by
-    // the definitions above.
-    //--------------------------------------------------
 
     BaseExc &            assign (const char *s);
     BaseExc &            operator = (const char *s);
 
     BaseExc &            append (const char *s);
     BaseExc &            operator += (const char *s);
+
+
+    //---------------------------------------------------
+    // Convenient methods to compare the exception's text
+    //---------------------------------------------------
+
+    bool operator== (const std::string &rhs) const;
+    bool operator!= (const std::string &rhs) const;
 
 
     //--------------------------------------------------
@@ -115,14 +123,28 @@ class BaseExc: public std::string, public std::exception
 
   private:
 
-    std::string                     _stackTrace;
+    //------------------------------------------------------
+    // Complementary methods to compare the exception's text
+    //------------------------------------------------------
+
+    friend bool
+    operator== (const std::string &lhs, const BaseExc &rhs);
+    friend bool
+    operator!= (const std::string &lhs, const BaseExc &rhs);
+
+
+    //-----------------------------------------------------------
+    // operator<< -- inserts the exception's test into the stream
+    //-----------------------------------------------------------
+
+    IEX_EXPORT friend std::ostream &
+    operator<< (std::ostream &os, const BaseExc &be);
+
+
+    struct Data;
+    Data* const _d;
 };
 
-
-#if defined(_MSC_VER)
-#pragma warning( push )
-#pragma warning( disable : 4275 ) // non dll-interface class used as base...
-#endif
 
 //-----------------------------------------------------
 // A macro to save typing when declararing an exception
@@ -179,10 +201,6 @@ DEFINE_EXC_EXP (IEX_EXPORT, TypeExc, BaseExc)   // An object is an inappropriate
                                                 // i.e. a dynamnic_cast failed.
 
 
-#if defined(_MSC_VER)
-#pragma warning( pop )
-#endif
-
 //----------------------------------------------------------------------
 // Stack-tracing support:
 // 
@@ -220,6 +238,20 @@ IEX_EXPORT StackTracer stackTracer ();
 //-----------------
 
 inline BaseExc &
+BaseExc::operator = (const std::string &s)
+{
+    return assign (s);
+}
+
+
+inline BaseExc &
+BaseExc::operator += (const std::string &s)
+{
+    return append (s);
+}
+
+
+inline BaseExc &
 BaseExc::operator = (std::stringstream &s)
 {
     return assign (s);
@@ -234,39 +266,30 @@ BaseExc::operator += (std::stringstream &s)
 
 
 inline BaseExc &
-BaseExc::assign (const char *s)
-{
-    std::string::assign(s);
-    return *this;
-}
-
-
-inline BaseExc &
 BaseExc::operator = (const char *s)
 {
-    return assign(s);
-}
-
-
-inline BaseExc &
-BaseExc::append (const char *s)
-{
-    std::string::append(s);
-    return *this;
+    return assign (s);
 }
 
 
 inline BaseExc &
 BaseExc::operator += (const char *s)
 {
-    return append(s);
+    return append (s);
 }
 
 
-inline const std::string &
-BaseExc::stackTrace () const
+inline bool
+operator== (const std::string &lhs, const BaseExc &rhs)
 {
-    return _stackTrace;
+    return rhs == lhs;
+}
+
+
+inline bool
+operator!= (const std::string &lhs, const BaseExc &rhs)
+{
+    return rhs != lhs;
 }
 
 
