@@ -35,7 +35,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#if defined(WIN32)
+#if defined(_WIN32)
 #  if defined(OPENEXR_DLL)
 #    define IMATH_EXPORT_DEFINITION __declspec(dllexport) 
 #    define IMATH_IMPORT_DEFINITION __declspec(dllimport)

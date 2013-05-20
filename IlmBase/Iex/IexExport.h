@@ -35,7 +35,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#if defined(WIN32)
+#if defined(_WIN32)
 #  if defined(OPENEXR_DLL)
 #    define IEX_EXPORT_DEFINITION __declspec(dllexport) 
 #    define IEX_IMPORT_DEFINITION __declspec(dllimport)
