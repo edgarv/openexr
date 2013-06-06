@@ -75,7 +75,6 @@ endif()
 # Documentation
 install (FILES
   doc/TechnicalIntroduction.pdf
-  doc/TechnicalIntroduction_2.0.pdf
   doc/ReadingAndWritingImageFiles.pdf
   doc/OpenEXRFileLayout.pdf
   doc/MultiViewOpenEXR.pdf
