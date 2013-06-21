@@ -40,7 +40,6 @@
 //-----------------------------------------------------------------------------
 
 #include <ImfStringVectorAttribute.h>
-#include <cassert>
 
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_ENTER
@@ -67,7 +66,7 @@ StringVectorAttribute::writeValueTo (OPENEXR_IMF_INTERNAL_NAMESPACE::OStream &os
     {
         int strSize = _value[i].size();
         Xdr::write <StreamIO> (os, strSize);
-        Xdr::write <StreamIO> (os, &_value[i][0], strSize);
+	Xdr::write <StreamIO> (os, &_value[i][0], strSize);
     }
 }
 
@@ -82,16 +81,17 @@ StringVectorAttribute::readValueFrom (OPENEXR_IMF_INTERNAL_NAMESPACE::IStream &i
     {   
        int strSize;
        Xdr::read <StreamIO> (is, strSize);
-       assert (strSize >= 0);
        read += Xdr::size<int>();       
 
        std::string str;
-
-       if (strSize != 0) {
-           str.resize (strSize);
+       str.resize (strSize);
+  
+       if( strSize>0 )
+       {
            Xdr::read<StreamIO> (is, &str[0], strSize);
-           read += strSize;
        }
+       
+       read += strSize;
 
        _value.push_back (str);
     }
