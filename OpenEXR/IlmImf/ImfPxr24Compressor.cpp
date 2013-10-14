@@ -62,7 +62,6 @@
 //	string of bytes is compressed with zlib.
 //
 //-----------------------------------------------------------------------------
-
 #include "ImfPxr24Compressor.h"
 #include "ImfHeader.h"
 #include "ImfChannelList.h"
@@ -315,7 +314,7 @@ Pxr24Compressor::compress (const char *inPtr,
 
 	    switch (c.type)
 	    {
-	      case UINT:
+	      case OPENEXR_IMF_INTERNAL_NAMESPACE::UINT:
 
 		ptr[0] = tmpBufferEnd;
 		ptr[1] = ptr[0] + n;
@@ -342,7 +341,7 @@ Pxr24Compressor::compress (const char *inPtr,
 
 		break;
 
-	      case HALF:
+	      case OPENEXR_IMF_INTERNAL_NAMESPACE::HALF:
 
 		ptr[0] = tmpBufferEnd;
 		ptr[1] = ptr[0] + n;
@@ -364,7 +363,7 @@ Pxr24Compressor::compress (const char *inPtr,
 
 		break;
 
-	      case FLOAT:
+	      case OPENEXR_IMF_INTERNAL_NAMESPACE::FLOAT:
 
 		ptr[0] = tmpBufferEnd;
 		ptr[1] = ptr[0] + n;
@@ -460,7 +459,7 @@ Pxr24Compressor::uncompress (const char *inPtr,
 
 	    switch (c.type)
 	    {
-	      case UINT:
+	      case OPENEXR_IMF_INTERNAL_NAMESPACE::UINT:
 
 		ptr[0] = tmpBufferEnd;
 		ptr[1] = ptr[0] + n;
@@ -488,7 +487,7 @@ Pxr24Compressor::uncompress (const char *inPtr,
 
 		break;
 
-	      case HALF:
+	      case OPENEXR_IMF_INTERNAL_NAMESPACE::HALF:
 
 		ptr[0] = tmpBufferEnd;
 		ptr[1] = ptr[0] + n;
@@ -511,7 +510,7 @@ Pxr24Compressor::uncompress (const char *inPtr,
 
 		break;
 
-	      case FLOAT:
+	      case OPENEXR_IMF_INTERNAL_NAMESPACE::FLOAT:
 
 		ptr[0] = tmpBufferEnd;
 		ptr[1] = ptr[0] + n;

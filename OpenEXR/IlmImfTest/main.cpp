@@ -127,12 +127,7 @@ main (int argc, char *argv[])
     TEST (testScanLineApi,"basic");
     TEST (testExistingStreams,"core");
     TEST (testStandardAttributes,"core");
-#if 0 
-    // Temporarily disabling the optimisation path and this
-    // associated test. 
-    /// c.f.    https://github.com/openexr/openexr/issues/66
     TEST (testOptimized,"basic");
-#endif
     TEST (testOptimizedInterleavePatterns,"basic");
     TEST (testYca,"basic");
     TEST (testTiledYa,"basic");

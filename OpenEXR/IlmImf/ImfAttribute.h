@@ -238,7 +238,6 @@ class TypedAttribute: public Attribute
 //------------------------------------
 // Implementation of TypedAttribute<T>
 //------------------------------------
-
 template <class T>
 TypedAttribute<T>::TypedAttribute ():
     Attribute (),

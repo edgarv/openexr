@@ -44,6 +44,8 @@
 #include "IexBaseExc.h"
 #include "IexMacros.h"
 
+#include <stdlib.h>
+
 IEX_INTERNAL_NAMESPACE_SOURCE_ENTER
 
 
@@ -233,12 +235,11 @@ iex_debugTrap()
         ::DebugBreak();
 }
 #else
-#include <cstdlib>
-
 void
 iex_debugTrap()
 {
-    if (0 != getenv("IEXDEBUGTHROW"))
+    // how to in Linux?
+    if (0 != ::getenv("IEXDEBUGTHROW"))
         __builtin_trap();
 }
 #endif
