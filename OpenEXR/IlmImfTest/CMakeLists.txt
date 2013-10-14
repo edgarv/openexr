@@ -13,6 +13,7 @@ set (IlmImfTest_SOURCES
   compareFloat.cpp                   compareFloat.h
   testAttributes.cpp                 testAttributes.h
   testBackwardCompatibility.cpp      testBackwardCompatibility.h
+  testBadTypeAttributes.cpp          testBadTypeAttributes.h
   testChannels.cpp                   testChannels.h
   testCompositeDeepScanLine.cpp      testCompositeDeepScanLine.h
   testCompression.cpp                testCompression.h
@@ -43,6 +44,7 @@ set (IlmImfTest_SOURCES
   testMultiView.cpp                  testMultiView.h
   testNativeFormat.cpp               testNativeFormat.h
   testOptimized.cpp                  testOptimized.h
+  testOptimizedInterleavePatterns.cpp testOptimizedInterleavePatterns.h
   testPartHelper.cpp                 testPartHelper.h
   testPreviewImage.cpp               testPreviewImage.h
   testRgba.cpp                       testRgba.h
