@@ -1,12 +1,13 @@
 # Non-standalone CMake file
 
-set (BIN_NAME exr2aces)
-set (SRCS
-    main.cpp
+add_executable (exr2aces
+  main.cpp
 )
 
-add_executable (${BIN_NAME} ${SRCS})
-target_link_libraries (${BIN_NAME} IlmImf ${ZLIB_LIBRARIES})
+target_link_libraries (exr2aces
+  IlmImf
+  ${ZLIB_LIBRARIES}
+)
 
-install(TARGETS ${BIN_NAME}
+install(TARGETS exr2aces
         RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR})

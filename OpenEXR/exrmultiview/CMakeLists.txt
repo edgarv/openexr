@@ -1,14 +1,15 @@
 # Non-standalone CMake file
 
-set (BIN_NAME exrmultiview)
-set (SRCS
-    main.cpp
+add_executable (exrmultiview
     Image.h Image.cpp
+    main.cpp
     makeMultiView.cpp makeMultiView.h
 )
 
-add_executable (${BIN_NAME} ${SRCS})
-target_link_libraries (${BIN_NAME} IlmImf ${ZLIB_LIBRARIES})
+target_link_libraries (exrmultiview
+  IlmImf
+  ${ZLIB_LIBRARIES}
+)
 
-install(TARGETS ${BIN_NAME}
+install(TARGETS exrmultiview
         RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR})

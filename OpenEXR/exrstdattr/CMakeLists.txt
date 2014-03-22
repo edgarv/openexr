@@ -1,12 +1,13 @@
 # Non-standalone CMake file
 
-set (BIN_NAME exrstdattr)
-set (SRCS
+add_executable (exrstdattr
     main.cpp
 )
 
-add_executable (${BIN_NAME} ${SRCS})
-target_link_libraries (${BIN_NAME} IlmImf ${ZLIB_LIBRARIES})
+target_link_libraries (exrstdattr
+  IlmImf
+  ${ZLIB_LIBRARIES}
+)
 
-install(TARGETS ${BIN_NAME}
+install(TARGETS exrstdattr
         RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR})

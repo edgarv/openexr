@@ -41,6 +41,8 @@ set(ILMIMF_HEADERS
   ImfConvert.h
   ImfDeepCompositing.h
   ImfDeepFrameBuffer.h
+  ImfDeepImageState.h
+  ImfDeepImageStateAttribute.h
   ImfDeepScanLineInputFile.h
   ImfDeepScanLineInputPart.h
   ImfDeepScanLineOutputFile.h
@@ -133,6 +135,8 @@ set(ILMIMF_SOURCES
   ImfConvert.cpp                  ImfConvert.h
   ImfDeepCompositing.cpp          ImfDeepCompositing.h
   ImfDeepFrameBuffer.cpp          ImfDeepFrameBuffer.h
+  ImfDeepImageState.h
+  ImfDeepImageStateAttribute.cpp  ImfDeepImageStateAttribute.h
   ImfDeepScanLineInputFile.cpp    ImfDeepScanLineInputFile.h
   ImfDeepScanLineInputPart.cpp    ImfDeepScanLineInputPart.h
   ImfDeepScanLineOutputFile.cpp   ImfDeepScanLineOutputFile.h

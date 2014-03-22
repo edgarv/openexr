@@ -68,6 +68,7 @@ if(OPENEXR_BUILD_UTILS)
   add_subdirectory(exrstdattr)
 endif()
 
+
 ##########################
 # Installation
 ##########################
@@ -78,8 +79,10 @@ install (FILES
   doc/ReadingAndWritingImageFiles.pdf
   doc/OpenEXRFileLayout.pdf
   doc/MultiViewOpenEXR.pdf
+  doc/InterpretingDeepPixels.pdf
+  doc/TheoryDeepPixels.pdf
   DESTINATION
-  share/doc/OpenEXR-2.0.0
+  share/doc/OpenEXR-${OPENEXR_VERSION_MAJOR}.${OPENEXR_VERSION_MINOR}.${OPENEXR_VERSION_PATCH}
 )
 
 # Examples
@@ -100,6 +103,7 @@ install (FILES
   IlmImfExamples/rgbaInterfaceTiledExamples.h
   IlmImfExamples/lowLevelIoExamples.h
   IlmImfExamples/previewImageExamples.h
+  IlmImfExamples/namespaceAlias.h
   DESTINATION
-  share/doc/OpenEXR-2.0.0/examples
+  share/doc/OpenEXR-${OPENEXR_VERSION_MAJOR}.${OPENEXR_VERSION_MINOR}.${OPENEXR_VERSION_PATCH}/examples
 )

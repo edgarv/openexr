@@ -1,12 +1,10 @@
 # Non-standalone CMake file
 
-set (BIN_NAME exrheader)
-set (SRCS
+add_executable (exrheader
     main.cpp
 )
 
-add_executable (${BIN_NAME} ${SRCS})
-target_link_libraries (${BIN_NAME} IlmImf ${ZLIB_LIBRARIES})
+target_link_libraries (exrheader IlmImf ${ZLIB_LIBRARIES})
 
-install(TARGETS ${BIN_NAME}
+install(TARGETS exrheader
         RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR})

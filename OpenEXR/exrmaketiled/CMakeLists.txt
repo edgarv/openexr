@@ -1,14 +1,14 @@
 # Non-standalone CMake file
 
-set (BIN_NAME exrmaketiled)
-set (SRCS
-  main.cpp
+add_executable (exrmaketiled
   Image.h Image.cpp
+  main.cpp
   makeTiled.cpp makeTiled.h
 )
 
-add_executable (${BIN_NAME} ${SRCS})
-target_link_libraries (${BIN_NAME} IlmImf ${ZLIB_LIBRARIES})
+target_link_libraries (exrmaketiled
+  IlmImf ${ZLIB_LIBRARIES}
+)
 
-install(TARGETS ${BIN_NAME}
+install(TARGETS exrmaketiled
         RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR})

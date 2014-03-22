@@ -1,20 +1,16 @@
 # Non-standalone CMake file
 
-set (BIN_NAME exrenvmap)
-set (SRCS
-  main.cpp
+add_executable (exrenvmap
   EnvmapImage.cpp    EnvmapImage.h
-  readInputImage.cpp readInputImage.h
-  resizeImage.cpp    resizeImage.h
   blurImage.cpp      blurImage.h
+  main.cpp
   makeCubeMap.cpp    makeCubeMap.h
   makeLatLongMap.cpp makeLatLongMap.h
+  readInputImage.cpp readInputImage.h
+  resizeImage.cpp    resizeImage.h
 )
 
-include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries (exrenvmap IlmImf ${ZLIB_LIBRARIES})
 
-add_executable (${BIN_NAME} ${SRCS})
-target_link_libraries (${BIN_NAME} IlmImf ${ZLIB_LIBRARIES})
-
-install(TARGETS ${BIN_NAME}
+install(TARGETS exrenvmap
         RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR})

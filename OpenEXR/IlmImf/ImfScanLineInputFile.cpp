@@ -815,7 +815,7 @@ void LineBufferTaskIIF::getWritePointerStereo
                            size_t& outPixelsToCopySSE,
                            size_t& outPixelsToCopyNormal) const
 {
-   getWritePointer<TYPE>(y,outWritePointerRight,outPixelsToCopySSE,outPixelsToCopyNormal),0;
+   getWritePointer<TYPE>(y,outWritePointerRight,outPixelsToCopySSE,outPixelsToCopyNormal,0);
    
    
    if(outWritePointerRight)
@@ -971,7 +971,7 @@ LineBufferTaskIIF::execute()
                 }
             }
             else {
-                throw(Iex::LogicExc("IIF mode called with incorrect channel pattern"));
+                throw(IEX_NAMESPACE::LogicExc("IIF mode called with incorrect channel pattern"));
             }
             
             // If we are in NO_OPTIMIZATION mode, this class will never

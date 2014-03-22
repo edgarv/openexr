@@ -49,6 +49,7 @@
 #include <ImfChannelListAttribute.h>
 #include <ImfChromaticitiesAttribute.h>
 #include <ImfCompressionAttribute.h>
+#include <ImfDeepImageStateAttribute.h>
 #include <ImfDoubleAttribute.h>
 #include <ImfEnvmapAttribute.h>
 #include <ImfFloatAttribute.h>
@@ -970,8 +971,8 @@ Header::sanityCheck (bool isTiled, bool isMultipartFile) const
 	     ++i)
 	{
 	    if (i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::UINT &&
-		i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::HALF &&
-		i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::FLOAT)
+		    i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::HALF &&
+		    i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::FLOAT)
 	    {
 		THROW (IEX_NAMESPACE::ArgExc, "Pixel type of \"" << i.name() << "\" "
 			            "image channel is invalid.");
@@ -999,8 +1000,8 @@ Header::sanityCheck (bool isTiled, bool isMultipartFile) const
 	     ++i)
 	{
 	    if (i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::UINT &&
-		i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::HALF &&
-		i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::FLOAT)
+		    i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::HALF &&
+		    i.channel().type != OPENEXR_IMF_INTERNAL_NAMESPACE::FLOAT)
 	    {
 		THROW (IEX_NAMESPACE::ArgExc, "Pixel type of \"" << i.name() << "\" "
 			            "image channel is invalid.");
@@ -1246,6 +1247,7 @@ staticInitialize ()
 	ChannelListAttribute::registerAttributeType();
 	CompressionAttribute::registerAttributeType();
 	ChromaticitiesAttribute::registerAttributeType();
+	DeepImageStateAttribute::registerAttributeType();
 	DoubleAttribute::registerAttributeType();
 	EnvmapAttribute::registerAttributeType();
 	FloatAttribute::registerAttributeType();

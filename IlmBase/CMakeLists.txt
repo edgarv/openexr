@@ -35,24 +35,6 @@ configure_file(
   ${OPENEXR_CFG_DIR}/IlmBaseConfig.h
   @ONLY
 )
-install(FILES ${OPENEXR_CFG_DIR}/IlmBaseConfig.h
-  DESTINATION ${INSTALL_INCLUDE_DIR}
-)
-
-# Now add the actual projects
-add_subdirectory(Half)
-add_subdirectory(Iex)
-add_subdirectory(IexMath)
-add_subdirectory(Imath)
-add_subdirectory(IlmThread)
-
-# Add the tests
-if(BUILD_TESTING)
-  add_subdirectory(HalfTest)
-  add_subdirectory(IexTest)
-  add_subdirectory(ImathTest)
-  add_subdirectory(IlmThreadTest)
-endif()
 
 
 message(AUTHOR_WARNING "To be added")
@@ -107,6 +89,29 @@ MACRO(GET_TARGET_PROPERTY_WITH_DEFAULT _variable _target _property _default_valu
    FILE(APPEND ${_laname} "libdir='${CMAKE_INSTALL_PREFIX}${_install_DIR}'\n")
    INSTALL( FILES ${_laname} DESTINATION ${CMAKE_INSTALL_PREFIX}${_install_DIR})
  ENDMACRO(CREATE_LIBTOOL_FILE)
+ 
+
+# Now add the actual projects
+add_subdirectory(Half)
+add_subdirectory(Iex)
+add_subdirectory(IexMath)
+add_subdirectory(Imath)
+add_subdirectory(IlmThread)
+
+# Tests
+
+if(BUILD_TESTING)
+  add_subdirectory(HalfTest)
+  add_subdirectory(IexTest)
+  add_subdirectory(ImathTest)
+  add_subdirectory(IlmThreadTest)
+endif()
+
+# Installation
+
+install(FILES ${OPENEXR_CFG_DIR}/IlmBaseConfig.h
+  DESTINATION ${INSTALL_INCLUDE_DIR}
+)
 
 
 FILE ( WRITE ${CMAKE_BINARY_DIR}/IlmBase.pc "prefix=${CMAKE_INSTALL_PREFIX}\n" )

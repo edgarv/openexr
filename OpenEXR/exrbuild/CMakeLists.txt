@@ -1,20 +1,17 @@
-# yue.nicholas@gmail.com
+# Non-standalone CMake file
 
-ADD_EXECUTABLE ( exrbuild
+add_executable (exrbuild
   exrbuild.cpp
 )
 
-TARGET_LINK_LIBRARIES ( exrbuild
+target_link_libraries (exrbuild
   IlmImf
   IlmThread
   Iex
   Half
-  ${PTHREAD_LIB}
   ${ZLIB_LIBRARIES}
 )
 
-INSTALL ( TARGETS
-  exrbuild
-  DESTINATION
-  ${CMAKE_INSTALL_PREFIX}/bin
+INSTALL (TARGETS exrbuild
+  RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR}
 )

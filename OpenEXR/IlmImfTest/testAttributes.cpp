@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2004, Industrial Light & Magic, a division of Lucas
+// Copyright (c) 2004-2012, Industrial Light & Magic, a division of Lucas
 // Digital Ltd. LLC
 // 
 // All rights reserved.
@@ -34,6 +34,7 @@
 
 
 
+#include <tmpDir.h>
 
 #include <ImfOutputFile.h>
 #include <ImfInputFile.h>
@@ -48,6 +49,7 @@
 #include <ImfChromaticitiesAttribute.h>
 #include <ImfFloatAttribute.h>
 #include <ImfEnvmapAttribute.h>
+#include <ImfDeepImageStateAttribute.h>
 #include <ImfDoubleAttribute.h>
 #include <ImfIntAttribute.h>
 #include <ImfLineOrderAttribute.h>
@@ -60,7 +62,6 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "tmpDir.h"
 
 namespace IMF = OPENEXR_IMF_NAMESPACE;
 using namespace IMF;
@@ -111,15 +112,14 @@ writeReadAttr (const Array2D<float> &pf1,
     a15.push_back ("");
     a15.push_back ("straw into");
     a15.push_back ("gold");
-
-    
-    
     M33d   a16 (12, 13, 14, 15, 16, 17, 18, 19, 20);
     M44d   a17 (2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
     V2d    a18 (27.51, 28.51);
     V3d    a19 (37.51, 38.51, 39.51);
     
     StringVector a20;
+
+    DeepImageState a21 (DIS_TIDY);
 
     //
     // Write an image file with extra attributes in the header
@@ -148,6 +148,7 @@ writeReadAttr (const Array2D<float> &pf1,
 	hdr.insert ("a18", V2dAttribute    (a18));
 	hdr.insert ("a19", V3dAttribute    (a19));
 	hdr.insert ("a20", StringVectorAttribute  (a20));
+	hdr.insert ("a21", DeepImageStateAttribute  (a21));
 
 	hdr.channels().insert ("F",			// name
 			       Channel (IMF::FLOAT,	// type
@@ -234,9 +235,10 @@ writeReadAttr (const Array2D<float> &pf1,
 	assert (hdr.typedAttribute <M44dAttribute>   ("a17").value()  == a17);
 	assert (hdr.typedAttribute <V2dAttribute>    ("a18").value()  == a18);
 	assert (hdr.typedAttribute <V3dAttribute>    ("a19").value()  == a19);
-          assert (hdr.typedAttribute <StringVectorAttribute>    ("a20").value()  == a20);
-          
-          
+	assert (hdr.typedAttribute <StringVectorAttribute>
+                                                  ("a20").value() == a20);
+	assert (hdr.typedAttribute <DeepImageStateAttribute>
+				                                  ("a21").value() == a21);
     }
 
     remove (fileName);
@@ -487,7 +489,7 @@ print_type(const OPENEXR_IMF_NAMESPACE::TypedAttribute<T> & object)
 }
 
 void
-testAttributes ()
+testAttributes (const std::string &tempDir)
 {
     try
     {
@@ -499,14 +501,14 @@ testAttributes ()
 	Array2D<float> pf (H, W);
 	fillPixels (pf, W, H);
 
-	const char *filename = IMF_TMP_DIR "imf_test_attr.exr";
+	std::string filename = tempDir + "imf_test_attr.exr";
 
-	writeReadAttr (pf, filename, W, H);
+	writeReadAttr (pf, filename.c_str(), W, H);
 	channelList();
-        longNames(pf, filename, W, H);
+        longNames(pf, filename.c_str(), W, H);
 
-        print_type(OPENEXR_IMF_NAMESPACE::TypedAttribute<int>());
-        
+    print_type(OPENEXR_IMF_NAMESPACE::TypedAttribute<int>());
+
 	cout << "ok\n" << endl;
     }
     catch (const std::exception &e)
