@@ -13,4 +13,4 @@ set (HalfTest_SOURCES
 
 add_executable (HalfTest ${HalfTest_SOURCES})
 target_link_libraries (HalfTest Half)
-add_openexr_test (HalfTest HalfTest)
+add_openexr_test (TestHalfTest HalfTest)

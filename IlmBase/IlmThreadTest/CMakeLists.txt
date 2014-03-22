@@ -13,4 +13,4 @@ set (IlmThreadTest_SOURCES
 
 add_executable (IlmThreadTest ${IlmThreadTest_SOURCES})
 target_link_libraries (IlmThreadTest IlmThread)
-add_openexr_test (IlmThreadTest IlmThreadTest)
+add_openexr_test (TestIlmThreadTest IlmThreadTest)
