@@ -251,7 +251,7 @@ blurImage (EnvmapImage &image1, bool verbose)
 		{
 		    bool xEdge = (x == 0 || x == sof - 1);
 
-		    V2f posInFace (x, y);
+		    V2f posInFace (static_cast<float>(x), static_cast<float>(y));
 
 		    V3f dir =
 			CubeMap::direction (face, dw, posInFace).normalized();
@@ -285,10 +285,10 @@ blurImage (EnvmapImage &image1, bool verbose)
 
 		    Rgba &pixel = pixels[toInt (pos.y)][toInt (pos.x)];
 
-		    pixel.r *= weight;
-		    pixel.g *= weight;
-		    pixel.b *= weight;
-		    pixel.a *= weight;
+		    pixel.r *= static_cast<float>(weight);
+		    pixel.g *= static_cast<float>(weight);
+		    pixel.b *= static_cast<float>(weight);
+		    pixel.a *= static_cast<float>(weight);
 
 		    weightTotal += weight;
 		}
@@ -310,10 +310,10 @@ blurImage (EnvmapImage &image1, bool verbose)
 
 	while (p < end)
 	{
-	    p->r *= weight;
-	    p->g *= weight;
-	    p->b *= weight;
-	    p->a *= weight;
+	    p->r *= static_cast<float>(weight);
+	    p->g *= static_cast<float>(weight);
+	    p->b *= static_cast<float>(weight);
+	    p->a *= static_cast<float>(weight);
 
 	    ++p;
 	}
@@ -346,7 +346,7 @@ blurImage (EnvmapImage &image1, bool verbose)
 	    {
 		for (int x2 = 0; x2 < sof2; ++x2)
 		{
-		    V2f posInFace2 (x2, y2);
+		    V2f posInFace2 (static_cast<float>(x2), static_cast<float>(y2));
 
 		    V3f dir2 = CubeMap::direction
 			(face2, dw2, posInFace2);
@@ -371,7 +371,7 @@ blurImage (EnvmapImage &image1, bool verbose)
 			{
 			    for (int x1 = 0; x1 < sof1; ++x1)
 			    {
-				V2f posInFace1 (x1, y1);
+				V2f posInFace1 (static_cast<float>(x1), static_cast<float>(y1));
 
 				V3f dir1 = CubeMap::direction
 				    (face1, dw1, posInFace1);
@@ -396,10 +396,10 @@ blurImage (EnvmapImage &image1, bool verbose)
 			}
 		    }
 
-		    pixel2.r = rTotal / weightTotal;
-		    pixel2.g = gTotal / weightTotal;
-		    pixel2.b = bTotal / weightTotal;
-		    pixel2.a = aTotal / weightTotal;
+		    pixel2.r = static_cast<float>(rTotal / weightTotal);
+		    pixel2.g = static_cast<float>(gTotal / weightTotal);
+		    pixel2.b = static_cast<float>(bTotal / weightTotal);
+		    pixel2.a = static_cast<float>(aTotal / weightTotal);
 		}
 	    }
 	}

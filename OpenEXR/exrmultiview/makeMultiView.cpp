@@ -136,7 +136,7 @@ makeMultiView (const vector <string> &viewNames,
 	{
 	    const Channel &inChannel = j.channel();
 	    string inChanName = j.name();
-	    string outChanName = insertViewName (inChanName, viewNames, i);
+	    string outChanName = insertViewName (inChanName, viewNames, (int)i);
 
 	    image.addChannel (outChanName, inChannel);
             image.channel(outChanName).black();

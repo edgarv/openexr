@@ -104,10 +104,10 @@ sp (Array2D<Rgba> &px, int w, int h,
 		a = rc - r * rc;
 
 	    float zl = sqrt (1 - r * r);
-	    float dl = xl * 0.42426 - yl * 0.56568 + zl * 0.70710;
+	    float dl = xl * 0.42426f - yl * 0.56568f + zl * 0.70710f;
 
 	    if (dl < 0)
-		dl *= -0.1;
+		dl *= -0.1f;
 
 	    float hl = pw (dl, 50) * 4;
 	    float dr = (dl + hl) * rd;
@@ -155,10 +155,10 @@ zsp (Array2D<half> &gpx, Array2D<float> &zpx, int w, int h,
 	    if (zp >= zpx[y][x])
 		continue;
 
-	    float dl = xl * 0.42426 - yl * 0.56568 + zl * 0.70710;
+	    float dl = xl * 0.42426f - yl * 0.56568f + zl * 0.70710f;
 
 	    if (dl < 0)
-		dl *= -0.1;
+		dl *= -0.1f;
 
 	    float hl = pw (dl, 50) * 4;
 	    float dg = (dl + hl) * gn;
@@ -258,7 +258,7 @@ mndl (Array2D <P> &px,
     double sy = double (iMax - iMin) / h;
     double tx = 1.f / xSamples;
     double ty = 1.f / ySamples;
-    float  t  = tx * ty;
+    float  t  = static_cast<float>(tx * ty);
 
     for (int y = yMin; y < yMax; ++y)
     {
@@ -320,33 +320,33 @@ drawImage1 (Array2D<Rgba> &px, int w, int h)
 
     for (int i = 0; i < n; ++i)
     {
-	float t = (i * 2.0 * M_PI) / n;
-	float xp = sin (t * 2.0) + 0.2 * sin (t * 15.0);
-	float yp = cos (t * 3.0) + 0.2 * cos (t * 15.0);
+	float t = static_cast<float>((i * 2.0 * M_PI) / n);
+	float xp = static_cast<float>(sin (t * 2.0) + 0.2 * sin (t * 15.0));
+	float yp = static_cast<float>(cos (t * 3.0) + 0.2 * cos (t * 15.0));
 	float r = float (i + 1) / float (n);
-	float xq = xp + 0.3 * r * sin (t * 80.0);
-	float yq = yp + 0.3 * r * cos (t * 80.0);
-	float xr = xp + 0.3 * r * sin (t * 80.0 + M_PI / 2);
-	float yr = yp + 0.3 * r * cos (t * 80.0 + M_PI / 2);
+	float xq = static_cast<float>(xp + 0.3 * r * sin (t * 80.0));
+	float yq = static_cast<float>(yp + 0.3 * r * cos (t * 80.0));
+	float xr = static_cast<float>(xp + 0.3 * r * sin (t * 80.0 + M_PI / 2));
+	float yr = static_cast<float>(yp + 0.3 * r * cos (t * 80.0 + M_PI / 2));
 
 	if (i % 10 == 0)
 	    sp (px, w, h,
 		xp * w / 3 + w / 2, yp * h / 3 + h / 2,
-		w * 0.05 * r,
-		2.0, 0.8, 0.1,
-		0.5 * r * r);
+		w * 0.05f * r,
+		2.0f, 0.8f, 0.1f,
+		0.5f * r * r);
 
 	sp (px, w, h,
 	    xq * w / 3 + w / 2, yq * h / 3 + h / 2,
-	    w * 0.01 * r,
-	    0.7, 0.2, 2.0,
-	    0.5 * r * r);
+	    w * 0.01f * r,
+	    0.7f, 0.2f, 2.0f,
+	    0.5f * r * r);
 
 	sp (px, w, h,
 	    xr * w / 3 + w / 2, yr * h / 3 + h / 2,
-	    w * 0.01 * r,
-	    0.2, 1.5, 0.1,
-	    0.5 * r * r);
+	    w * 0.01f * r,
+	    0.2f, 1.5f, 0.1f,
+	    0.5f * r * r);
     }
 }
 
@@ -367,19 +367,19 @@ drawImage2 (Array2D<half> &gpx, Array2D<float> &zpx, int w, int h)
 
     for (int i = 0; i < n; ++i)
     {
-	float t = (i * 2.0 * M_PI) / n;
-	float xp = sin (t * 4.0) + 0.2 * sin (t * 15.0);
-	float yp = cos (t * 3.0) + 0.2 * cos (t * 15.0);
-	float zp = sin (t * 5.0);
-	float rd = 0.7 + 0.3 * sin (t * 15.0);
-	float gn = 0.5 - 0.5 * zp + 0.2;
+	float t  = static_cast<float>((i * 2.0 * M_PI) / n);
+	float xp = static_cast<float>(sin (t * 4.0) + 0.2 * sin (t * 15.0));
+	float yp = static_cast<float>(cos (t * 3.0) + 0.2 * cos (t * 15.0));
+	float zp = static_cast<float>(sin (t * 5.0));
+	float rd = static_cast<float>(0.7 + 0.3 * sin (t * 15.0));
+	float gn = static_cast<float>(0.5 - 0.5 * zp + 0.2);
 
 	zsp (gpx, zpx, w, h,
 	     xp * w / 3 + w / 2,
 	     yp * h / 3 + h / 2,
 	     zp * w + 3 * w,
-	     w * rd * 0.05,
-	     2.5 * gn * gn);
+	     w * rd * 0.05f,
+	     2.5f * gn * gn);
     }
 }
 
@@ -461,8 +461,8 @@ drawImage7 (Array<Rgba> &px, int w, int h, int y)
 {
     for (int x = 0; x < w; ++x)
     {
-	float xc = x - w / 2;
-	float yc = y - h / 2;
+	float xc = x - w / 2.0f;
+	float yc = y - h / 2.0f;
 	float a = atan2 (xc, yc);
 	float r = sqrt (xc * xc + yc * yc);
 

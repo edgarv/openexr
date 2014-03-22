@@ -72,7 +72,7 @@ resizeLatLong (const EnvmapImage &image1,
     {
 	for (int x = 0; x < w; ++x)
 	{
-	    V3f dir = LatLongMap::direction (image2DataWindow, V2f (x, y));
+	    V3f dir = LatLongMap::direction (image2DataWindow, V2f ((float)x, (float)y));
 	    pixels[y][x] = image1.filteredLookup (dir, radius, numSamples);
 	}
     }

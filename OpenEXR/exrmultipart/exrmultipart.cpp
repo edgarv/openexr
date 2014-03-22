@@ -405,7 +405,7 @@ convert(vector <const char*> in,
         // create output file
         //
         MultiPartOutputFile outfile(outname,&output_headers[0],
-                                    output_headers.size());
+                                    (int)output_headers.size());
         InputPart inpart(infile,0);
         
         

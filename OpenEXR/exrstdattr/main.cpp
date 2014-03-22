@@ -349,7 +349,7 @@ getFloat (const char attrName[],
     if (i > argc - 2)
         usageMessage (argv[0]);
 
-    float f = strtod (argv[i + 1], 0);
+    float f = static_cast<float>(strtod (argv[i + 1], 0));
 
     if (check)
         check (attrName, f);
@@ -403,7 +403,7 @@ getV2f (const char attrName[],
     if (i > argc - 3)
         usageMessage (argv[0]);
 
-    V2f v (strtod (argv[i + 1], 0), strtod (argv[i + 2], 0));
+    V2f v ((float) strtod (argv[i + 1], 0), (float) strtod (argv[i + 2], 0));
 
     if (check)
         check (attrName, v);
@@ -481,7 +481,7 @@ getNameAndFloat (int argc,
         usageMessage (argv[0]);
 
     const char *attrName = argv[i + 1];
-    float f = strtod (argv[i + 2], 0);
+    float f = static_cast<float>(strtod (argv[i + 2], 0));
     attrs[attrName] = new FloatAttribute (f);
     i += 3;
 }

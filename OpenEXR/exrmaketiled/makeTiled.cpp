@@ -607,7 +607,7 @@ makeTiled (const char inFileName[],
     // Store the highest-resolution level of the image in the output file
     //
 
-    MultiPartOutputFile output (outFileName, &headers[0], headers.size());
+    MultiPartOutputFile output (outFileName, &headers[0], (int)headers.size());
 
     for(int p = 0 ; p < parts; p++)
     {

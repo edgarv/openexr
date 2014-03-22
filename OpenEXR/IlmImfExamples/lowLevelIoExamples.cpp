@@ -112,7 +112,7 @@ C_IStream::read (char c[/*n*/], int n)
 	    throw IEX_NAMESPACE::InputExc ("Unexpected end of file.");
     }
 
-    return feof (_file);
+    return feof (_file) != 0;
 }
 
 
