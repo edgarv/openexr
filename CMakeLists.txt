@@ -5,8 +5,8 @@
 # contain the full path to the zlib import library when building
 # this as a Windows DLL.
 
-project(OpenEXR)
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+project(OpenEXR)
 
 option(OPENEXR_SHARED_LIBS
   "Builds the different OpenEXR components as shared libraries." ON)
