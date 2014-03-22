@@ -40,13 +40,14 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <makeCubeMap.h>
+#include "makeCubeMap.h"
+#include "EnvmapImage.h"
 
 #include <ImfRgbaFile.h>
 #include <ImfStandardAttributes.h>
-#include <EnvmapImage.h>
-#include "Iex.h"
-#include "IexMacros.h"
+#include <Iex.h>
+#include <IexMacros.h>
+
 #include <iostream>
 #include <string>
 #include <string.h>
