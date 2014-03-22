@@ -6,7 +6,7 @@ add_executable (exrmakepreview
 )
 
 target_link_libraries (exrmakepreview
-  IlmImf ${ZLIB_LIBRARIES
+  IlmImf ${ZLIB_LIBRARIES}
 )
 
 install(TARGETS exrmakepreview

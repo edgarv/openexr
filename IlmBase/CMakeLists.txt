@@ -37,9 +37,6 @@ configure_file(
 )
 
 
-message(AUTHOR_WARNING "To be added")
-if (0)
-
 MACRO(GET_TARGET_PROPERTY_WITH_DEFAULT _variable _target _property _default_value)
    GET_TARGET_PROPERTY (${_variable} ${_target} ${_property})
    IF (${_variable} MATCHES NOTFOUND)
@@ -114,6 +111,9 @@ install(FILES ${OPENEXR_CFG_DIR}/IlmBaseConfig.h
 )
 
 
+message(AUTHOR_WARNING "IlmBase.pc [pkgconfig] generation to be added")
+if (0)
+
 FILE ( WRITE ${CMAKE_BINARY_DIR}/IlmBase.pc "prefix=${CMAKE_INSTALL_PREFIX}\n" )
 FILE ( APPEND ${CMAKE_BINARY_DIR}/IlmBase.pc "exec_prefix=\${prefix}
 libdir=\${exec_prefix}/lib
@@ -132,6 +132,5 @@ INSTALL ( FILES
   DESTINATION
   lib/pkgconfig
 )
-
 
 endif()
