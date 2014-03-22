@@ -127,7 +127,11 @@ void
 C_IStream::seekg (Int64 pos)
 {
     clearerr (_file);
+#ifndef _MSC_VER
     fseek (_file, pos, SEEK_SET);
+#else
+    _fseeki64 (_file, pos, SEEK_SET);
+#endif
 }
 
 
@@ -159,7 +163,11 @@ void
 C_OStream::seekp (Int64 pos)
 {
     clearerr (_file);
+#ifndef _MSC_VER
     fseek (_file, pos, SEEK_SET);
+#else
+    _fseeki64 (_file, pos, SEEK_SET);
+#endif
 }
 
 

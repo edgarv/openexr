@@ -58,6 +58,7 @@
 #include <OpenEXRConfig.h>
 #include <Iex.h>
 
+#include <cctype>  // isdigit
 #include <iostream>
 #include <vector>
 #include <utility> // pair
