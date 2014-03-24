@@ -1261,7 +1261,7 @@ staticInitialize ()
 	PreviewImageAttribute::registerAttributeType();
 	RationalAttribute::registerAttributeType();
 	StringAttribute::registerAttributeType();
-        StringVectorAttribute::registerAttributeType();
+	StringVectorAttribute::registerAttributeType();
 	TileDescriptionAttribute::registerAttributeType();
 	TimeCodeAttribute::registerAttributeType();
 	V2dAttribute::registerAttributeType();
