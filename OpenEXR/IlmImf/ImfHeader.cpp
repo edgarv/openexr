@@ -69,8 +69,8 @@
 #include "IlmThreadMutex.h"
 #include "Iex.h"
 #include <sstream>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 
 #include "ImfNamespace.h"
 
