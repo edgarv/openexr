@@ -40,6 +40,14 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <OpenEXRConfig.h>
+#if OPENEXR_IMF_USE_WINNT_VISTA_SYNC
+# define _WIN32_WINNT 0x0600
+# define NOMINMAX
+# define WIN32_LEAN_AND_MEAN
+# include <windows.h>
+#endif
+
 #include <ImfHeader.h>
 #include <ImfStdIO.h>
 #include <ImfVersion.h>
@@ -66,8 +74,8 @@
 #include <ImfTimeCodeAttribute.h>
 #include <ImfVecAttribute.h>
 #include <ImfPartType.h>
-#include "IlmThreadMutex.h"
-#include "Iex.h"
+#include <IlmThreadMutex.h>
+#include <Iex.h>
 #include <sstream>
 #include <cstdlib>
 #include <ctime>
@@ -1227,16 +1235,11 @@ Header::readFrom (OPENEXR_IMF_INTERNAL_NAMESPACE::IStream &is, int &version)
 }
 
 
-void
-staticInitialize ()
+namespace
 {
-    static Mutex criticalSection;
-    Lock lock (criticalSection);
 
-    static bool initialized = false;
-
-    if (!initialized)
-    {
+inline void initAttributes()
+{
 	//
 	// One-time initialization -- register
 	// some predefined attribute types.
@@ -1270,9 +1273,37 @@ staticInitialize ()
 	V3dAttribute::registerAttributeType();
 	V3fAttribute::registerAttributeType();
 	V3iAttribute::registerAttributeType();
+}
 
-	initialized = true;
+#if OPENEXR_IMF_USE_WINNT_VISTA_SYNC
+BOOL CALLBACK
+initAttributesCallback(PINIT_ONCE initOnce, PVOID parameter, PVOID *context)
+{
+    initAttributes();
+    return TRUE;
+}
+#else
+// Mutex for the attributes registration, created during static initialization
+static Mutex initAttributesMutex;
+#endif
+
+} // namespace
+
+void
+staticInitialize ()
+{
+#if OPENEXR_IMF_USE_WINNT_VISTA_SYNC
+    static ::INIT_ONCE initFlag = INIT_ONCE_STATIC_INIT;
+    ::InitOnceExecuteOnce(&initFlag, initAttributesCallback, NULL, NULL);
+#else
+    Lock lock (initAttributesMutex);
+    static bool initialized = false;
+
+    if (!initialized) {
+        initAttributes();
+        initialized = true;
     }
+#endif
 }
 
 

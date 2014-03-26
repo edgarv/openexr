@@ -40,6 +40,14 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <OpenEXRConfig.h>
+#if OPENEXR_IMF_USE_WINNT_VISTA_SYNC
+# define _WIN32_WINNT 0x0600
+# define NOMINMAX
+# define WIN32_LEAN_AND_MEAN
+# include <windows.h>
+#endif
+
 #include <ImfAttribute.h>
 #include "IlmThreadMutex.h"
 #include "Iex.h"
@@ -68,7 +76,7 @@ struct NameCompare: std::binary_function <const char *, const char *, bool>
     bool
     operator () (const char *x, const char *y) const
     {
-	return strcmp (x, y) < 0;
+        return strcmp (x, y) < 0;
     }
 };
 
@@ -85,18 +93,37 @@ class LockedTypeMap: public TypeMap
 };
 
 
+#if OPENEXR_IMF_USE_WINNT_VISTA_SYNC
+BOOL CALLBACK
+typeMapCallback(PINIT_ONCE initOnce, PVOID parameter, PVOID *context)
+{
+    *context = new LockedTypeMap ();
+    return context != NULL;
+}
+#else
+// Mutex for the type map singleton, configured during static initialization.
+static Mutex typeMapMutex;
+#endif // OPENEXR_IMF_USE_WINNT_VISTA_SYNC
+
+
 LockedTypeMap &
 typeMap ()
 {
-    static Mutex criticalSection;
-    Lock lock (criticalSection);
-
+#if !OPENEXR_IMF_USE_WINNT_VISTA_SYNC
+    Lock lock (typeMapMutex);
     static LockedTypeMap* typeMap = 0;
 
-    if (typeMap == 0)
-	typeMap = new LockedTypeMap ();
-
+    if (typeMap == 0) {
+        typeMap = new LockedTypeMap ();
+    }
     return *typeMap;
+#else
+    static ::INIT_ONCE initFlag = INIT_ONCE_STATIC_INIT;
+    LockedTypeMap* result;
+    ::InitOnceExecuteOnce(&initFlag, typeMapCallback, NULL,
+        reinterpret_cast<LPVOID*>(&result));
+    return *result;
+#endif
 }
 
 
@@ -115,15 +142,15 @@ Attribute::knownType (const char typeName[])
 
 void	
 Attribute::registerAttributeType (const char typeName[],
-			          Attribute *(*newAttribute)())
+                      Attribute *(*newAttribute)())
 {
     LockedTypeMap& tMap = typeMap();
     Lock lock (tMap.mutex);
 
     if (tMap.find (typeName) != tMap.end())
-	THROW (IEX_NAMESPACE::ArgExc, "Cannot register image file attribute "
-			    "type \"" << typeName << "\". "
-			    "The type has already been registered.");
+    THROW (IEX_NAMESPACE::ArgExc, "Cannot register image file attribute "
+                "type \"" << typeName << "\". "
+                "The type has already been registered.");
 
     tMap.insert (TypeMap::value_type (typeName, newAttribute));
 }
@@ -148,8 +175,8 @@ Attribute::newAttribute (const char typeName[])
     TypeMap::const_iterator i = tMap.find (typeName);
 
     if (i == tMap.end())
-	THROW (IEX_NAMESPACE::ArgExc, "Cannot create image file attribute of "
-			    "unknown type \"" << typeName << "\".");
+    THROW (IEX_NAMESPACE::ArgExc, "Cannot create image file attribute of "
+                "unknown type \"" << typeName << "\".");
 
     return (i->second)();
 }
