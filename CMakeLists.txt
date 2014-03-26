@@ -192,6 +192,26 @@ if(HAVE_LARGE_STACK)
     ${USE_LARGE_STACK_DEFAULT})
 endif()
 
+# Check if the system has the Windows Vista sync functions
+if(WIN32)
+  include(CheckFunctionExists)
+  CHECK_FUNCTION_EXISTS("InitOnceExecuteOnce" HAVE_WINNT_VISTA_SYNC)
+endif()
+
+# Optionally use functions introduced with Windows Vista for the correct
+# initialization on demand of singletons among other things
+if(HAVE_WINNT_VISTA_SYNC)
+  # Set the default based on the host system (Windows Vista's version is 6.0)
+  if("${CMAKE_SYSTEM_VERSION}" VERSION_LESS "6.0")
+    set(USE_WINNT_VISTA_SYNC_DEFAULT OFF)
+  else()
+    set(USE_WINNT_VISTA_SYNC_DEFAULT ON)
+  endif()
+  option(USE_WINNT_VISTA_SYNC
+    "Use synchronization functions introduced in Windows Vista."
+    ${USE_WINNT_VISTA_SYNC_DEFAULT})
+endif()
+
 # Handle namespacing configuration : internal library namespace
 #                                    public namespace
 option(ENABLE_NAMESPACE_VERSIONING

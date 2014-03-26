@@ -1,4 +1,7 @@
 /* config/OpenEXRConfig.h.  Generated from OpenEXRConfig.h.cmake by CMake. */
+#ifndef INCLUDED_OPENEXR_CONFIG_H
+#define INCLUDED_OPENEXR_CONFIG_H
+
 //
 // Define and set to 1 if the target system supports a proc filesystem
 // compatible with the Linux kernel's proc filesystem.  Note that this
@@ -31,6 +34,13 @@
 #cmakedefine OPENEXR_IMF_HAVE_LARGE_STACK 1
 
 //
+// Define and set to 1 to use the synchronization functions
+// introduced with Windows Vista.
+//
+
+#cmakedefine OPENEXR_IMF_USE_WINNT_VISTA_SYNC 1
+
+//
 // Current internal library namepace name
 //
 #cmakedefine OPENEXR_IMF_INTERNAL_NAMESPACE_CUSTOM @OPENEXR_IMF_INTERNAL_NAMESPACE_CUSTOM@
@@ -58,3 +68,5 @@
 #define OPENEXR_VERSION_HEX ((OPENEXR_VERSION_MAJOR << 24) | \
                              (OPENEXR_VERSION_MINOR << 16) | \
                              (OPENEXR_VERSION_PATCH <<  8))
+
+#endif // INCLUDED_OPENEXR_CONFIG_H

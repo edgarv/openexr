@@ -1,4 +1,7 @@
 /* config/IlmBaseConfig.h.  Generated from IlmBaseConfig.h.cmake by cmake. */
+#ifndef INCLUDED_ILM_BASE_CONFIG_H
+#define INCLUDED_ILM_BASE_CONFIG_H
+
 //
 // Define and set to 1 if the target system has POSIX thread support
 // and you want IlmBase to use it for multithreaded file I/O.
@@ -33,6 +36,14 @@
 
 
 //
+// Define and set to 1 to use the synchronization functions
+// introduced with Windows Vista.
+//
+
+#cmakedefine ILMBASE_USE_WINNT_VISTA_SYNC 1
+
+
+//
 // Current (internal) library namepace name and corresponding public
 // client namespaces.
 //
@@ -61,3 +72,5 @@
 #define ILMBASE_VERSION_HEX ((ILMBASE_VERSION_MAJOR << 24) | \
                              (ILMBASE_VERSION_MINOR << 16) | \
                              (ILMBASE_VERSION_PATCH <<  8))
+
+#endif // INCLUDED_ILM_BASE_CONFIG_H
