@@ -55,7 +55,10 @@
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_ENTER
 
-using namespace std;
+using std::string;
+using std::min;
+using std::max;
+using std::ptrdiff_t;
 using namespace IMATH_NAMESPACE;
 using namespace RgbaYca;
 using namespace ILMTHREAD_NAMESPACE;

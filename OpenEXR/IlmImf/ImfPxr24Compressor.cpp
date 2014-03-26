@@ -78,7 +78,7 @@
 #include <assert.h>
 #include <algorithm>
 
-using namespace std;
+using std::min;
 using namespace IMATH_NAMESPACE;
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_ENTER

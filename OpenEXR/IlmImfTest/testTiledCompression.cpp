@@ -48,12 +48,17 @@
 
 #include "compareFloat.h"
 
-#include <stdio.h>
-#include <assert.h>
+#include <algorithm>
+#include <cstdio>
+#include <cassert>
 
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::flush;
+using std::min;
 namespace IMF = OPENEXR_IMF_NAMESPACE;
 using namespace IMF;
-using namespace std;
 using namespace IMATH_NAMESPACE;
 
 

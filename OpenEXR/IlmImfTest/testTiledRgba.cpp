@@ -43,15 +43,21 @@
 #include <ImfThreading.h>
 #include <IlmThread.h>
 #include <ImathRandom.h>
+#include <algorithm>
 #include <string>
 #include <stdio.h>
-#include <assert.h>
+#include <cassert>
 #include <vector>
-#include <math.h>
+#include <cmath>
 
 
+using std::min;
+using std::max;
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::flush;
 using namespace OPENEXR_IMF_NAMESPACE;
-using namespace std;
 using namespace IMATH_NAMESPACE;
 
 

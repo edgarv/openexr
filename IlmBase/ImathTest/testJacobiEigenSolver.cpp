@@ -34,6 +34,7 @@
 
 #include "ImathMatrix.h"
 #include "ImathMatrixAlgo.h"
+#include <algorithm>
 #include <iostream>
 #include <math.h>
 #include <cmath>
@@ -41,7 +42,8 @@
 #include <cassert>
 #include <limits>
 
-using namespace std;
+using std::cout;
+using std::endl;
 using namespace IMATH_INTERNAL_NAMESPACE;
 
 const Matrix33<double> A33_1 ( 1, 0, 0, 0, 1, 0, 0, 0, 1 );

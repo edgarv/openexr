@@ -43,6 +43,7 @@
 //----------------------------------------------------------------------------
 
 #include "ImathMatrixAlgo.h"
+#include <algorithm>
 #include <cmath>
 
 IMATH_INTERNAL_NAMESPACE_SOURCE_ENTER

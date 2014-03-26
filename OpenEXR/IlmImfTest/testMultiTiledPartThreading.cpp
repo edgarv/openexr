@@ -32,6 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -64,9 +65,16 @@ namespace
 
 namespace IMF = OPENEXR_IMF_NAMESPACE;
 using namespace IMF;
-using namespace std;
 using namespace IMATH_NAMESPACE;
 using namespace ILMTHREAD_NAMESPACE;
+using std::vector;
+using std::cout;
+using std::cerr;
+using std::endl;
+using std::flush;
+using std::string;
+using std::stringstream;
+using std::min;
 
 const int height = 263;
 const int width = 197;

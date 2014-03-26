@@ -50,13 +50,16 @@
 #include <ImfArray.h>
 #include <ImathMath.h>
 #include <ImathFun.h>
-#include <math.h>
+#include <algorithm>
+#include <cmath>
 #include <iostream>
 
 #include <OpenEXRConfig.h>
 using namespace OPENEXR_IMF_NAMESPACE;
 using namespace IMATH_NAMESPACE;
-using namespace std;
+using std::max;
+using std::cout;
+using std::endl;
 
 
 namespace {

@@ -43,7 +43,8 @@
 
 
 using namespace OPENEXR_IMF_NAMESPACE;
-using namespace std;
+using std::min;
+using std::max;
 
 
 int

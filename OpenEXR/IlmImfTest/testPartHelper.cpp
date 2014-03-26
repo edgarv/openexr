@@ -34,6 +34,7 @@
 #include "testPartHelper.h"
 
 #include <ImfPartHelper.h>
+#include <algorithm>
 #include <vector>
 #include <iostream>
 

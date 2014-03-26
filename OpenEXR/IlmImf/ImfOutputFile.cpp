@@ -64,10 +64,11 @@
 #include "ImfNamespace.h"
 #include "ImfOutputPartData.h"
 
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <fstream>
-#include <assert.h>
+#include <cassert>
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_ENTER
 

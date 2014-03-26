@@ -46,7 +46,7 @@
 #include <algorithm>
 #include <math.h>
 
-using namespace std;
+using std::min;
 using namespace IMATH_NAMESPACE;
 
 

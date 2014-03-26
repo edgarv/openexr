@@ -42,7 +42,8 @@
 #include <typeinfo>
 #include <vector>
 
-using namespace std;
+using std::cout;
+using std::endl;
 using namespace IMATH_INTERNAL_NAMESPACE;
 
 namespace {
