@@ -38,17 +38,20 @@
 //
 //-----------------------------------------------------------------------------
 
-#if defined(_MSC_VER)
-    #if ILM_THREAD_WINNT_VISTA
-        #define _WIN32_WINNT 0x0600
-    #else
-        #define _WIN32_WINNT 0x0501
-    #endif
-    #define NOMINMAX
-    #define VC_EXTRALEAN
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
-    #include <memory>
+// MSVC 2013 November 2013 CTP finally introduced
+// Thread-safe function local static initialization
+#if defined(_MSC_VER) && _MSC_FULL_VER < 180021114
+# define HAVE_SAFE_LOCAL_STATIC 0
+# include "IlmBaseConfig.h"
+# if ILMBASE_USE_WINNT_VISTA_SYNC
+#  define _WIN32_WINNT 0x0600
+#  define NOMINMAX
+#  define WIN32_LEAN_AND_MEAN
+#  include <windows.h>
+# endif
+# include <memory>
+#else
+# define HAVE_SAFE_LOCAL_STATIC 1
 #endif
 
 #include "IlmThread.h"
@@ -473,30 +476,33 @@ ThreadPool::addTask (Task* task)
 }
 
 
+#if !HAVE_SAFE_LOCAL_STATIC
 namespace
 {
-#if defined(_MSC_VER) && ILM_THREAD_WINNT_VISTA
+// Global thread pool, declared here so that the smart pointer is configured
+// during the static initialization phase
+static std::auto_ptr<ThreadPool> gThreadPool;
 
+#if ILMBASE_USE_WINNT_VISTA_SYNC
 // Single initialization callback
 BOOL CALLBACK
 initGlobalThreadPool(PINIT_ONCE initOnce, PVOID param, PVOID *context)
 {
-    typedef std::auto_ptr<ThreadPool> ThreadAutoPtr;
-    ThreadAutoPtr *ptr = static_cast<ThreadAutoPtr *>(param);
-    ptr->reset(new(nothrow) ThreadPool (0));
-    return ptr->get() != NULL;
+    gThreadPool.reset(new(nothrow) ThreadPool (0));
+    return gThreadPool.get() != NULL;
 }
 #else
 // Mutex for the global thread pool creation
 static Mutex gThreadPoolMutex;
-#endif
-} // namespace
+#endif // ILMBASE_USE_WINNT_VISTA_SYNC
+}
+#endif // !HAVE_SAFE_LOCAL_STATIC
 
 
 ThreadPool&
 ThreadPool::globalThreadPool ()
 {
-#if !defined(_MSC_VER)
+#if HAVE_SAFE_LOCAL_STATIC
     //
     // The global thread pool
     //
@@ -507,30 +513,20 @@ ThreadPool::globalThreadPool ()
 #else
     // MSVC (as of version 11) does not perform thread-safe initialization
     // of static local variables. This translates into Mutex crashes on Windows
-    // when multiple threads try to initialize the global thread pool
-#if ILM_THREAD_WINNT_VISTA
-    static INIT_ONCE gInitOnce = INIT_ONCE_STATIC_INIT;
-    static std::auto_ptr<ThreadPool> gThreadPool;
-    
-    InitOnceExecuteOnce (&gInitOnce, initGlobalThreadPool, &gThreadPool, NULL);
-    return *gThreadPool;
+    // when multiple threads try to initialize the global thread pool.
+    // Instead InitOnceExecuteOnce implements double-checked locking properly.
+#if ILMBASE_USE_WINNT_VISTA_SYNC
+    static INIT_ONCE gInitOnce = INIT_ONCE_STATIC_INIT;    
+    InitOnceExecuteOnce (&gInitOnce, initGlobalThreadPool, NULL, NULL);
 #else
-    // Use the double lock pattern
-    #if _MSC_VER < 1400
-        #pragma message(__FILE__ " : Warning : double lock needs at least MSVC 2005.")
-    #endif
-    static std::auto_ptr<volatile ThreadPool> gThreadPool;
-
+    // Safe, albeit slow alternative via locking
+    Lock lock(gThreadPoolMutex);
     if (gThreadPool.get() == NULL) {
-        Lock lock (gThreadPoolMutex);
-        if (gThreadPool.get() == NULL) {
-            gThreadPool.reset(new ThreadPool (0));
-        }
+        gThreadPool.reset(new ThreadPool (0));
     }
-    return const_cast<ThreadPool&> (*gThreadPool);
-
-#endif // ILM_THREAD_WINNT_VISTA
-#endif // !defined(_MSC_VER)
+#endif
+    return *gThreadPool;
+#endif // HAVE_SAFE_LOCAL_STATIC
 }
 
 
