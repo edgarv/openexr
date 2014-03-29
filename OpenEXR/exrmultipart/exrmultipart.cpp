@@ -58,6 +58,7 @@
 #include <OpenEXRConfig.h>
 #include <Iex.h>
 
+#include <algorithm>
 #include <cctype>  // isdigit
 #include <iostream>
 #include <vector>

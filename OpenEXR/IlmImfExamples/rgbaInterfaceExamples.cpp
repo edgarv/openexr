@@ -50,12 +50,16 @@
 
 #include "drawImage.h"
 
+#include <algorithm>
 #include <iostream>
 
 #include "namespaceAlias.h"
 using namespace IMF;
-using namespace std;
 using namespace IMATH_NAMESPACE;
+using std::cout;
+using std::endl;
+using std::flush;
+using std::min;
 
 
 void
