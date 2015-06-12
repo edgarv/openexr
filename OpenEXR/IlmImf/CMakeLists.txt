@@ -1,4 +1,4 @@
-g# Description of the IlmImf library
+# Description of the IlmImf library
 
 find_package(ZLIB REQUIRED)
 
@@ -23,6 +23,13 @@ add_custom_command(OUTPUT ${LUT_DIRECTORY}/b44ExpLogTable.h
   VERBATIM
 )
 
+add_executable(dwaLookups dwaLookups.cpp)
+target_link_libraries(dwaLookups Half IlmThread)
+  add_custom_command(OUTPUT ${LUT_DIRECTORY}/dwaLookups.h
+    COMMAND dwaLookups > ${LUT_DIRECTORY}/dwaLookups.h
+    COMMENT "Generating acceleration lookup tables for for Imf::DwaCompressor..."
+    VERBATIM
+  )
 # Public headers
 set(ILMIMF_HEADERS
   ImfAcesFile.h
@@ -55,7 +62,9 @@ set(ILMIMF_HEADERS
   ImfEnvmap.h
   ImfEnvmapAttribute.h
   ImfExport.h
+  ImfFastHuf.h
   ImfFloatAttribute.h
+  ImfFloatVectorAttribute.h
   ImfForward.h
   ImfFrameBuffer.h
   ImfFramesPerSecond.h
@@ -116,6 +125,7 @@ set(ILMIMF_HEADERS
 # All sources, including the public headers
 set(ILMIMF_SOURCES
   "${LUT_DIRECTORY}/b44ExpLogTable.h"
+  "${LUT_DIRECTORY}/dwaLookups.h"
   ImfAcesFile.cpp                 ImfAcesFile.h
   ImfArray.h
   ImfAttribute.cpp                ImfAttribute.h
@@ -146,10 +156,14 @@ set(ILMIMF_SOURCES
   ImfDeepTiledOutputFile.cpp      ImfDeepTiledOutputFile.h
   ImfDeepTiledOutputPart.cpp      ImfDeepTiledOutputPart.h
   ImfDoubleAttribute.cpp          ImfDoubleAttribute.h
+  ImfDwaCompressor.cpp            ImfDwaCompressor.h 
+  ImfDwaCompressorSimd.h
   ImfEnvmap.cpp                   ImfEnvmap.h
   ImfEnvmapAttribute.cpp          ImfEnvmapAttribute.h
   ImfExport.h
+  ImfFastHuf.cpp                  ImfFastHuf.h
   ImfFloatAttribute.cpp           ImfFloatAttribute.h
+  ImfFloatVectorAttribute.cpp     ImfFloatVectorAttribute.h
   ImfForward.h
   ImfFrameBuffer.cpp              ImfFrameBuffer.h
   ImfFramesPerSecond.cpp          ImfFramesPerSecond.h
@@ -194,13 +208,15 @@ set(ILMIMF_SOURCES
   ImfRgba.h
   ImfRgbaFile.cpp                 ImfRgbaFile.h
   ImfRgbaYca.cpp                  ImfRgbaYca.h
+  ImfRle.cpp                      ImfRle.h
   ImfRleCompressor.cpp            ImfRleCompressor.h
+  ImfSimd.h
   ImfScanLineInputFile.cpp        ImfScanLineInputFile.h
   ImfStandardAttributes.cpp       ImfStandardAttributes.h
   ImfStdIO.cpp                    ImfStdIO.h
   ImfStringAttribute.cpp          ImfStringAttribute.h
   ImfStringVectorAttribute.cpp    ImfStringVectorAttribute.h
-  ImfSystemSpecific.h
+  ImfSystemSpecific.cpp           ImfSystemSpecific.h
   ImfTestFile.cpp                 ImfTestFile.h
   ImfThreading.cpp                ImfThreading.h
   ImfTileDescription.h
@@ -218,6 +234,7 @@ set(ILMIMF_SOURCES
   ImfVersion.cpp                  ImfVersion.h
   ImfWav.cpp                      ImfWav.h
   ImfXdr.h
+  ImfZip.cpp                      ImfZip.h
   ImfZipCompressor.cpp            ImfZipCompressor.h
 )
 

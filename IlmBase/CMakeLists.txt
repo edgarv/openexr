@@ -111,6 +111,9 @@ install(FILES ${OPENEXR_CFG_DIR}/IlmBaseConfig.h
   DESTINATION ${INSTALL_INCLUDE_DIR}
 )
 
+# Skip package config on unsupported platforms
+if (MSVC)
+
 FILE ( WRITE ${CMAKE_BINARY_DIR}/IlmBase.pc "prefix=${CMAKE_INSTALL_PREFIX}\n" )
 FILE ( APPEND ${CMAKE_BINARY_DIR}/IlmBase.pc "exec_prefix=\${prefix}
 libdir=\${exec_prefix}/lib
