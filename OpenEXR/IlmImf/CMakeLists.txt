@@ -11,6 +11,7 @@ set(LUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lut")
 file(MAKE_DIRECTORY "${LUT_DIRECTORY}")
 include_directories("${LUT_DIRECTORY}")
 
+# TODO Use CMake 2.8.12 generator expressions instead
 # We set the working directory to the one containing the half dll (not an
 # issue with the static libs). On gcc there is no problem because CMake uses
 # the full rpath to dependent libraries during the build process.
@@ -25,11 +26,32 @@ add_custom_command(OUTPUT ${LUT_DIRECTORY}/b44ExpLogTable.h
 
 add_executable(dwaLookups dwaLookups.cpp)
 target_link_libraries(dwaLookups Half IlmThread)
+if (WIN32 AND OPENEXR_SHARED_LIBS)
+  # We need to find Half, IlmThread and Iex at runtime, so we will copy them
+  file(MAKE_DIRECTORY "${LUT_DIRECTORY}")
+  add_custom_command(OUTPUT "${LUT_DIRECTORY}/dwaLookups.h"
+    COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:Half>      "${LUT_DIRECTORY}"
+	COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:IlmThread> "${LUT_DIRECTORY}"
+	COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:Iex>       "${LUT_DIRECTORY}"
+	COMMAND dwaLookups > "${LUT_DIRECTORY}/dwaLookups.h"
+	COMMAND "${CMAKE_COMMAND}" -E remove
+	        "${LUT_DIRECTORY}/$<TARGET_FILE_NAME:Half>"
+			"${LUT_DIRECTORY}/$<TARGET_FILE_NAME:IlmThread>"
+	        "${LUT_DIRECTORY}/$<TARGET_FILE_NAME:Iex>"
+	COMMENT "Generating acceleration lookup tables for for Imf::DwaCompressor..."
+	WORKING_DIRECTORY "${LUT_DIRECTORY}"
+	VERBATIM
+  )
+else()
+  # Standard command with static libraries/rpath
   add_custom_command(OUTPUT ${LUT_DIRECTORY}/dwaLookups.h
     COMMAND dwaLookups > ${LUT_DIRECTORY}/dwaLookups.h
     COMMENT "Generating acceleration lookup tables for for Imf::DwaCompressor..."
     VERBATIM
   )
+endif()
+
+
 # Public headers
 set(ILMIMF_HEADERS
   ImfAcesFile.h
