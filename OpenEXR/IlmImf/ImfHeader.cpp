@@ -59,8 +59,10 @@
 #include <ImfCompressionAttribute.h>
 #include <ImfDeepImageStateAttribute.h>
 #include <ImfDoubleAttribute.h>
+#include <ImfDwaCompressor.h>
 #include <ImfEnvmapAttribute.h>
 #include <ImfFloatAttribute.h>
+#include <ImfFloatVectorAttribute.h>
 #include <ImfIntAttribute.h>
 #include <ImfKeyCodeAttribute.h>
 #include <ImfLineOrderAttribute.h>
@@ -1254,6 +1256,7 @@ inline void initAttributes()
 	DoubleAttribute::registerAttributeType();
 	EnvmapAttribute::registerAttributeType();
 	FloatAttribute::registerAttributeType();
+	FloatVectorAttribute::registerAttributeType();
 	IntAttribute::registerAttributeType();
 	KeyCodeAttribute::registerAttributeType();
 	LineOrderAttribute::registerAttributeType();
@@ -1273,6 +1276,7 @@ inline void initAttributes()
 	V3dAttribute::registerAttributeType();
 	V3fAttribute::registerAttributeType();
 	V3iAttribute::registerAttributeType();
+	DwaCompressor::initializeFuncs();
 }
 
 #if OPENEXR_IMF_USE_WINNT_VISTA_SYNC

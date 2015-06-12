@@ -69,6 +69,7 @@
 #include <vector>
 #include <fstream>
 #include <cassert>
+#include <algorithm>
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_SOURCE_ENTER
 

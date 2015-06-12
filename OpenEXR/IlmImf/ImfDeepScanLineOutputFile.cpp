@@ -65,6 +65,7 @@
 #include <vector>
 #include <fstream>
 #include <cassert>
+#include <algorithm>
 
 #include "ImfNamespace.h"
 

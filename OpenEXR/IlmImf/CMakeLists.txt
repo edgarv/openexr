@@ -1,4 +1,4 @@
-# Description of the IlmImf library
+g# Description of the IlmImf library
 
 find_package(ZLIB REQUIRED)
 

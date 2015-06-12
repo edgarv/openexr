@@ -72,6 +72,7 @@
 #include <fstream>
 #include <cassert>
 #include <map>
+#include <algorithm>
 
 #include "ImfNamespace.h"
 

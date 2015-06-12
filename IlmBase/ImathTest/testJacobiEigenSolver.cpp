@@ -41,6 +41,7 @@
 #include <ctime>
 #include <cassert>
 #include <limits>
+#include <algorithm>
 
 using std::cout;
 using std::endl;

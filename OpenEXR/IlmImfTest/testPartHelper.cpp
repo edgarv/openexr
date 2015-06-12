@@ -37,6 +37,8 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
+#include <algorithm>
+
 
 using std::vector;
 using std::cout;

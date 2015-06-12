@@ -7,6 +7,7 @@ if (OPENEXR_BUILD_IMFHUGETEST)
 endif()
 
 set (IlmImfTest_SOURCES
+  compareDwa.cpp
   main.cpp
   tmpDir.h
   compareB44.cpp                     compareB44.h
@@ -25,6 +26,7 @@ set (IlmImfTest_SOURCES
   testCustomAttributes.cpp           testCustomAttributes.h
   testDeepScanLineBasic.cpp          testDeepScanLineBasic.h
   testDeepScanLineHuge.cpp           testDeepScanLineHuge.h
+  testDwaCompressorSimd.cpp          testDwaCompressorSimd.h
   testDeepScanLineMultipleRead.cpp   testDeepScanLineMultipleRead.h
   testDeepTiledBasic.cpp             testDeepTiledBasic.h
   testExistingStreams.cpp            testExistingStreams.h
@@ -48,6 +50,7 @@ set (IlmImfTest_SOURCES
   testPartHelper.cpp                 testPartHelper.h
   testPreviewImage.cpp               testPreviewImage.h
   testRgba.cpp                       testRgba.h
+  testRle.cpp                        testRle.h
   testRgbaThreading.cpp              testRgbaThreading.h
   testSampleImages.cpp               testSampleImages.h
   testScanLineApi.cpp                testScanLineApi.h

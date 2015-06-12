@@ -47,13 +47,13 @@ const std::string TILEDIMAGE    = "tiledimage";
 const std::string DEEPSCANLINE  = "deepscanline";
 const std::string DEEPTILE      = "deeptile";
 
-bool IMF_EXPORT isImage(const std::string& name);
+IMF_EXPORT bool isImage(const std::string& name);
 
-bool IMF_EXPORT isTiled(const std::string& name);
+IMF_EXPORT bool isTiled(const std::string& name);
 
-bool IMF_EXPORT isDeepData(const std::string& name);
+IMF_EXPORT bool isDeepData(const std::string& name);
 
-bool IMF_EXPORT isSupportedType(const std::string& name);
+IMF_EXPORT bool isSupportedType(const std::string& name);
 
 
 OPENEXR_IMF_INTERNAL_NAMESPACE_HEADER_EXIT

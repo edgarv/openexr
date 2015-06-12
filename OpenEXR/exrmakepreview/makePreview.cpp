@@ -53,6 +53,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <algorithm>
 
 #include <OpenEXRConfig.h>
 using namespace OPENEXR_IMF_NAMESPACE;
