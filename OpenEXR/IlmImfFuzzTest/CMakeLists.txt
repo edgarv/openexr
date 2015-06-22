@@ -13,4 +13,4 @@ set (SRCS
 add_executable (IlmImfFuzzTest ${SRCS})
 target_link_libraries (IlmImfFuzzTest
   Half Iex Imath IlmThread IlmImf ${ZLIB_LIBRARIES})
-add_openexr_test (IlmImfFuzzTest IlmImfFuzzTest)
+add_openexr_test (TestIlmImfFuzz IlmImfFuzzTest)

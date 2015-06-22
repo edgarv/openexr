@@ -71,4 +71,4 @@ add_definitions( -DILM_IMF_TEST_IMAGEDIR=\"${CMAKE_CURRENT_SOURCE_DIR}/\" )
 add_executable (IlmImfTest ${IlmImfTest_SOURCES})
 target_link_libraries (IlmImfTest
   Half Iex Imath IlmThread IlmImf ${ZLIB_LIBRARIES})
-add_openexr_test (TestIlmImfTest IlmImfTest)
+add_openexr_test (TestIlmImf IlmImfTest)

@@ -8,4 +8,4 @@ set (IexTest_SOURCES
 
 add_executable (IexTest ${IexTest_SOURCES})
 target_link_libraries (IexTest Iex)
-add_openexr_test (TestIexTest IexTest)
+add_openexr_test (TestIex IexTest)

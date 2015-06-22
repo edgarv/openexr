@@ -28,4 +28,4 @@ set (ImathTest_SOURCES
 
 add_executable (ImathTest ${ImathTest_SOURCES})
 target_link_libraries (ImathTest Imath Iex Half)
-add_openexr_test (TestImathTest ImathTest)
+add_openexr_test (TestImath ImathTest)
