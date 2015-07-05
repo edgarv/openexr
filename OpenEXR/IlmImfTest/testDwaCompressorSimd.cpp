@@ -128,9 +128,9 @@ testCsc()
     {   
         for (int i=0; i<64; ++i)
         {
-            test[0]._buffer[i] = orig[0]._buffer[i] = rand48.nextf();
-            test[1]._buffer[i] = orig[1]._buffer[i] = rand48.nextf();
-            test[2]._buffer[i] = orig[2]._buffer[i] = rand48.nextf();
+            test[0]._buffer[i] = orig[0]._buffer[i] = static_cast<float>(rand48.nextf());
+            test[1]._buffer[i] = orig[1]._buffer[i] = static_cast<float>(rand48.nextf());
+            test[2]._buffer[i] = orig[2]._buffer[i] = static_cast<float>(rand48.nextf());
         }
         
         csc709Forward64(test[0]._buffer, test[1]._buffer, test[2]._buffer);
@@ -139,9 +139,9 @@ testCsc()
             csc709Inverse(test[0]._buffer[i], test[1]._buffer[i], test[2]._buffer[i]);
         }
 
-        compareBuffer(orig[0], test[0], 1e-3);
-        compareBuffer(orig[1], test[1], 1e-3);
-        compareBuffer(orig[2], test[2], 1e-3);
+        compareBuffer(orig[0], test[0], 1e-3f);
+        compareBuffer(orig[1], test[1], 1e-3f);
+        compareBuffer(orig[2], test[2], 1e-3f);
 
     } // iter
 
@@ -150,17 +150,17 @@ testCsc()
     {    
         for (int i=0; i<64; ++i)
         {
-            test[0]._buffer[i] = orig[0]._buffer[i] = rand48.nextf();
-            test[1]._buffer[i] = orig[1]._buffer[i] = rand48.nextf();
-            test[2]._buffer[i] = orig[2]._buffer[i] = rand48.nextf();
+            test[0]._buffer[i] = orig[0]._buffer[i] = static_cast<float>(rand48.nextf());
+            test[1]._buffer[i] = orig[1]._buffer[i] = static_cast<float>(rand48.nextf());
+            test[2]._buffer[i] = orig[2]._buffer[i] = static_cast<float>(rand48.nextf());
         }
         
         csc709Forward64(test[0]._buffer, test[1]._buffer, test[2]._buffer);
         csc709Inverse64(test[0]._buffer, test[1]._buffer, test[2]._buffer);
 
-        compareBuffer(orig[0], test[0], 1e-3);
-        compareBuffer(orig[1], test[1], 1e-3);
-        compareBuffer(orig[2], test[2], 1e-3);
+        compareBuffer(orig[0], test[0], 1e-3f);
+        compareBuffer(orig[1], test[1], 1e-3f);
+        compareBuffer(orig[2], test[2], 1e-3f);
 
     } // iter
 }
@@ -266,19 +266,19 @@ testDct()
     {
         for (int i=0; i<64; ++i) 
         {
-            orig._buffer[i] = test._buffer[i] = rand48.nextf();
+            orig._buffer[i] = test._buffer[i] = static_cast<float>(rand48.nextf());
         }
 
         dctForward8x8(test._buffer);
         dctInverse8x8_scalar<0>(test._buffer);
 
-        compareBufferRelative(orig, test, .02, 1e-3);
+        compareBufferRelative(orig, test, .02f, 1e-3f);
     } 
 
     cout << "      Inverse, DC Only" << endl;
     for (int iter=0; iter<numIter; ++iter) 
     {
-        orig._buffer[0] = test._buffer[0] = rand48.nextf();
+        orig._buffer[0] = test._buffer[0] = static_cast<float>(rand48.nextf());
         for (int i=1; i<64; ++i) 
         {
             orig._buffer[i] = test._buffer[i] = 0;
@@ -287,7 +287,7 @@ testDct()
         dctInverse8x8_scalar<0>(orig._buffer);
         dctInverse8x8DcOnly(test._buffer);
 
-        compareBufferRelative(orig, test, .01, 1e-6);
+        compareBufferRelative(orig, test, .01f, 1e-6f);
     } 
 
 
@@ -299,14 +299,15 @@ testDct()
         {                                                          \
             if (i < 8*(8-_n))                                      \
             {                                                      \
-               orig._buffer[i] = test._buffer[i] = rand48.nextf(); \
+               orig._buffer[i] = test._buffer[i] =                 \
+                  static_cast<float>(rand48.nextf());              \
             } else {                                               \
                orig._buffer[i] = test._buffer[i] = 0;              \
             }                                                      \
         }                                                          \
         dctInverse8x8_scalar<0>(orig._buffer);                     \
         _func<_n>(test._buffer);                                   \
-        compareBufferRelative(orig, test, .01, 1e-6);              \
+        compareBufferRelative(orig, test, .01f, 1e-6f);            \
     }
 
     cout << "      Inverse, Scalar: " << endl;
@@ -367,10 +368,10 @@ testFloatToHalf()
         {
             if (i < 32)
             {
-                src._buffer[i] = (float)140000*(rand48.nextf()-.5);
+                src._buffer[i] = static_cast<float>(140000.0*(rand48.nextf()-.5));
             } else
             {
-                src._buffer[i] = (float)(rand48.nextf()-.5);
+                src._buffer[i] = static_cast<float>(rand48.nextf()-.5);
             }
             dst._buffer[i] = 0;
         }
@@ -400,11 +401,11 @@ testFloatToHalf()
             {
                 if (i < 32)
                 {
-                    src._buffer[i] = (float)140000*(rand48.nextf()-.5);
+                    src._buffer[i] = static_cast<float>(140000.0*(rand48.nextf()-.5));
                 } 
                 else
                 {
-                    src._buffer[i] = (float)(rand48.nextf()-.5);
+                    src._buffer[i] = static_cast<float>(rand48.nextf()-.5);
                 }
                 dst._buffer[i] = 0;
             }
@@ -483,11 +484,11 @@ testFromHalfZigZag()
             {
                 if (i < 32)
                 {
-                    h = (half)(140000.*(rand48.nextf() - .5));
+                    h = half(static_cast<float>(140000.*(rand48.nextf() - .5)));
                 }
                 else 
                 {
-                    h = (half)(rand48.nextf() - .5);
+                    h = half(static_cast<float>(rand48.nextf() - .5));
                 }
                 src._buffer[i] = h.bits();
             }
